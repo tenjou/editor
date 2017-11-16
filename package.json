@@ -5,8 +5,8 @@
   "author": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "build-replica src/index.js -i index.html -t -u -l ../../wabi",
-    "dev": "build-replica src/index.js -i index.html -t -s 9080 9081 -si -l ../../wabi"
+    "build": "build-replica src/index.js -i index.html -t -u",
+    "dev": "build-replica src/index.js -i index.html -t -s 9080 9081 -si"
   },
   "keywords": [],
   "license": "MIT",
