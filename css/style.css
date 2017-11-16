@@ -1,0 +1,175 @@
+body {
+	padding: 0;
+	margin: 0;
+	font-family: "Open Sans";
+	font-size: 11px;
+	background: #22262f;
+	color: white;
+}
+
+* {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	-webkit-user-drag: none;
+	user-drag: none;
+}
+*:focus {
+	outline: 0;
+}
+
+layout {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+overlay {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+overlay > * {
+	pointer-events: all;
+}
+
+row {
+	display: flex;
+	height: 100%;
+	flex-direction: row;
+}
+
+panel {
+	flex: 100%;
+	margin: 1px;
+}
+panel header {
+	font-weight: bold;
+	padding: 4px;
+}
+
+content {
+	flex: 100%;
+}
+content.centered {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+hierarchy {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+}
+hierarchy item {
+	display: block;
+	padding: 2px;
+	cursor: pointer;
+}
+hierarchy item.selected,
+hierarchy item:hover {
+	background-color: #438ce2;
+}
+hierarchy item icon {
+	width: 14px;
+}
+hierarchy item caret {
+	width: 17px;
+	text-align: center;
+}
+
+contextmenu {
+	position: absolute;
+	width: 200px;
+	padding: 2px;
+	z-index: 100;
+	background: rgba(0, 0, 0, 0.84);
+	border-radius: 2px;
+	box-shadow: 1px 1px 4px rgba(0,0,0,.2);
+	transition: transform 0.05s ease-out, opacity 0.05s ease-out;
+}
+contextmenu contextmenu {
+	left: 100%;
+	margin-top: -5px;
+	opacity: 0;
+	pointer-events: none;
+    max-height: 250px;
+    overflow: auto;
+}
+contextmenu item:hover > contextmenu {
+	opacity: 1;
+	pointer-events: auto;
+}
+contextmenu category {
+	display: block;
+    margin-top: 3px;
+}
+contextmenu category:first-child {
+	padding-top: 0;
+	margin-top: 0;
+}
+contextmenu category > header {
+	display: block;
+	background: black;
+	color: #8C8888;
+	font-size: 9px;
+	font-weight: bold;
+	text-transform: uppercase;
+	padding: 0px 0px 0px 5px;
+	line-height: 21px;
+}
+contextmenu header > icon {
+	position: absolute;
+	left: 2px;
+	top: 6px;	
+	width: 15px;
+}
+contextmenu item {
+	display: block;
+	position: relative;
+	color: white;
+	padding: 3px 6px 3px 20px;
+	font-size: 11px;
+	cursor: pointer;
+}
+contextmenu item > icon {
+	position: absolute;
+	left: 2px;
+	top: 6px;	
+	width: 19px;
+}
+contextmenu item:hover {
+	background: #438ce2;
+	text-shadow: 1px 1px #312E2E;
+}
+contextmenu caret {
+	float: right;
+	margin-right: -7px;
+	margin-top: 2px;
+}
+
+word {
+	color: white;
+	background: none;
+	transition: background 0.3s ease-in;
+	transition: color 0.3s ease-in;
+	padding: 0 2px 1px 2px;
+	cursor: text;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+word:hover,
+word[contentEditable="true"] {
+	-webkit-user-select: auto;
+	-moz-user-select: auto;
+	-ms-user-select: auto;
+	user-select: auto;
+}
