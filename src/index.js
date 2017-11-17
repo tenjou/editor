@@ -62,7 +62,7 @@ export default function main()
 			id: "item1",
 			type: "Folder",
 			name: "Folder 1",
-			children: [],
+			children: [ "item3" ],
 			cache: {}	
 		},
 		item2: {
@@ -77,6 +77,13 @@ export default function main()
 			id: "item3",
 			type: "Folder",
 			name: "some_other_folder",
+			children: [ "item4" ],
+			cache: {}
+		},
+		item4: {
+			id: "item4",
+			type: "Folder",
+			name: "item4",
 			cache: {}
 		}		
 	}

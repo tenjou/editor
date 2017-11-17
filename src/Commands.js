@@ -7,11 +7,13 @@ class AddItem
 	}
 
 	execute() {
-		store.add(`hierarchy`, this.data)
+		store.set(`assets/${this.data.id}`, this.data)
+		store.add(`hierarchy`, this.data.id)
 	}
 
 	undo() {
-		store.remove(`hierarchy`, this.data)
+		store.remove(`assets/${this.data.id}`)
+		store.remove(`hierarchy`, this.data.id)
 	}
 }
 
@@ -22,11 +24,13 @@ class RemoveItem
 	}
 
 	execute() {
-		store.remove(`hierarchy`, this.data)
+		store.remove(`assets/${this.data.id}`)
+		store.remove(`hierarchy`, this.data.id)
 	}
 
 	undo() {
-		store.add(`hierarchy`, this.data)
+		store.set(`assets/${this.data.id}`, this.data)
+		store.add(`hierarchy`, this.data.id)
 	}
 }
 

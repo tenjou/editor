@@ -19,18 +19,26 @@ const HierarchyItem = component
 	render() 
 	{
 		const item = this.$value
+		const open = this.$open
 		const attr = this.$selected ? Object.assign({ class: "selected" }, this.attr) : this.attr
-
+	
 		elementOpen("item", attr)
-			if(this.$open) {
-				elementVoid("caret", { class: "fa fa-caret-down" })
-			}
-			else {
-				elementVoid("caret", { class: "fa fa-caret-right" })
+			if(item.children)
+			{
+				if(open) {
+					elementVoid("caret", { class: "fa fa-caret-down" })
+				}
+				else {
+					elementVoid("caret", { class: "fa fa-caret-right" })
+				}
 			}
 			elementVoid("icon", { class: "fa fa-folder" })
 			componentVoid(Word, { bind: `${this.bind.value}/name` })
 		elementClose("item")
+
+		if(item.children && open) {
+			componentVoid(HierarchyItems, { bind: `${this.bind.value}/children` })
+		}
 	},
 
 	handleClick(event) {
@@ -40,6 +48,26 @@ const HierarchyItem = component
 		else {
 			this.$open = !this.$open
 		}
+	}
+})
+
+const HierarchyItems = component
+({
+	render() {
+		const items = this.$value
+		elementOpen("content")
+			for(let n = 0; n < items.length; n++) {
+				const itemId = items[n]
+				const itemPath = `assets/${itemId}`
+				componentVoid(HierarchyItem, { 
+					bind: {
+						value: itemPath,
+						open: `${itemPath}/cache/open`,
+						selected: `${itemPath}/cache/selected`,
+					}
+				})
+			}
+		elementClose("content")
 	}
 })
 
@@ -65,19 +93,7 @@ const Hierarchy = component
 					elementClose("content")
 				}
 				else {
-					elementOpen("content")
-						for(let n = 0; n < items.length; n++) {
-							const itemId = items[n]
-							const itemPath = `assets/${itemId}`
-							componentVoid(HierarchyItem, { 
-								bind: {
-									value: itemPath,
-									open: `${itemPath}/cache/open`,
-									selected: `${itemPath}/cache/selected`,
-								}
-							})
-						}
-					elementClose("content")
+					componentVoid(HierarchyItems, { bind: this.bind })
 				}
 			elementClose("hierarchy")
 		elementClose("panel")

@@ -67,10 +67,16 @@ hierarchy {
 	height: 100%;
 	flex-direction: column;
 }
+hierarchy content content {
+	display: block;
+	margin-left: 12px;
+}
 hierarchy item {
+	position: relative;
 	display: block;
 	padding: 2px;
 	cursor: pointer;
+	padding-left: 17px;
 }
 hierarchy item.selected,
 hierarchy item:hover {
@@ -80,6 +86,9 @@ hierarchy item icon {
 	width: 14px;
 }
 hierarchy item caret {
+	position: absolute;
+	left: 0;
+	top: 4px;
 	width: 17px;
 	text-align: center;
 }
