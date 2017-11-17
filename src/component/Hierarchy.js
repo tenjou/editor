@@ -7,6 +7,7 @@ const HierarchyItem = component
 	state: {
 		value: null,
 		open: false,
+		selected: false
 	},
 
 	mount() {
@@ -15,9 +16,12 @@ const HierarchyItem = component
 		}
 	},
 
-	render() {
+	render() 
+	{
 		const item = this.$value
-		elementOpen("item", this.attr)
+		const attr = this.$selected ? Object.assign({ class: "selected" }, this.attr) : this.attr
+
+		elementOpen("item", attr)
 			if(this.$open) {
 				elementVoid("caret", { class: "fa fa-caret-down" })
 			}
@@ -30,7 +34,9 @@ const HierarchyItem = component
 	},
 
 	handleClick(event) {
-		if(event.detail % 2) {}
+		if(event.detail % 2) {
+			this.$selected = true
+		}
 		else {
 			this.$open = !this.$open
 		}
@@ -61,12 +67,13 @@ const Hierarchy = component
 				else {
 					elementOpen("content")
 						for(let n = 0; n < items.length; n++) {
-							const item = items[n]
-							const itemPath = `${this.bind}/${n}`
+							const itemId = items[n]
+							const itemPath = `assets/${itemId}`
 							componentVoid(HierarchyItem, { 
 								bind: {
 									value: itemPath,
-									open: `${itemPath}/local/open`
+									open: `${itemPath}/cache/open`,
+									selected: `${itemPath}/cache/selected`,
 								}
 							})
 						}
