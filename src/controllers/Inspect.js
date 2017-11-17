@@ -9,7 +9,7 @@ const select = (id) => {
 	}
 	selected = id
 	if(selected) {
-		selectedData = store.get(selected)
+		selectedData = store.get(`assets/${selected}`)
 	}
 }
 
@@ -20,7 +20,12 @@ const unselect = (id) => {
 	}
 }
 
+const getSelectedData = () => {
+	return selectedData
+}
+
 export {
 	select,
-	unselect
+	unselect,
+	getSelectedData
 }

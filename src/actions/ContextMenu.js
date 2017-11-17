@@ -1,7 +1,25 @@
 import { store } from "wabi"
+import Menu from "../menu/Menu"
+
+const show = (event, menuId) => 
+{
+	event.preventDefault()
+	event.stopPropagation()
+
+	const menu = Menu.get(menuId)
+	if(!menu) {
+		console.warn(`(ContextMenu.show) Could not find menu with id: ${menuId}`)
+		return
+	}
+	store.set("contextmenu", {
+		props: menu,
+		x: event.clientX,
+		y: event.clientY
+	})
+}
 
 const hide = () => {
-	store.set("contextmenu/show", false)
+	store.set("contextmenu/props", null)
 }
 
 const handleClick = (event) => {
@@ -14,10 +32,15 @@ const handleContextMenu = (event) => {
 }
 
 store.set("contextmenu", {
-	show: false,
+	props: null,
 	x: 0,
 	y: 0
 })
 
 window.addEventListener("click", handleClick)
 window.addEventListener("contextmenu", handleContextMenu)
+
+export {
+	show,
+	hide
+}

@@ -1,5 +1,6 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 import Word from "./Word"
+import ContextMenu from "../actions/ContextMenu"
 import { isEmpty } from "../Utils" 
 
 const HierarchyItem = component
@@ -12,7 +13,8 @@ const HierarchyItem = component
 
 	mount() {
 		this.attr = {
-			onclick: this.handleClick.bind(this)
+			onclick: this.handleClick.bind(this),
+			oncontextmenu: this.handleContextMenu.bind(this)
 		}
 	},
 
@@ -48,6 +50,11 @@ const HierarchyItem = component
 		else {
 			this.$open = !this.$open
 		}
+	},
+
+	handleContextMenu(event) {
+		this.$selected = true
+		ContextMenu.show(event, "HierarchyItem")
 	}
 })
 
@@ -74,7 +81,12 @@ const HierarchyItems = component
 const Hierarchy = component
 ({
 	mount() {
-		this.attr = { style: "flex: 240px;" }
+		this.attr = { 
+			style: "flex: 240px;",
+			oncontextmenu(event) {
+				ContextMenu.show(event, "Hierarchy")
+			}			
+		}
 	},
 
 	render() 

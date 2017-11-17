@@ -1,9 +1,10 @@
+import Menu from "./Menu"
 import Add from "../actions/Add"
 
-const HierarchyMenu = [
+Menu.add("Hierarchy", [
 	{
 		type: "category",
-		name: "create",
+		name: "Create",
 		children: [
 			{
 				icon: "fa-folder",
@@ -12,6 +13,4 @@ const HierarchyMenu = [
 			}		
 		]
 	}
-]
-
-export default HierarchyMenu
+])

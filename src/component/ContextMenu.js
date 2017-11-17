@@ -1,6 +1,6 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 import "../actions/ContextMenu"
-import HierarchyMenu from "../menu/HierarchyMenu"
+import Menu from "../menu/Menu"
 
 const ContextMenuInner = component({
 	render() {
@@ -56,15 +56,18 @@ const ContextMenu = component({
 		this.bind = "contextmenu"
 	},
 
-	render() {
-		if(!this.$value.show) { return }
+	render() 
+	{
+		const props = this.$value.props
+		if(!props) { return }
+		
 		elementOpen("contextmenu", { 
 			style: {
 				left: `${this.$value.x}px`,
 				top: `${this.$value.y}px`
 			}
 		})
-			componentVoid(ContextMenuInner, { $value: HierarchyMenu })
+			componentVoid(ContextMenuInner, { $value: this.$value.props })
 		elementClose("contextmenu")
 	}
 })

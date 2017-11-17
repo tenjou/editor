@@ -4,23 +4,10 @@ import ContextMenu from "./component/ContextMenu"
 import History from "./History"
 import Device from "./Device"
 import Inspect from "./controllers/Inspect"
+import "./menu/index"
 
 const Layout = component
 ({
-	mount() {
-		this.attr = {
-			oncontextmenu(event) {
-				event.preventDefault()
-				event.stopPropagation()
-				store.set("contextmenu", {
-					x: event.clientX,
-					y: event.clientY,
-					show: true	
-				})
-			}	
-		}
-	},
-
 	render() {
 		elementOpen("layout", this.attr)
 			elementOpen("row")
