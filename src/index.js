@@ -65,12 +65,14 @@ export default function main()
 			type: "Folder",
 			name: "some_other_folder",
 			children: [ "item4" ],
+			parent: "item1",
 			cache: {}
 		},
 		item4: {
 			id: "item4",
 			type: "Folder",
 			name: "item4",
+			parent: "item3",
 			cache: {}
 		}		
 	}

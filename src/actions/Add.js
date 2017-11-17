@@ -7,7 +7,9 @@ const folder = () => {
 		id: uuid4(),
 		type: "Folder",
 		name: "Folder",
-		local: {}
+		parent: null,
+		children: null,
+		cache: {}
 	}
 	Editor.execute(new Commands.AddItem(data))
 }
