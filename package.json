@@ -1,5 +1,5 @@
 {
-  "name": "untitled",
+  "name": "editor",
   "version": "0.1.0",
   "description": "",
   "author": "",
@@ -12,5 +12,8 @@
   "license": "MIT",
   "dependencies": {
     "wabi": "^0.9.8"
+  },
+  "devDependencies": {
+    "build-replica": "^0.2.52"
   }
 }
