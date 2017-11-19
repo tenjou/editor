@@ -14,6 +14,6 @@
     "wabi": "^0.9.8"
   },
   "devDependencies": {
-    "build-replica": "^0.2.52"
+    "build-replica": "^0.2.55"
   }
 }
