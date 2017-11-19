@@ -3,7 +3,7 @@ body {
 	margin: 0;
 	font-family: "Open Sans";
 	font-size: 11px;
-	background: #26282d;
+	background: #18181b;
 	color: white;
 }
 
@@ -46,10 +46,12 @@ row {
 panel {
 	flex: 100%;
 	margin: 1px;
+	background: #4a4a4a;
 }
 panel header {
-	font-weight: bold;
-	padding: 4px;
+	font-weight: 600;
+	padding: 3px;
+	background: #1b1b1b;
 }
 
 content {
@@ -181,4 +183,17 @@ word[contentEditable="true"] {
 	-moz-user-select: auto;
 	-ms-user-select: auto;
 	user-select: auto;
+}
+
+.ql-toolbar {
+	border: none;
+	border-bottom: 1px solid #b9b9b9 !important;
+	background: #c3c3c3;
+	padding: 3px !important;
+}
+.ql-container {
+	background: #d2d2d2;
+	color: black;
+	flex: 100%;
+	overflow: auto;	
 }

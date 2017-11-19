@@ -1,25 +1,9 @@
-import { component, componentVoid, elementOpen, elementClose, route, store } from "wabi"
-import Hierarchy from "./component/Hierarchy"
-import ContextMenu from "./component/ContextMenu"
+import { component, componentVoid, elementOpen, elementClose, route, store, text } from "wabi"
+import Layout from "./layouts/Layout"
 import History from "./History"
 import Device from "./Device"
 import Inspect from "./controllers/Inspect"
 import "./menu/index"
-
-const Layout = component
-({
-	render() {
-		elementOpen("layout", this.attr)
-			elementOpen("row")
-				componentVoid(Hierarchy, { bind: "hierarchy" })
-			elementClose("row")
-		elementClose("layout")
-
-		elementOpen("overlay")
-			componentVoid(ContextMenu)
-		elementClose("overlay")		
-	}
-})
 
 const handleKeyDown = (event) => {
 	switch(event.keyCode) {

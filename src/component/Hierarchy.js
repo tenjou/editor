@@ -8,7 +8,8 @@ const HierarchyItem = component
 	state: {
 		value: null,
 		open: false,
-		selected: false
+		selected: false,
+		dragOver: false
 	},
 
 	mount() {
@@ -39,7 +40,11 @@ const HierarchyItem = component
 		elementClose("item")
 
 		if(item.children && open) {
-			componentVoid(HierarchyItems, { bind: `${this.bind.value}/children` })
+			componentVoid(HierarchyItems, { 
+				bind: {
+					value: `${this.bind.value}/children` 
+				}
+			})
 		}
 	},
 
@@ -55,11 +60,54 @@ const HierarchyItem = component
 	handleContextMenu(event) {
 		this.$selected = true
 		ContextMenu.show(event, "HierarchyItem")
-	}
+	},
+
+	handleDrop(event) 
+	{
+		event.stopPropagation()
+		event.preventDefault()
+		this.$dragOver = false
+
+		const parentAsset = store.get(store.get("local/assets/location"))
+		Assets.dropFiles(event.dataTransfer.items, parentAsset.id)
+	},
+
+	handleDragOver(event) {
+		event.stopPropagation()
+		event.preventDefault()
+		event.dataTransfer.dropEffect = "copy"
+	},
+
+	handleDragEnter(event) {
+		event.stopPropagation()
+		event.preventDefault()
+		this.$dragOver = true
+	},
+
+	handleDragLeave(event) {
+		event.stopPropagation()
+		event.preventDefault()
+		this.$dragOver = false
+	}	
 })
 
 const HierarchyItems = component
 ({
+	state: {
+		value: null,
+		dragOver: false
+	},
+
+	mount() {
+		this.attr = {
+			ondrop: this.handleDrop.bind(this),
+			ondragover: this.handleDragOver.bind(this),
+			ondragenter: this.handleDragEnter.bind(this),
+			ondragleave: this.handleDragLeave.bind(this),
+			oncontextmenu: this.handleContextMenu.bind(this)			
+		}		
+	},
+
 	render() {
 		const items = this.$value
 		elementOpen("content")
@@ -75,14 +123,48 @@ const HierarchyItems = component
 				})
 			}
 		elementClose("content")
-	}
+	},
+
+	handleDrop(event) 
+	{
+		event.stopPropagation()
+		event.preventDefault()
+		this.$dragOver = false
+
+		console.log(event.dataTransfer.items)		
+		// const parentAsset = store.get(store.get("local/assets/location"))
+		// Assets.dropFiles(event.dataTransfer.items, parentAsset.id)
+	},
+
+	handleDragOver(event) {
+		event.stopPropagation()
+		event.preventDefault()
+		event.dataTransfer.dropEffect = "copy"
+	},
+
+	handleDragEnter(event) {
+		event.stopPropagation()
+		event.preventDefault()
+		this.$dragOver = true
+	},
+
+	handleDragLeave(event) {
+		event.stopPropagation()
+		event.preventDefault()
+		this.$dragOver = false
+	},
+
+	handleContextMenu(event) {
+		this.$selected = true
+		ContextMenu.show(event, "HierarchyItem")
+	}	
 })
 
 const Hierarchy = component
 ({
 	mount() {
 		this.attr = { 
-			style: "flex: 240px;",
+			style: "flex: 0 0 220px;",
 			oncontextmenu(event) {
 				ContextMenu.show(event, "Hierarchy")
 			}			
@@ -105,7 +187,11 @@ const Hierarchy = component
 					elementClose("content")
 				}
 				else {
-					componentVoid(HierarchyItems, { bind: this.bind })
+					componentVoid(HierarchyItems, { 
+						bind: {
+							value: this.bind 
+						}
+					})
 				}
 			elementClose("hierarchy")
 		elementClose("panel")
