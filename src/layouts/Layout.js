@@ -1,4 +1,5 @@
-import { component, componentVoid, elementOpen, elementClose, route, store, text } from "wabi"
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
+import TopMenu from "../component/TopMenu"
 import Hierarchy from "../component/Hierarchy"
 import Workspace from "../component/Workspace"
 import Inspect from "../component/Inspect"
@@ -8,6 +9,8 @@ const Layout = component
 ({
 	render() {
 		elementOpen("layout", this.attr)
+			componentVoid(TopMenu)
+
 			elementOpen("row")
 				componentVoid(Hierarchy, { bind: "hierarchy" })
 				componentVoid(Workspace)

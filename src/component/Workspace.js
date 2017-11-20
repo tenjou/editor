@@ -1,4 +1,4 @@
-import { component, componentVoid, elementOpen, elementClose, elementVoid, route, store, text } from "wabi"
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 
 const Workspace = component
 ({
@@ -9,6 +9,10 @@ const Workspace = component
 	render() 
 	{	
 		elementOpen("panel")
+			elementOpen("header")
+				text("Workspace")
+			elementClose("header")
+
 			elementOpen("workspace")
 				elementOpen("content")	
 					const element = elementOpen("div").element
