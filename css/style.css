@@ -27,13 +27,26 @@ body {
 	outline: 0;
 }
 
+::-webkit-scrollbar {
+	width: 6px;
+}
+menu::-webkit-scrollbar-thumb:vertical {
+	background: #999; 
+}
+::-webkit-scrollbar:hover {
+	background-color: rgba(0, 0, 0, 0.09);
+}
+::-webkit-scrollbar-thumb:vertical {
+	background: #222;
+}
+::-webkit-scrollbar-thumb:vertical:active {
+	background: rgba(0,0,0,0.61);
+}
+
 .centered {
 	align-items: center;
 	justify-content: center;
 }
-
-::selection { background: black; }
-::-moz-selection { background: black; }
 
 .fa {
 	width: 18px;
