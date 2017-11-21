@@ -1,5 +1,9 @@
-import { component, componentVoid, elementOpen, elementClose, route, store, text } from "wabi"
-import Layout from "./layouts/Layout"
+import { component, componentVoid, elementOpen, elementClose, route, clearRoutes, store, text } from "wabi"
+import FileSystem from "./fs/FileSystem"
+import MainView from "./view/MainView"
+import HomeView from "./view/HomeView"
+import NewProjectView from "./view/NewProjectView"
+import WarnView from "./view/WarnView"
 import History from "./History"
 import Device from "./Device"
 import Inspect from "./controllers/Inspect"
@@ -26,8 +30,25 @@ const handleKeyDown = (event) => {
 	}
 }
 
-export default function main() 
+const setup = () => 
 {
+	route("", WarnView, null, null, () => {
+		FileSystem.init((error) => 
+		{
+			if(error) {
+				console.error(error)
+				return
+			}
+
+			ready()
+		})		
+	})
+}
+
+const ready = () =>
+{
+	clearRoutes()
+	
 	const assets = {
 		item1: {
 			id: "item1",
@@ -88,8 +109,17 @@ export default function main()
 	store.set("assets", assets)
 	store.set("hierarchy", hierarchy)
 	store.set("cache", cache)
-	route("/", Layout)
+
+	route(/#new-project/g, NewProjectView)
+	route(/#([a-zA-Z0-9_]*)/g, MainView, (result) => {
+		// loadView_Project(result[0][1])
+	})
+	route("", MainView)
 
 	window.store = store
 	window.addEventListener("keydown", handleKeyDown)
+}
+
+export default function main() {
+	setup()
 }

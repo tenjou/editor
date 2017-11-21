@@ -27,6 +27,35 @@ body {
 	outline: 0;
 }
 
+.centered {
+	align-items: center;
+	justify-content: center;
+}
+
+::selection { background: black; }
+::-moz-selection { background: black; }
+
+.fa {
+	width: 18px;
+	text-align: center;
+}
+.hidden {
+	display: none;
+}
+
+.yellow {
+	color: #dcd836;
+}
+.red {
+	color: #ff2f2f;
+}
+
+warn {
+	padding: 10px;
+	background: black;
+	border-left: 4px solid #ffd12b;
+}
+
 layout {
 	position: absolute;
 	width: 100%;
@@ -118,6 +147,30 @@ hierarchy item caret {
 	top: 4px;
 	width: 17px;
 	text-align: center;
+}
+
+projects {
+	width: 400px;
+	height: 300px;
+}
+projects item {
+	display: block;
+	padding: 2px 2px 2px 5px;
+	cursor: pointer;
+}
+projects item:hover,
+projects item.select {
+	background-color: #438ce2;
+}
+projects item > tag {
+	display: inline-block;
+	background-color: #333;
+	padding: 2px 4px 2px 4px;
+	font-weight: bold;
+	font-size: 9px;
+	margin-left: 8px;
+	color: #ccc;
+	border-radius: 2px;
 }
 
 contextmenu {
@@ -229,6 +282,27 @@ topmenu logo {
 	display: block;
 	font-size: 14px;
 	font-weight: bold;
+}
+
+loader {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    background: #4a4c4e;
+    font-size: 30px;
+    color: white;
+}
+loader:before
+{
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	display: inline-block;
+	content: "\f1ce";
+	animation: fa-spin 2s infinite linear;
 }
 
 .ql-toolbar {

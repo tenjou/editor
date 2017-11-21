@@ -1,11 +1,11 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
+import OverlayView from "./OverlayView"
 import TopMenu from "../component/TopMenu"
 import Hierarchy from "../component/Hierarchy"
 import Workspace from "../component/Workspace"
 import Inspect from "../component/Inspect"
-import ContextMenu from "../component/ContextMenu"
 
-const Layout = component
+const MainView = component
 ({
 	render() {
 		elementOpen("layout", this.attr)
@@ -18,10 +18,8 @@ const Layout = component
 			elementClose("row")
 		elementClose("layout")
 
-		elementOpen("overlay")
-			componentVoid(ContextMenu)
-		elementClose("overlay")		
+		componentVoid(OverlayView)
 	}
 })
 
-export default Layout
+export default MainView
