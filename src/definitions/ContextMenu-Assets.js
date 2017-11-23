@@ -11,50 +11,7 @@ Definitions.add("Context.Assets", {
 				func: () => {
 					Assets.createAsset("Folder", null)
 				}
-			},
-			Material: {
-				name: "Material",
-				icon: "fa-diamond",
-				func: () => {
-					Assets.createAsset("Material", null)
-				}
-			},
-			// Entity: {
-			// 	name: "Entity",
-			// 	icon: "fa-cube",
-			// 	func: () => {
-			// 		Assets.createItem("Prefab", "Prefab", "assets.Prefab.children")
-			// 	}
-			// },
-			Cubemap: {
-				name: "Cubemap",
-				icon: "fa-map",
-				func: () => {
-					const data = {
-						textures: [ null, null, null, null, null, null ]
-					}
-					Assets.createAsset("Cubemap", data)
-				}
-			},
-			Scene: {
-				name: "Scene",
-				icon: "fa-database",
-				func: () => {
-					Assets.createAsset("Scene")
-				}
-			},				
-		}
-	},
-	Custom: {
-		type: "category",
-		children: {
-			Item: {
-				name: "Item",
-				icon: "fa-cube",
-				func() {
-					Assets.createAsset("Item")
-				}
-			}
+			}			
 		}
 	},
 	Actions: {
