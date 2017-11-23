@@ -1,12 +1,17 @@
 {
-  "name": "editor",
+  "name": "meta-studio",
   "version": "0.1.0",
   "description": "",
   "author": "",
-  "main": "src/index.js",
+  "main": "desktop.js",
   "scripts": {
-    "build": "build-replica src/index.js -i index.html -t -u",
-    "dev": "build-replica src/index.js -i index.html -t -s 9080 9081 -si"
+    "build": "build-replica src/main.js -i index.html -t -u",
+    "test-build": "build-replica src/main.js -i index.html -t -u -s 8090 8091",
+    "dev": "build-replica src/main.js -i index.html -s 8090 8091 -si",
+    "dev-iframe": "cd plugins/threejs/iframe/ && build-replica src/index.js -i index.html -s 8091 -si",
+    "build-iframe": "cd plugins/threejs/iframe/ && build-replica src/index.js -i index.html -t -u",
+    "desktop": "start build-replica src/main.js -i index.html -s 8090 8091 -si & electron . --enable-logging",
+    "build-win": "npm run build && electron-packager . MetaEditor --platform=win32 --arch=x64 --out=./dist --overwrite --ignore=/dist --ignore=/libs --ignore=/meta-engine --ignore=/node_modules --ignore=/src --ignore=README.md"
   },
   "keywords": [],
   "license": "MIT",
@@ -14,6 +19,8 @@
     "wabi": "^0.9.8"
   },
   "devDependencies": {
-    "build-replica": "^0.2.55"
+    "build-replica": "^0.2.55",
+    "electron": "~1.6.2",
+    "electron-packager": "^8.6.0"
   }
 }

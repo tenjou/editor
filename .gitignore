@@ -1,4 +1,6 @@
 node_modules/
 build/
-index.html
-package.js
+npm-debug.log
+/index.html
+/package.js
+dist/

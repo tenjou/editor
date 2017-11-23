@@ -1,32 +1,131 @@
-import History from "./History"
+import { 
+	componentVoid, 
+	update,
+	route, 
+	clearRoutes, 
+	store 
+} from "wabi"
+import FileSystem from "./fs/FileSystem"
+import Persistence from "./Persistence"
+import Server from "./server/Server"
+import HomeLayout from "./layouts/HomeLayout"
+import Layout from "./layouts/Layout"
+import WarnLayout from "./layouts/WarnLayout"
+import NewProjectLayout from "./layouts/NewProjectLayout"
+import Project from "./actions/Project"
+import Status from "./actions/Status"
+import Types from "./types/index"
+import Definitions from "./definitions/Definitions"
+import "./Migration"
+import "./definitions/index"
 
-class Editor
+if(process && process.versions && process.versions.electron) {
+	window.electron = true
+}
+else {
+	window.electron = false 
+}
+
+function Listener(func, owner) {
+	this.func = func
+	this.owner = owner
+}
+
+const listeners = {}
+let needSave = false
+
+const setup = function() 
 {
-	constructor() {
-		this.selected = null
-	}
+	Definitions.add("Enum.ProjectType", [ "Default" ])
 
-	execute(cmd) {
-		History.execute(cmd)
-	}
+	window.store = store
+	
+	route("", WarnLayout, null, null, () => {
+		FileSystem.init((error) => 
+		{
+			if(error) {
+				console.error(error)
+				return
+			}
 
-	selectById(id) 
+			ready()
+		})		
+	})
+}
+
+const ready = function()
+{
+	clearRoutes()
+
+	route(/#new-project/g, NewProjectLayout)
+
+	if(window.electron)
 	{
-		const item = store.get(`assets/${id}`)
-		if(this.selected === item) { return }
+		route(/^#[a-zA-Z]:\\([a-zA-Z0-9._-]+\\)*\w*/g, Layout, 
+			(result) => {
+				loadView_Project(result[0][0].slice(1))
+			})
+	}
+	else
+	{
+		route(/#([a-zA-Z0-9_]*)/g, Layout,
+			(result) => {
+				loadView_Project(result[0][1])
+			})
+	}
 
-		if(this.selected) {
-			store.set(`assets/${this.selected.id}/local/selected`, false)
-		}
+	route("", HomeLayout)
+}
 
-		this.selected = item
+const on = function(event, func, owner) 
+{
+	const listener = new Listener(func, owner)
 
-		if(this.selected) {
-			store.set(`assets/${this.selected.id}/local/selected`, true)
-		}
+	const buffer = listeners[event]
+	if(!buffer) {
+		listeners[event] = [ listener ]
+	}
+	else {
+		buffer.push(listener)
 	}
 }
 
-const instance = new Editor()
+const emit = function(event)
+{
+	const buffer = listeners[event]
+	if(!buffer) { return }
 
-export default instance
+	for(let n = 0; n < buffer.length; n++) {
+		const listener = buffer[n]
+		listener.func.call(listener.owner)
+	}
+}
+
+const loadView_Project = function(url) {
+	Project.load(url)
+}
+
+const start = function(payload)
+{
+	if(!payload.value) 
+	{
+		Persistence.start()
+		Status.clear()
+
+		store.globalProxy = (payload) => {
+			if(payload.key === "assets" || payload.key.indexOf("assets/") === 0) {
+				Server.dispatch(payload)
+			}
+			else {
+				store.handle(payload)
+			}
+		}		
+	}
+}
+
+store.watch("status/loading", start)
+
+export {
+	setup,
+	on
+}

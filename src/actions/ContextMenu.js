@@ -1,46 +1,74 @@
-import { store } from "wabi"
-import Menu from "../menu/Menu"
+import { update, store } from "wabi"
+import Definitions from "../definitions/Definitions"
 
-const show = (event, menuId) => 
+const show = function(id, bind, event)
 {
 	event.preventDefault()
 	event.stopPropagation()
 
-	const menu = Menu.get(menuId)
-	if(!menu) {
-		console.warn(`(ContextMenu.show) Could not find menu with id: ${menuId}`)
-		return
-	}
+	const props = Definitions.get(`Context.${id}`)
+	if(!props) {
+		return false
+	}	
+
 	store.set("contextmenu", {
-		props: menu,
-		x: event.clientX,
-		y: event.clientY
+		props,
+		bind: (typeof bind === "object") ? bind.value : bind,
+		x: event.x,
+		y: event.y
 	})
+
+	return true
 }
 
-const hide = () => {
-	store.set("contextmenu/props", null)
+const hide = function() {
+	// if(store.data.contextmenu.props) {
+		store.set("contextmenu/props", null)
+	// }
 }
 
-const handleClick = (event) => {
+const handleClick = function(event) {
 	hide()
 }
 
-const handleContextMenu = (event) => {
+const handleContextMenu = function(event) {
 	event.preventDefault()
 	hide()
 }
 
-store.set("contextmenu", {
-	props: null,
-	x: 0,
-	y: 0
-})
-
+store.set("contextmenu", {})
 window.addEventListener("click", handleClick)
 window.addEventListener("contextmenu", handleContextMenu)
 
-export {
+const context = 
+{
+	set props(value) 
+	{
+		if(context._props === value) { return }
+		context._props = value
+		update()
+	},
+
+	get props() {
+		return context._props
+	},
+
+	set path(path) {
+		this._path = path
+	},
+
+	get path() {
+		return this._path
+	},
+
+	_path: null,
+
 	show,
-	hide
+	hide,
+
+	x: 0,
+	y: 0,
+	_props: null
 }
+
+export default context
