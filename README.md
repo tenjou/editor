@@ -3,7 +3,6 @@
 ## Installation
 
 ```
-npm install build-replica -g
 npm install
 ```
 
