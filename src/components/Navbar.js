@@ -35,7 +35,7 @@ export default component(
 	},
 
 	handleHomeClick(event) {
-		document.location.href = `${location.origin}/${location.pathname}`
+		document.location.href = `${location.origin}${location.pathname}`
 	},
 
 	handleExportClick(event) {
