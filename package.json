@@ -8,8 +8,6 @@
     "build": "build-replica src/main.js -i index.html -t -u",
     "test-build": "build-replica src/main.js -i index.html -t -u -s 8090 8091",
     "dev": "build-replica src/main.js -i index.html -s 8090 8091 -si",
-    "dev-iframe": "cd plugins/threejs/iframe/ && build-replica src/index.js -i index.html -s 8091 -si",
-    "build-iframe": "cd plugins/threejs/iframe/ && build-replica src/index.js -i index.html -t -u",
     "desktop": "start build-replica src/main.js -i index.html -s 8090 8091 -si & electron . --enable-logging",
     "build-win": "npm run build && electron-packager . MetaEditor --platform=win32 --arch=x64 --out=./dist --overwrite --ignore=/dist --ignore=/libs --ignore=/meta-engine --ignore=/node_modules --ignore=/src --ignore=README.md"
   },
