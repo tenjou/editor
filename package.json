@@ -14,7 +14,7 @@
   "keywords": [],
   "license": "MIT",
   "dependencies": {
-    "wabi": "^0.9.8"
+    "wabi": "^0.9.13"
   },
   "devDependencies": {
     "build-replica": "^0.2.55",
