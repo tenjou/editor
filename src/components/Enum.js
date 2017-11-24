@@ -13,8 +13,7 @@ const EnumItem = component
 		this.attrWord = {
 			bind: this.bind,
 			$validateFunc(newName) {
-				console.log("newName", newName)
-				return "xxx2"
+				return newName
 			}
 		}
 	},
@@ -42,8 +41,6 @@ const Enum = component
 		elementOpen("enum")
 			elementOpen("content", { class: "column" })
 				const items = this.$value
-				console.log(items)
-				console.log("---")
 				for(let n = 0; n < items.length; n++) {
 					console.log("item")
 					componentVoid(EnumItem, { bind: `${this.bind}/${n}` })
