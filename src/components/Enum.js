@@ -3,17 +3,25 @@ import Word from "./Word"
 
 const EnumItem = component
 ({
+	state: {
+		value: null,
+		list: null
+	},
+
 	mount() {
 		this.attrButtonRemove = {
 			class: "fa fa-remove",
 			onclick: (event) => {
-				store.remove(this.bind)
+				store.remove(this.bind.value)
 			}
 		}
 		this.attrWord = {
-			bind: this.bind,
-			$validateFunc(newName) {
-				return newName
+			bind: this.bind.value,
+			$validateFunc: (newId) => {
+				if(this.isValidId(newId)) {
+					return newId
+				}
+				return this.$value
 			}
 		}
 	},
@@ -25,7 +33,15 @@ const EnumItem = component
 			elementClose("button")
 			componentVoid(Word, this.attrWord)
 		elementClose("item")
-	}
+	},
+
+	isValidId(id) {
+		const index = this.$list.indexOf(id)
+		if(index === -1) {
+			return true
+		}
+		return false
+	},	
 })
 
 const Enum = component
@@ -40,10 +56,12 @@ const Enum = component
 	{	
 		elementOpen("enum")
 			elementOpen("content", { class: "column" })
-				const items = this.$value
-				for(let n = 0; n < items.length; n++) {
-					console.log("item")
-					componentVoid(EnumItem, { bind: `${this.bind}/${n}` })
+				const list = this.$value
+				for(let n = 0; n < list.length; n++) {
+					componentVoid(EnumItem, { 
+						bind: { value: `${this.bind}/${n}` },
+						$list: list
+					})
 				}
 			elementClose("content")
 			elementOpen("button", this.attrAddButton)
@@ -52,23 +70,17 @@ const Enum = component
 		elementClose("enum")
 	},
 
-	addItem() 
-	{
+	handleClick(event) {
 		const items = this.$value
 		let name = "Item"
 		let id = 1
 		for(;;) {
 			const index = items.indexOf(name)
 			if(index === -1) { break }
-
 			id++
 			name = `Item ${id}`
 		}
 		store.add(this.bind, name)
-	},
-
-	handleClick(event) {
-		this.addItem()
 	}	
 })
 
