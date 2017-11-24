@@ -11,7 +11,42 @@ Definitions.add("Context.Assets", {
 				func: () => {
 					Assets.createAsset("Folder", null)
 				}
-			}			
+			},
+			Template: {
+				name: "Template",
+				icon: "fa-cube",
+				func: () => {
+					Assets.createAsset("Template", null)
+				}
+			},
+			Enum: {
+				name: "Enum",
+				icon: "fa-list",
+				func: () => {
+					Assets.createAsset("Enum", null)
+				}
+			},			
+			Entity: {
+				name: "Entity",
+				icon: "fa-cube",
+				func: () => {
+					Assets.createAsset("Entity", null)
+				}
+			},			
+			Component: {
+				name: "Component",
+				icon: "fa-flask",
+				func: () => {
+					Assets.createAsset("Component", null)
+				}
+			},
+			Text: {
+				name: "Text",
+				icon: "fa-font",
+				func: () => {
+					Assets.createAsset("Text", null)
+				}
+			}							
 		}
 	},
 	Actions: {

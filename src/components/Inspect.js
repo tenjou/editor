@@ -20,6 +20,8 @@ import Vector2 from "./Vector2"
 import Vector3 from "./Vector3"
 import Color from "./Color"
 import MeshInspect from "./MeshInspect"
+import Component from "./Component"
+import Enum from "./Enum"
 
 const Category = component({
 	state: {
@@ -271,6 +273,20 @@ const Items = component(
 						})
 					elementClose("item")
 				} break
+
+				case "Component":
+				{
+					elementOpen("item")
+						componentVoid(Component)
+					elementClose("item")
+				} break
+
+				case "Enum":
+				{
+					elementOpen("item")
+						componentVoid(Enum, { bind: itemBind })
+					elementClose("item")
+				} break				
 
 				case "Category":
 				{

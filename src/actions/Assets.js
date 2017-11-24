@@ -24,9 +24,12 @@ let blobsAssets = {}
 let blobsMasterFolder = {}
 let numEntriesPreparing = 0
 
-const createAsset = (type) => {
+const createAsset = (type) => 
+{
 	const parent = prevLocation
 	const asset = Types.create(type, parent)
+	if(!asset) { return }
+
 	store.dispatch({
 		action: "ADD_ITEM",
 		value: asset,
@@ -149,6 +152,7 @@ const dropFiles_traverseDir = (entry, parent) =>
 }
 
 const writeFile = (file, fileResult, parent) => {
+	// parent = parent || prevLocation
 	const blob = dataURItoBlob(fileResult.target.result, file.type)
 	const asset = createFileData(file, parent || prevLocation)
 	blobsFolders[parent][asset.id] = asset

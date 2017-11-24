@@ -1,18 +1,14 @@
-import {
-	component,
-	elementOpen,
-	elementClose,
-	text,
-	selectElementContents
-} from "wabi"
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text, selectElementContents } from "wabi"
 
-export default component(
-{
+const Word = component
+({
 	state: {
 		value: null,
 		editable: true,
-		editing: false
+		editing: false,
+		validateFunc: null
 	},
+
 	mount() {
 		this.attr = {
 			spellcheck: false,
@@ -20,9 +16,9 @@ export default component(
 			ondblclick: this.handleDblClick.bind(this),
 			onkeydown: this.handleKeyDown.bind(this),
 			onblur: this.handleBlur.bind(this)
-
 		}
 	},
+
 	render() 
 	{
 		let attr
@@ -44,6 +40,7 @@ export default component(
 			selectElementContents(node.element)
 		}
 	},
+
 	handleClick(event) 
 	{
 		event.preventDefault()
@@ -56,10 +53,12 @@ export default component(
 			}
 		}
 	},
+
 	handleDblClick(event) {
 		event.preventDefault()
 		event.stopPropagation()
 	},
+
 	handleKeyDown(domEvent)
 	{
 		const keyCode = domEvent.keyCode
@@ -95,14 +94,22 @@ export default component(
 
 		domEvent.preventDefault()
 	},
+
 	handleBlur(domEvent)
 	{
 		const newValue = domEvent.target.innerHTML
 
 		if(newValue) {
-			this.$value = newValue
+			if(this.$validateFunc) {
+				this.$value = this.$validateFunc(newValue)
+			}
+			else {
+				this.$value = newValue
+			}
 		}
 
 		this.$editing = false
 	}
 })
+
+export default Word

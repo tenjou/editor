@@ -353,9 +353,9 @@ button {
 	background: var(--header-background);
 	border: 1px solid #333333;
 	color: #e6e6e6;
-	text-transform: uppercase;
-	font-weight: bold;
-	font-size: 10px;
+	/* text-transform: uppercase; */
+	font-weight: 600;
+	font-size: 11px;
 	cursor: pointer;
 }
 button:last-of-type {
@@ -941,10 +941,8 @@ mesh-inspect item.selected {
 layout > status {
 	height: 15px;
 	padding: 2px;
-	background: #282828;
 	color: #eee;
-	font-size: 11px;	
-	border-top: 1px solid #191919;
+	font-size: 11px;
 }
 
 iframe-info {
@@ -985,8 +983,18 @@ menu::-webkit-scrollbar-thumb:vertical {
   background: rgba(0,0,0,0.61);
 }
 
-body {
-	background: #111;
+enum {
+	flex: 1;
+}
+enum > button {
+	float: right;
+}
+enum content button {
+	padding: 3px;
+	opacity: 0.25;
+}
+enum content button:hover {
+	opacity: 1;
 }
 
 .ql-toolbar {

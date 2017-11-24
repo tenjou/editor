@@ -97,3 +97,43 @@ Types.add("Video", "File", {
 		}
 	]	
 })
+
+Types.add("Text", "File", {
+	icon: "fa-font",
+	exts: {
+		txt: "text/plain"
+	}	
+})
+
+Types.add("Template", "File", {
+	icon: "fa-cube"
+})
+
+Types.add("Enum", "File", {
+	icon: "fa-list",
+	init() {
+		this.data = []
+	},
+	schema: [
+		{
+			name: "Enum",
+			type: "Enum",
+			bind: "data"
+		}
+	]	
+})
+
+Types.add("Entity", "File", {
+	icon: "fa-cube"
+})
+
+Types.add("Component", "File", {
+	icon: "fa-flask",
+	schema: [
+		{
+			name: "Component",
+			type: "Component",
+			bind: "data"
+		}
+	]
+})
