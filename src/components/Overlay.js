@@ -1,19 +1,21 @@
-import {
-	component,
-	componentVoid,
-	elementOpen,
-	elementClose,
-	elementVoid
-} from "wabi"
+import { component, elementOpen, elementClose, store } from "wabi"
 
-import ContextMenu from "./ContextMenu"
+store.set("overlay", [])
 
-export default component(
-{
-	render() 
-	{
+const Overlay = component
+({
+	mount() {
+		this.bind = "overlay"
+	},
+
+	render() {
 		elementOpen("overlay")
-			componentVoid(ContextMenu, { bind: "contextmenu" })
+			const funcs = this.$value
+			for(let n = 0; n < funcs.length; n++) {
+				funcs[n]()
+			}
 		elementClose("overlay")
 	}
 })
+
+export default Overlay

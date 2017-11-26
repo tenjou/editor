@@ -1,17 +1,11 @@
-import {
-	component,
-	componentVoid,
-	elementVoid,
-	elementOpen,
-	elementClose,
-	text
-} from "wabi"
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
+import ContextMenu from "../actions/ContextMenu"
 
-export default component({
+const Dropdown = component
+({
 	state: {
 		value: null,
 		default: null,
-		open: false,
 		source: null,
 		source2: null,
 		valueIsId: true,
@@ -20,6 +14,11 @@ export default component({
 	
 	mount() 
 	{
+		this.menuOpen = false
+		this.menuX = 0
+		this.menuY = 0
+		this.menuWidth = 0
+
 		this.menuAttr = {
 			onmousedown: this.handleMenuDown.bind(this),
 			onmouseup: this.handleMenuUp.bind(this)
@@ -27,6 +26,7 @@ export default component({
 
 		this.handleClickFunc = this.handleClick.bind(this)
 		this.handleCloseFunc = this.close.bind(this)
+		this.renderMenuFunc = this.renderMenu.bind(this)
 
 		if(!this.$value) {
 			this.$value = (this.$valueIsId) ? 0 : this.$source[0]
@@ -36,7 +36,6 @@ export default component({
 	render()
 	{
 		elementOpen("dropdown")
-
 			const value = (this.$value === null) ? this.$default : this.$value
 
 			let item 
@@ -73,24 +72,25 @@ export default component({
 			inputNode.element.value = name
 
 			elementVoid("icon", { class: "fa fa-caret-down" })
-			if(this.$open) {
-				this.renderMenu()
-			}
-			
-		elementClose("dropdown")
+		elementClose("dropdown")	
 	},
 
 	renderMenu()
 	{
-		elementOpen("menu", this.menuAttr)
+		const menuAttr = Object.assign({
+			style: {
+				left: `${this.menuX}px`,
+				top: `${this.menuY}px`,
+				width: `${this.menuWidth}px`
+			}
+		}, this.menuAttr)
 
+		elementOpen("menu", menuAttr)
 			if(this.$emptyOption) {
 				elementVoid("item")
 			}
-
 			this.renderSource(this.$source)
 			this.renderSource(this.$source2, true)
-
 		elementClose("menu")
 	},
 
@@ -136,8 +136,21 @@ export default component({
 		}	
 	},
 
-	handleClick(event) {
-		this.$open = !this.$open
+	handleClick(event) 
+	{
+		const rect = event.currentTarget.getBoundingClientRect()
+		this.menuX = rect.left
+		this.menuY = rect.bottom
+		this.menuWidth = rect.width
+
+		if(this.menuOpen) {
+			this.menuOpen = false
+			store.remove("overlay", this.renderMenuFunc)
+		}
+		else {
+			this.menuOpen = true
+			store.add("overlay", this.renderMenuFunc)
+		}
 	},
 
 	handleMenuDown(event) {
@@ -154,10 +167,14 @@ export default component({
 			this.$value = this.$source[event.target.dataset.key] || null
 		}
 		
-		this.$open = false
+		this.menuOpen = false
+		store.remove("overlay", this.renderMenuFunc)
 	},
 
 	close(event) {
-		this.$open = false
+		this.menuOpen = false
+		store.remove("overlay", this.renderMenuFunc)
 	}
 })
+
+export default Dropdown

@@ -1,5 +1,6 @@
 import Definitions from "./Definitions"
 import Assets from "../actions/Assets"
+import ContextMenu from "../actions/ContextMenu"
 
 Definitions.add("Context.Assets", {
 	Create: {
@@ -67,7 +68,7 @@ Definitions.add("Context.Assets.DefaultItem", {
 			Delete: {
 				icon: "fa-trash",
 				func: () => {
-					Assets.removeAsset(store.get("contextmenu/bind"))
+					Assets.removeAsset(ContextMenu.getBind())
 				}
 			}
 		}
@@ -118,7 +119,7 @@ Definitions.add("Context.Assets.Directory", "Context.Assets.MasterDirectory", {
 			Delete: {
 				icon: "fa-trash",
 				func: () => {
-					Assets.removeAsset(store.get("contextmenu/bind"))
+					Assets.removeAsset(ContextMenu.getBind())
 				}
 			}
 		}

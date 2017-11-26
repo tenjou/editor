@@ -874,7 +874,11 @@ dropdown icon {
 	top: 5px;
 	color: black;
 }
-dropdown menu {
+wrapper {
+	z-index: 999999;
+	overflow: visible;
+}
+menu {
 	position: absolute;
 	display: block;
 	background: black;
@@ -884,18 +888,18 @@ dropdown menu {
 	max-height: 400px;
 	overflow-y: auto;
 }
-dropdown menu > line {
+menu > line {
 	display: block;
 	border-top: 1px solid #2f2f2f;
 }
-dropdown menu item {
+menu item {
 	padding: 2px 2px 2px 4px;
 	height: 19px;
 	display: block;
 	color: white;
 	cursor: pointer;
 }
-dropdown menu item:hover {
+menu item:hover {
 	background-color: #438ce2;
 }
 
@@ -995,6 +999,26 @@ enum content button {
 }
 enum content button:hover {
 	opacity: 1;
+}
+
+component {
+	flex: 1;
+}
+component header word {
+	font-size: 11px;
+	color: #ccc;
+}
+component holder {
+	float: right;
+}
+component header button {
+	background: none;
+	border: none;
+	padding: 0;
+	float: right;	
+}
+component items {
+	padding-top: 3px;
 }
 
 .ql-toolbar {

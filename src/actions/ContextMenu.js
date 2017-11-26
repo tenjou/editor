@@ -1,30 +1,34 @@
-import { update, store } from "wabi"
+import { componentVoid, store } from "wabi"
 import Definitions from "../definitions/Definitions"
+import ContextMenu from "../components/ContextMenu"
 
-const show = function(id, bind, event)
+let menuX = 0
+let menuY = 0
+let menuProps = null
+let menuBind = null
+
+const show = function(id, bind, event, x, y)
 {
+	menuProps = Definitions.get(`Context.${id}`)
+	if(!menuProps) { return false }	
+
+	menuX = (x !== undefined) ? x : event.x
+	menuY = (y !== undefined) ? y : event.y
+	menuBind = (typeof bind === "object") ? bind.value : bind,
+
 	event.preventDefault()
 	event.stopPropagation()
 
-	const props = Definitions.get(`Context.${id}`)
-	if(!props) {
-		return false
-	}	
-
-	store.set("contextmenu", {
-		props,
-		bind: (typeof bind === "object") ? bind.value : bind,
-		x: event.x,
-		y: event.y
-	})
-
+	store.add("overlay", renderMenu)
 	return true
 }
 
 const hide = function() {
-	// if(store.data.contextmenu.props) {
-		store.set("contextmenu/props", null)
-	// }
+	store.remove("overlay", renderMenu)
+}
+
+const getBind = () => {
+	return menuBind
 }
 
 const handleClick = function(event) {
@@ -36,39 +40,19 @@ const handleContextMenu = function(event) {
 	hide()
 }
 
-store.set("contextmenu", {})
+const renderMenu = () => {
+	componentVoid(ContextMenu, { 
+		$x: menuX,
+		$y: menuY,
+		$props: menuProps 
+	})
+}
+
 window.addEventListener("click", handleClick)
 window.addEventListener("contextmenu", handleContextMenu)
 
-const context = 
-{
-	set props(value) 
-	{
-		if(context._props === value) { return }
-		context._props = value
-		update()
-	},
-
-	get props() {
-		return context._props
-	},
-
-	set path(path) {
-		this._path = path
-	},
-
-	get path() {
-		return this._path
-	},
-
-	_path: null,
-
+export default {
 	show,
 	hide,
-
-	x: 0,
-	y: 0,
-	_props: null
+	getBind
 }
-
-export default context

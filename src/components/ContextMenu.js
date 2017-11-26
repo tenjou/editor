@@ -1,13 +1,4 @@
-import {
-	component,
-	componentVoid,
-	elementOpen,
-	elementClose,
-	elementVoid,
-	text
-} from "wabi"
-
-import ContextMenu from "../actions/ContextMenu"
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 
 const Inner = component(
 {
@@ -68,24 +59,25 @@ const Category = component(
 	}
 })
 
-export default component(
-{
+const ContextMenu = component
+({
+	state: {
+		x: 0,
+		y: 0,
+		props: null
+	},
+
 	render() 
 	{
-		const menu = this.$.value
-		if(!menu || !menu.props) { 
-			return 
-		}
-
 		elementOpen("contextmenu", { 
 			style: {
-				left: menu.x + "px",
-				top: menu.y + "px"
+				left: `${this.$x}px`,
+				top: `${this.$y}px`
 			}
 		})
-
-		componentVoid(Inner, { $value: menu.props })
-
+			componentVoid(Inner, { $value: this.$props })
 		elementClose("contextmenu")
 	}
 })
+
+export default ContextMenu
