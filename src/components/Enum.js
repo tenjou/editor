@@ -30,8 +30,8 @@ const EnumItem = component
 		elementOpen("header")
 			componentVoid(Word, this.attrWord)
 			elementOpen("button")
-			elementVoid("icon", this.attrButtonRemove)
-		elementClose("button")
+				elementVoid("icon", this.attrButtonRemove)
+			elementClose("button")
 		elementClose("header")
 	},
 
