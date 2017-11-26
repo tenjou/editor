@@ -8,7 +8,7 @@ const Dropdown = component
 		default: null,
 		source: null,
 		source2: null,
-		valueIsId: true,
+		valueIsId: false,
 		emptyOption: false
 	},
 	

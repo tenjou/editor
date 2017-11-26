@@ -4,13 +4,22 @@ import Word from "./Word"
 
 const attribTypes = [ "Number", "String", "Boolean" ]
 
-const ComponentNumberAttrib = component
+const ComponentAttrib = component
 ({
+	mount() {
+		this.attrButtonRemove = {
+			onclick: (event) => {
+				store.remove(this.bind)
+			}
+		}
+	},
+
 	render() {
 		elementOpen("attrib")
 			elementOpen("header")
-				componentVoid(Word, { $value: this.$value.name })
-				elementOpen("button")
+				componentVoid(Word, { bind: `${this.bind}/name` })
+
+				elementOpen("button", this.attrButtonRemove)
 					elementVoid("icon", { class: "fa fa-remove" })
 				elementClose("button")
 			elementClose("header")
@@ -20,7 +29,7 @@ const ComponentNumberAttrib = component
 					elementOpen("name")
 						text("type")
 					elementClose("name")
-					componentVoid(Dropdown, { $source: attribTypes, $value: this.$value.type })	
+					componentVoid(Dropdown, { $source: attribTypes, bind: `${this.bind}/type` })	
 				elementClose("item")
 			elementClose("items")
 		elementClose("attrib")
@@ -30,52 +39,48 @@ const ComponentNumberAttrib = component
 const Component = component
 ({
 	mount() {
-		this.attrAddButton = {
-			onclick: this.handleClick.bind(this)
+		this.attrButtonAdd = {
+			onclick: this.handleAdd.bind(this)
+		}
+		this.attrButtonApply = {
+			onclick: this.handleApply.bind(this)
 		}
 	},
 
 	render() 
 	{	
-		const attribs = [
-			{
-				name: "MyNumber",
-				type: "Number"
-			},
-			{
-				name: "MyString",
-				type: "Number"
-			}			
-		]
+		const attribs = this.$value
 
 		elementOpen("component")
 			elementOpen("content", { class: "column" })
 				for(let n = 0; n < attribs.length; n++) {
 					const attrib = attribs[n]
-					componentVoid(componentAttribMap[attrib.type], { $value: attrib })
+					componentVoid(ComponentAttrib, { bind: `${this.bind}/${n}` })
 				}
-				
 			elementClose("content")
 
 			elementOpen("holder")
 				elementOpen("button")
 					text("Apply")
-				elementClose("button")				
-				elementOpen("button")
-					text("Add Attribute")
+				elementClose("button")	
+
+				elementOpen("button", this.attrButtonAdd)
+					text("Add")
 				elementClose("button")
 			elementClose("holder")
-			
 		elementClose("component")
 	},
 
-	handleClick(event) {
-		store.add(this.bind, "Item")
+	handleAdd(event) {
+		store.add(this.bind, {
+			name: "foo",
+			type: attribTypes[0]
+		})
+	},
+
+	handleApply(event) {
+
 	}
 })
-
-const componentAttribMap = {
-	Number: ComponentNumberAttrib
-}
 
 export default Component

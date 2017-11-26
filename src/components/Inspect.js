@@ -277,7 +277,7 @@ const Items = component(
 				case "Component":
 				{
 					elementOpen("item")
-						componentVoid(Component)
+						componentVoid(Component, { bind: itemBind })
 					elementClose("item")
 				} break
 

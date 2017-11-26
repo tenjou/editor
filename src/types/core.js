@@ -117,11 +117,14 @@ Types.add("Entity", "File", {
 
 Types.add("Component", "File", {
 	icon: "fa-flask",
+	init() {
+		this.attribs = []
+	},
 	schema: [
 		{
 			name: "component",
 			type: "Component",
-			bind: "data"
+			bind: "attribs"
 		}
 	]
 })
