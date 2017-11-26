@@ -78,7 +78,7 @@ const Enum = component
 			const index = items.indexOf(name)
 			if(index === -1) { break }
 			id++
-			name = `Item ${id}`
+			name = `Item${id}`
 		}
 		store.add(this.bind, name)
 	}	
