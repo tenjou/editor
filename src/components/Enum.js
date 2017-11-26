@@ -27,12 +27,12 @@ const EnumItem = component
 	},
 
 	render() {
-		elementOpen("item")
-			elementOpen("button")
-				elementVoid("icon", this.attrButtonRemove)
-			elementClose("button")
+		elementOpen("header")
 			componentVoid(Word, this.attrWord)
-		elementClose("item")
+			elementOpen("button")
+			elementVoid("icon", this.attrButtonRemove)
+		elementClose("button")
+		elementClose("header")
 	},
 
 	isValidId(id) {
