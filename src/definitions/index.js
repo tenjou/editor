@@ -1,6 +1,3 @@
 import "./ContextMenu-Assets"
 import "./ContextMenu-Hierarchy"
 import "./ContextMenu-Projects"
-import "./Inspect-Default"
-import "./Inspect-Folder"
-import "./Inspect-Audio"

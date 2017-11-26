@@ -22,13 +22,13 @@ Types.add("General", {
 	},
 	schema: [
 		{
-			name: "Id",
+			name: "id",
 			type: "String",
 			bind: "id",
 			readonly: true
 		},
 		{
-			name: "Name",
+			name: "name",
 			type: "String",
 			bind: "name"
 		}
@@ -63,7 +63,7 @@ Types.add("Texture", "File", {
 	},
 	schema: [
 		{
-			name: "Texture",
+			name: "texture",
 			type: "Image"
 		}
 	]	
@@ -75,13 +75,7 @@ Types.add("Audio", "File", {
 		mp3: "audio/mpeg",
 		ogg: "audio/ogg",
 		wav: "audio/wav"
-	},
-	schema: [
-		{
-			name: "Texture",
-			type: "Image"
-		}
-	]	
+	}
 })
 
 Types.add("Video", "File", {
@@ -89,13 +83,7 @@ Types.add("Video", "File", {
 	exts: {
 		m4v: "video/mp4",
 		mp4: "video/mp4"
-	},
-	schema: [
-		{
-			name: "Texture",
-			type: "Image"
-		}
-	]	
+	}
 })
 
 Types.add("Text", "File", {
@@ -116,7 +104,7 @@ Types.add("Enum", "File", {
 	},
 	schema: [
 		{
-			name: "Enum",
+			name: "enum",
 			type: "Enum",
 			bind: "data"
 		}
@@ -131,7 +119,7 @@ Types.add("Component", "File", {
 	icon: "fa-flask",
 	schema: [
 		{
-			name: "Component",
+			name: "component",
 			type: "Component",
 			bind: "data"
 		}

@@ -18,7 +18,7 @@ const ComponentNumberAttrib = component
 			elementOpen("items")
 				elementOpen("item")
 					elementOpen("name")
-						text("Type")
+						text("type")
 					elementClose("name")
 					componentVoid(Dropdown, { $source: attribTypes, $value: this.$value.type })	
 				elementClose("item")
