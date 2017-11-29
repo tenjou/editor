@@ -31,6 +31,13 @@ const ComponentAttrib = component
 					elementClose("name")
 					componentVoid(Dropdown, { $source: attribTypes, bind: `${this.bind}/type` })	
 				elementClose("item")
+
+				elementOpen("item")
+					elementOpen("name")
+						text("default")
+					elementClose("name")
+					elementVoid("input", { type: "text" })	
+				elementClose("item")				
 			elementClose("items")
 		elementClose("attrib")
 	}
@@ -49,18 +56,19 @@ const Component = component
 
 	render() 
 	{	
-		const attribs = this.$value
+		const attribs = this.$value.attribsEdited
 
 		elementOpen("component")
 			elementOpen("content", { class: "column" })
+				const bind = `${this.bind}/attribsEdited`
 				for(let n = 0; n < attribs.length; n++) {
 					const attrib = attribs[n]
-					componentVoid(ComponentAttrib, { bind: `${this.bind}/${n}` })
+					componentVoid(ComponentAttrib, { bind: `${bind}/${n}` })
 				}
 			elementClose("content")
 
 			elementOpen("holder")
-				elementOpen("button")
+				elementOpen("button", this.attrButtonApply)
 					text("Apply")
 				elementClose("button")	
 
@@ -72,14 +80,14 @@ const Component = component
 	},
 
 	handleAdd(event) {
-		store.add(this.bind, {
+		store.add(`${this.bind}/attribsEdited`, {
 			name: "foo",
 			type: attribTypes[0]
 		})
 	},
 
 	handleApply(event) {
-
+		store.set(`${this.bind}/attribs`, this.$value.attribsEdited)
 	}
 })
 

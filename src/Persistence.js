@@ -145,34 +145,34 @@ class Storage
 		const pathNew = `db/${this.type}_new.json`
 		const pathOld = `db/${this.type}_old.json`
 
-		FileSystem.write(pathNew, JSON.stringify(data, 4), (error, data) => {
+		FileSystem.write(path, JSON.stringify(data, 4), (error, data) => {
 			if(error) {
 				console.error(`(Persistence) Error while writing ${this.type} data in: ${pathNew}`)
 				return
 			}
 
-			FileSystem.moveTo(path, pathOld, (error) => {
-				if(error) {
-					console.error(`(Persistence) Error while renaming: ${path}`)
-					return
-				}
+			// FileSystem.moveTo(path, pathOld, (error) => {
+			// 	if(error) {
+			// 		console.error(`(Persistence) Error while renaming: ${path}`)
+			// 		return
+			// 	}
 
-				FileSystem.moveTo(pathNew, path, (error) => {
-					if(error) {
-						console.error(`(Persistence) Error while renaming: ${pathNew}`)
-						return
-					}
+			// 	FileSystem.moveTo(pathNew, path, (error) => {
+			// 		if(error) {
+			// 			console.error(`(Persistence) Error while renaming: ${pathNew}`)
+			// 			return
+			// 		}
 	
-					FileSystem.remove(pathOld, (error) => {
-						if(error) {
-							console.error(`(Persistence) Error while removing: ${pathOld}`)
-							return
-						}
+			// 		FileSystem.remove(pathOld, (error) => {
+			// 			if(error) {
+			// 				console.error(`(Persistence) Error while removing: ${pathOld}`)
+			// 				return
+			// 			}
 
 						console.log(`(${this.type} saved)`)
-					})
-				})
-			})
+			// 		})
+			// 	})
+			// })
 		})
 	}
 

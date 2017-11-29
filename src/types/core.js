@@ -112,19 +112,30 @@ Types.add("Enum", "File", {
 })
 
 Types.add("Entity", "File", {
-	icon: "fa-cube"
+	icon: "fa-cube",
+	init() {
+		this.components = []
+	},
+	schema: [
+		{
+			name: "entity",
+			type: "Entity",
+			bind: "components"
+		}
+	]
 })
 
 Types.add("Component", "File", {
 	icon: "fa-flask",
 	init() {
 		this.attribs = []
+		this.attribsEdited = []
 	},
 	schema: [
 		{
 			name: "component",
 			type: "Component",
-			bind: "attribs"
+			bind: ""
 		}
 	]
 })

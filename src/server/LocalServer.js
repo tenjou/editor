@@ -1,5 +1,5 @@
 import { store } from "wabi"
-import Dispatch from "./Dispatch"
+import Translator from "./Translator"
 import FileSystem from "../fs/FileSystem"
 import Status from "../actions/Status"
 import { uuid4 } from "../Utils"
@@ -11,17 +11,17 @@ const dispatch = (payload) => {
 		{
 			case "ADD_ITEM": {
 				if(buffer.length > 2) {
-					Dispatch(payload)
+					Translator.dispatch(payload)
 				}
 				else {
 					const result = createItem(payload.value)
-					Dispatch(result)
+					Translator.dispatch(result)
 				}
 			} break
 				
 			case "ADD_BULK": {
 				const result = createItems(payload)
-				Dispatch(result)
+				Translator.dispatch(result)
 			} break
 
 			case "SET":
@@ -30,7 +30,7 @@ const dispatch = (payload) => {
 					renameItem(payload, buffer[1])
 				}
 				else {
-					Dispatch(payload)
+					Translator.dispatch(payload)
 				}
 			} break
 
@@ -43,7 +43,7 @@ const dispatch = (payload) => {
 				break
 
 			default:
-				Dispatch(payload)
+			Translator.dispatch(payload)
 				break
 		}
 	}
@@ -92,7 +92,7 @@ const createItems = (payload) => {
 }
 
 const removeItem = (payload) => {
-	Dispatch(payload)
+	Translator.dispatch(payload)
 }
 
 const renameItem = (payload, id) => 
@@ -119,7 +119,7 @@ const renameItem = (payload, id) =>
 		}
 	}
 
-	Dispatch(result)
+	Translator.dispatch(result)
 }
 
 const moveItem = (payload) => {
@@ -172,7 +172,7 @@ const moveItem = (payload) => {
 		}
 	}
 
-	Dispatch(payload)
+	Translator.dispatch(payload)
 }
 
 const createProject = function(data, onDone)

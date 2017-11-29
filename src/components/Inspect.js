@@ -1,15 +1,6 @@
-import {
-	component,
-	componentVoid,
-	elementOpen,
-	elementClose,
-	elementVoid,
-	text
-} from "wabi"
-
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 import Definitions from "../definitions/Definitions"
 import Inspect from "../actions/Inspect"
-
 import Checkbox from "./Checkbox"
 import Dropdown from "./Dropdown"
 import NumberInput from "./NumberInput"
@@ -22,6 +13,7 @@ import Color from "./Color"
 import MeshInspect from "./MeshInspect"
 import Component from "./Component"
 import Enum from "./Enum"
+import Entity from "./Entity"
 
 const Category = component({
 	state: {
@@ -286,7 +278,14 @@ const Items = component(
 					elementOpen("item")
 						componentVoid(Enum, { bind: itemBind })
 					elementClose("item")
-				} break				
+				} break		
+				
+				case "Entity":
+				{
+					elementOpen("item")
+						componentVoid(Entity, { bind: itemBind })
+					elementClose("item")
+				} break		
 
 				case "Category":
 				{

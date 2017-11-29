@@ -18,6 +18,7 @@ import Types from "./types/index"
 import Definitions from "./definitions/Definitions"
 import "./Migration"
 import "./definitions/index"
+import "./controller/Component"
 
 if(process && process.versions && process.versions.electron) {
 	window.electron = true
