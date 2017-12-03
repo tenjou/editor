@@ -25,7 +25,7 @@ const exports = {
 			delete processed_assets[""]
 			resolve([{
 				"name": "db.json",
-				"contents": JSON.stringify(processed_assets),
+				"contents": JSON.stringify(processed_assets, null, "\t"),
 				"type": "string"
 			}])
 		})

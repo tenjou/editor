@@ -1010,8 +1010,6 @@ enum header button {
 component {
 	flex: 1;
 }
-component attrib header {
-}
 component header word {
 	font-size: 11px;
 	color: #ccc;
@@ -1027,6 +1025,20 @@ component holder {
 }
 component items {
 	padding-top: 3px;
+}
+
+entity {
+	flex: 1;
+}
+entity header word {
+	font-size: 11px;
+	color: #ccc;
+}
+entity header button {
+	background: none;
+	border: none;
+	padding: 0;
+	float: right;	
 }
 
 .ql-toolbar {

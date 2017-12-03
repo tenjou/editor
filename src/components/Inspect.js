@@ -248,7 +248,7 @@ const Items = component(
 						componentVoid(Image, { 
 							bind: {
 								value: itemBind,
-								updated: `${this.$.bind}/updated` 
+								updated: `${this.bind}/updated` 
 							}
 						})
 					elementClose("item")
@@ -260,7 +260,7 @@ const Items = component(
 						componentVoid(Audio, { 
 							bind: {
 								value: itemBind,
-								updated: `${bind}.updated` 
+								updated: `${bind}/updated` 
 							}
 						})
 					elementClose("item")
@@ -269,7 +269,13 @@ const Items = component(
 				case "Component":
 				{
 					elementOpen("item")
-						componentVoid(Component, { bind: itemBind })
+						componentVoid(Component, { 
+							bind: {
+								attribs: `${itemBind}/attribs`,
+								attribsEdited: `${itemBind}/cache/attribs`,
+								isAttribsEdited: `${itemBind}/cache/attribsEdited`
+							}
+						})
 					elementClose("item")
 				} break
 

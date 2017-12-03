@@ -129,7 +129,8 @@ Types.add("Component", "File", {
 	icon: "fa-flask",
 	init() {
 		this.attribs = []
-		this.attribsEdited = []
+		this.cache.attribs = []
+		this.cache.attribsEdited = false
 	},
 	schema: [
 		{

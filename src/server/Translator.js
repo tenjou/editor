@@ -41,7 +41,7 @@ const translate = function(payload)
 							store.handle(payload)
 						}	
 						else {		
-							emit("UpdateAsset", store.data.assets[buffer[1]], buffer[2], payload.value)		
+							emit("UpdateAsset", store.data.assets[buffer[1]], buffer.slice(2), payload.value)		
 							Assets.performUpdate(payload, buffer)
 						}
 					}
@@ -49,7 +49,7 @@ const translate = function(payload)
 
 				case "ADD":
 				{
-					emit("UpdateAsset", store.data.assets[buffer[1]], buffer[2], payload.value)
+					emit("UpdateAsset", store.data.assets[buffer[1]], buffer.slice(2), payload.value)
 					Assets.performUpdate(payload, buffer)
 				} break
 
@@ -59,7 +59,7 @@ const translate = function(payload)
 						Assets.performRemove(payload)
 					}
 					else if(buffer.length >= 4) {
-						emit("UpdateAsset", store.data.assets[buffer[1]], buffer[2], payload.value)
+						emit("UpdateAsset", store.data.assets[buffer[1]], buffer.slice(2), payload.value)
 						Assets.performUpdate(payload, buffer)
 						break
 					}

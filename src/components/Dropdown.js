@@ -104,9 +104,9 @@ const Dropdown = component
 
 		if(Array.isArray(source)) 
 		{
-			source.sort((a, b) => {
-				return a.localeCompare(b)
-			})
+			// source.sort((a, b) => {
+			// 	return a.localeCompare(b)
+			// })
 
 			for(let n = 0; n < source.length; n++) {
 				elementOpen("item", { "data-key": n })
@@ -121,9 +121,9 @@ const Dropdown = component
 				buffer.push(key)
 			}
 
-			buffer.sort((a, b) => {
-				return source[a].name.localeCompare(source[b].name)
-			})
+			// buffer.sort((a, b) => {
+			// 	return source[a].name.localeCompare(source[b].name)
+			// })
 
 			for(let n = 0; n < buffer.length; n++) 
 			{
