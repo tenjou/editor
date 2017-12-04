@@ -1040,6 +1040,10 @@ entity header button {
 	padding: 0;
 	float: right;	
 }
+entity row button {
+	margin: 0;
+	margin-left: 3px;
+}
 
 .ql-toolbar {
 	border: none;
