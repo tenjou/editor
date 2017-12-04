@@ -19,7 +19,7 @@ const ComponentAttrib = component
 	mount() {
 		this.attrButtonRemove = {
 			onclick: (event) => {
-				store.remove(this.bind)
+				store.remove(this.bind.value)
 			}
 		}
 		this.attrWord = {
