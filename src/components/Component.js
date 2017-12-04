@@ -71,7 +71,7 @@ const ComponentAttrib = component
 
 	renderNumber()
 	{
-		const bind = `${this.bind}/value`
+		const bind = `${this.bind.value}/value`
 
 		elementOpen("item")
 			elementOpen("name")
@@ -83,7 +83,7 @@ const ComponentAttrib = component
 
 	renderString()
 	{
-		const bind = `${this.bind}/value`
+		const bind = `${this.bind.value}/value`
 		
 		elementOpen("item")
 			elementOpen("name")
@@ -95,7 +95,7 @@ const ComponentAttrib = component
 
 	renderBoolean()
 	{
-		const bind = `${this.bind}/value`
+		const bind = `${this.bind.value}/value`
 		
 		elementOpen("item")
 			elementOpen("name")
@@ -107,7 +107,7 @@ const ComponentAttrib = component
 
 	renderEnum()
 	{
-		const bind = `${this.bind}/value`
+		const bind = `${this.bind.value}/value`
 		
 		elementOpen("item")
 			elementOpen("name")
