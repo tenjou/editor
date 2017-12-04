@@ -20,6 +20,7 @@ import "./Migration"
 import "./definitions/index"
 import "./system/Component"
 import "./system/Template"
+import "./system/Enum"
 
 if(process && process.versions && process.versions.electron) {
 	window.electron = true

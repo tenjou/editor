@@ -2,6 +2,8 @@ import { component, componentVoid, elementOpen, elementClose, elementVoid, text,
 import ComponentDropdown from "./ComponentDropdown"
 import TextInput from "./TextInput"
 import NumberInput from "./NumberInput"
+import Checkbox from "./Checkbox"
+import Dropdown from "./Dropdown"
 import Component from "../system/Component"
 
 const Entity = component
@@ -75,6 +77,12 @@ const Entity = component
 				case "String":
 					componentVoid(TextInput, { bind })
 					break
+				case "Boolean":
+					componentVoid(Checkbox, { bind })
+					break	
+				case "Enum":
+					componentVoid(Checkbox, { bind })
+					break					
 			}
 			
 		elementClose("item")

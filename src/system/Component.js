@@ -114,13 +114,32 @@ const HandleUpdateAsset = (asset, key, value) =>
 					const prevInfo = components[asset.id]
 					const prevValue = asset.attribs
 					const newAttribs = compile(value)
-					prevInfo.attribs = newAttribs
+					const diffs = compileDiff(value, prevValue)
+					console.log(diffs)
+	
 					for(let key in entities) {
 						const components = entities[key].components
-						for(let n = 0; n < components.length; n++) {
+						for(let n = 0; n < components.length; n++) 
+						{
 							const component = components[n]
+							if(component.id !== asset.id) { continue }
+
+							const data = component.data
+							for(let i = 0; i < diffs.length; i++) {
+								const diff = diffs[n]
+								switch(diff) {
+									case "add":
+										data[diff.key] = newAttribs[diff.key]
+										break
+									case "remove":
+										delete data[diff.key]
+										break
+								}
+							}
 						}
 					}
+
+					prevInfo.attribs = newAttribs					
 					break
 
 				case "cache":
@@ -140,6 +159,45 @@ const HandleAssets = (payload) =>
 		HandleCreateAsset(assets[key])
 	}	
 	store.unwatch("assets", HandleAssets)
+}
+
+const compileDiff = (attribs, prevAttribs) => 
+{
+	const changes = []
+
+	const attribsMap = {}
+	for(let n = 0; n < attribs.length; n++) {
+		const attrib = attribs[n]
+		attribsMap[attrib.name] = attrib
+	}
+
+	const prevAttribsMap = {}
+	for(let n = 0; n < prevAttribs.length; n++) {
+		const attrib = prevAttribs[n]
+		prevAttribsMap[attrib.name] = attrib
+	}
+
+	for(let key in prevAttribsMap) {
+		if(attribsMap[key] === undefined) {
+			changes.push({ key, action: "remove" })
+		}
+	}
+
+	for(let key in attribsMap) {
+		const curr = attribsMap[key]
+		const prev = prevAttribsMap[key]
+		if(prev === undefined) {
+			changes.push({ key, action: "add" })
+		}
+		else if(prev.type !== curr.type) {
+			changes.push({ key, action: "type" })
+		}
+		else if(prev.value !== curr.value) {
+			changes.push({ key, action: "value", prev: prev.value })
+		}
+	}
+
+	return changes
 }
 
 store.set("components", componentsList)

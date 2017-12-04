@@ -1,28 +1,25 @@
-import {
-	component,
-	elementOpen,
-	elementClose,
-	elementVoid,
-} from "wabi"
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 
-export default component(
-{
+const Checkbox = component
+({
 	state: {
-		default: false
+		value: false
 	},
 
-	setup() {
-		this.attr = { class: "checked", onclick: this.handleClick.bind(this) }
+	mount() {
+		this.attr = {
+			onclick: this.handleClick.bind(this) 
+		}
 	},
 
-	render() 
-	{
-		const value = (this.$value === null) ? this.$default : this.$value
-		this.attr.class = value ? "checked" : ""
-		elementVoid("checkbox", this.attr)
+	render() {
+		const attr = this.$value ? Object.assign({ class: "checked" }, this.attr) : this.attr
+		elementVoid("checkbox", attr)
 	},
 
 	handleClick(event) {
 		this.$value = !this.$value
 	}
 })
+
+export default Checkbox

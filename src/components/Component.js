@@ -3,16 +3,32 @@ import Dropdown from "./Dropdown"
 import Word from "./Word"
 import TextInput from "./TextInput"
 import NumberInput from "./NumberInput"
+import Checkbox from "./Checkbox"
+import Dropdown from "./Dropdown"
 import { cloneObj } from "../Utils"
 
-const attribTypes = [ "Number", "String", "Boolean" ]
+const attribTypes = [ "Number", "String", "Boolean", "Enum" ]
 
 const ComponentAttrib = component
 ({
+	state: {
+		value: null,
+		list: null
+	},
+
 	mount() {
 		this.attrButtonRemove = {
 			onclick: (event) => {
 				store.remove(this.bind)
+			}
+		}
+		this.attrWord = {
+			bind: `${this.bind.value}/name`,
+			$validateFunc: (newName) => {
+				if(this.isValidName(newName)) {
+					return newName
+				}
+				return this.$value.name
 			}
 		}
 	},
@@ -20,7 +36,7 @@ const ComponentAttrib = component
 	render() {
 		elementOpen("attrib")
 			elementOpen("header")
-				componentVoid(Word, { bind: `${this.bind}/name` })
+				componentVoid(Word, this.attrWord)
 
 				elementOpen("button", this.attrButtonRemove)
 					elementVoid("icon", { class: "fa fa-remove" })
@@ -32,26 +48,91 @@ const ComponentAttrib = component
 					elementOpen("name")
 						text("type")
 					elementClose("name")
-					componentVoid(Dropdown, { $source: attribTypes, bind: `${this.bind}/type` })	
+					componentVoid(Dropdown, { $source: attribTypes, bind: `${this.bind.value}/type` })	
 				elementClose("item")
 
-				elementOpen("item")
-					elementOpen("name")
-						text("value")
-					elementClose("name")
-					const bind = `${this.bind}/value`
-					switch(this.$value.type) {
-						case "Number":
-							componentVoid(NumberInput, { bind })
-							break				
-						case "String":
-							componentVoid(TextInput, { bind })
-							break
-					}
-				elementClose("item")
+				switch(this.$value.type) {
+					case "Number":
+						this.renderNumber()
+						break				
+					case "String":
+						this.renderString()
+						break
+					case "Boolean":
+						this.renderBoolean()
+						break
+					case "Enum":
+						this.renderEnum()
+						break
+				}
 			elementClose("items")
 		elementClose("attrib")
-	}
+	},
+
+	renderNumber()
+	{
+		const bind = `${this.bind}/value`
+
+		elementOpen("item")
+			elementOpen("name")
+				text("value")
+			elementClose("name")						
+			componentVoid(NumberInput, { bind })
+		elementClose("item")
+	},
+
+	renderString()
+	{
+		const bind = `${this.bind}/value`
+		
+		elementOpen("item")
+			elementOpen("name")
+				text("value")
+			elementClose("name")						
+			componentVoid(TextInput, { bind })
+		elementClose("item")
+	},
+
+	renderBoolean()
+	{
+		const bind = `${this.bind}/value`
+		
+		elementOpen("item")
+			elementOpen("name")
+				text("value")
+			elementClose("name")						
+			componentVoid(Checkbox, { bind })
+		elementClose("item")
+	},
+
+	renderEnum()
+	{
+		const bind = `${this.bind}/value`
+		
+		elementOpen("item")
+			elementOpen("name")
+				text("source")
+			elementClose("name")						
+			componentVoid(Dropdown, { bind: { source: "enums" }})
+		elementClose("item")
+
+		elementOpen("item")
+			elementOpen("name")
+				text("value")
+			elementClose("name")						
+			componentVoid(Dropdown, { bind: { source: "enums" }})
+		elementClose("item")	
+	},
+	
+	isValidName(name) {
+		const list = this.$list
+		for(let n = 0; n < list.length; n++) {
+			if(list[n].name === name) {
+				return false
+			}
+		}
+		return true
+	}	
 })
 
 const Component = component
@@ -82,7 +163,7 @@ const Component = component
 			elementOpen("content", { class: "column" })
 				for(let n = 0; n < attribs.length; n++) {
 					const attrib = attribs[n]
-					componentVoid(ComponentAttrib, { bind: `${this.bind.attribsEdited}/${n}` })
+					componentVoid(ComponentAttrib, { bind: { value: `${this.bind.attribsEdited}/${n}` }, $list: attribs })
 				}
 			elementClose("content")
 
