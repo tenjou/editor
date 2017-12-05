@@ -6,6 +6,7 @@ let menuX = 0
 let menuY = 0
 let menuProps = null
 let menuBind = null
+let menuVisible = false
 
 const show = function(id, bind, event, x, y)
 {
@@ -19,12 +20,22 @@ const show = function(id, bind, event, x, y)
 	event.preventDefault()
 	event.stopPropagation()
 
-	store.add("overlay", renderMenu)
+	if(!menuVisible) {
+		menuVisible = true
+		store.add("overlay", renderMenu)
+	}
+	else {
+		store.set("overlay", store.data.overlay)
+	}
+	
 	return true
 }
 
 const hide = function() {
-	store.remove("overlay", renderMenu)
+	if(menuVisible) {
+		menuVisible = false
+		store.remove("overlay", renderMenu)
+	}
 }
 
 const getBind = () => {
