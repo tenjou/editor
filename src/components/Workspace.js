@@ -1,5 +1,6 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 import Commander from "../Commander"
+import Assets from "../actions/Assets"
 
 const Workspace = component
 ({
@@ -18,13 +19,19 @@ const Workspace = component
 
 	render() 
 	{	
+		const workspaceId = this.$id
+
 		elementOpen("workspace", { class: "panel" })
 			elementOpen("header")
-				text("Workspace")
+				if(workspaceId) {
+					text(Assets.buildPath(store.data.assets[workspaceId]))
+				}
+				else {
+					text("Workspace")
+				}
 			elementClose("header")
 
-			const workspaceId = this.$id
-			const attrContent = this.$id ? null : { class: "hidden" }
+			const attrContent = workspaceId ? null : { class: "hidden" }
 
 			elementOpen("content", attrContent)	
 				const element = elementOpen("div").element
@@ -40,7 +47,7 @@ const Workspace = component
 				})
 			}
 
-			if(!this.$id) {
+			if(!workspaceId) {
 				elementOpen("content", { class: "centered" })	
 					text("Workspace is empty")
 				elementClose("content")

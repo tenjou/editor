@@ -19,7 +19,6 @@ const select = function(key)
 	selectedData = key ? store.get(key) : null
 	if(selectedData) 
 	{
-		
 		let type = Types.get(selectedData.type)
 		if(!type) {
 			type = Types.get("Default")
