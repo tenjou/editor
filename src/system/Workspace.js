@@ -18,6 +18,7 @@ const handleWorkspaceLocal = (payload) => {
 	activeAsset = store.data.assets[payload.value]
 	if(activeAsset) {
 		store.watch(`assets/${activeAsset.id}`, handleActive)
+		store.set("workspace", "")
 		FileSystem.read(Assets.buildPath(activeAsset), handleLoadWorkspace)
 	}
 }
