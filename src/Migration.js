@@ -9,6 +9,11 @@ import Persistence from "./Persistence"
 // 	}
 // })
 
+Persistence.storage("local").seed(null, {
+	workspace: null,
+	selected: null
+})
+
 Persistence.storage("local").seed("assets", {
 	location: "",
 	search: null

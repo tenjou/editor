@@ -248,7 +248,7 @@ const Items = component(
 						componentVoid(Image, { 
 							bind: {
 								value: itemBind,
-								updated: `${this.bind}/updated` 
+								updated: `${itemBind}/updated` 
 							}
 						})
 					elementClose("item")
@@ -260,7 +260,7 @@ const Items = component(
 						componentVoid(Audio, { 
 							bind: {
 								value: itemBind,
-								updated: `${bind}/updated` 
+								updated: `${itemBind}/updated` 
 							}
 						})
 					elementClose("item")

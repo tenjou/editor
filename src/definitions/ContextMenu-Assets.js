@@ -126,18 +126,18 @@ Definitions.add("Context.Assets.Directory", "Context.Assets.MasterDirectory", {
 	}
 })
 
-Definitions.add("Context.Assets.Scene", "Context.Assets.DefaultItem", {
+Definitions.add("Context.Assets.Text", "Context.Assets.Item", {
 	Actions: {
 		type: "category",
 		children: {
 			Open: {
-				action: "dblclick",
 				icon: "fa-folder-open",
-				index: 10,
-				func: Assets.open
+				func: Assets.openSelected,
+				index: 9999
 			}
 		}
 	}
 })
+
 
 Definitions.add("Context.Asset.Item", "Context.Assets.DefaultItem", {})

@@ -1,55 +1,15 @@
 import { store } from "wabi"
-import { uuid4, cloneObj } from "../Utils"
-
-// const types = {
-// 	HDR: {
-// 		icon: "fa-map-o",
-// 		mimes: {
-// 			hdr: "image/x-radiance"
-// 		}
-// 	},
-
-
-// 	Geometry: {
-// 		icon: "fa-cube"
-// 	},
-// 	Box: {
-		
-// 	},
-// 	Plane: {
-// 		icon: "fa-cube"
-// 	},
-// 	Circle: {
-// 		icon: "fa-cube"
-// 	},
-// 	Cylinder: {
-// 		icon: "fa-cube"
-// 	},
-// 	Sphere: {
-// 		icon: "fa-cube"
-// 	},
-// 	Icosahedron: {
-// 		icon: "fa-cube"
-// 	},
-// 	Torus: {
-// 		icon: "fa-cube"
-// 	},
-// 	TorusKnot: {
-// 		icon: "fa-cube"
-// 	},
-// 	// CUSTOM
-// 	Item: {
-// 		icon: "fa-cube"
-// 	}
-// }
+import { uuid4, cloneObj, firstKey } from "../Utils"
 
 const types = {}
 const exts = {}
+const mimes = {}
 
 const updateExts = (type) => {
 	const newExts = type.exts
 	for(let key in newExts) {
 		exts[key] = type
+		mimes[key] = newExts[key]
 	}
 }
 
@@ -140,6 +100,10 @@ const create = (type, parent) =>
 		inits[n].call(data)
 	}
 
+	if(typeInfo.exts) {
+		data.ext = firstKey(typeInfo.exts)
+	}
+
 	return data
 }
 
@@ -156,7 +120,7 @@ const createFromExt = (ext, parent) =>
 	return data
 }
 
-const getIconFromType = function(type) {
+const getIconFromType = (type) => {
 	const typeInfo = types[type]
 	if(!typeInfo) {
 		return "fa-question"
@@ -164,9 +128,15 @@ const getIconFromType = function(type) {
 	return typeInfo.icon ? typeInfo.icon : "fa-question"
 }
 
+const getMimeFromExt = (ext) => {
+	const mime = mimes[ext]
+	return mime ? mime : null
+}
+
 export default {
 	createFromExt,
 	getIconFromType,
+	getMimeFromExt,
 	add,
 	get,
 	create

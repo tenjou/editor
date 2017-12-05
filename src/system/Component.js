@@ -115,7 +115,6 @@ const HandleUpdateAsset = (asset, key, value) =>
 					const prevValue = asset.attribs
 					const newAttribs = compile(value)
 					const diffs = compileDiff(value, prevValue)
-					console.log(diffs)
 	
 					for(let key in entities) {
 						const components = entities[key].components
@@ -126,13 +125,24 @@ const HandleUpdateAsset = (asset, key, value) =>
 
 							const data = component.data
 							for(let i = 0; i < diffs.length; i++) {
-								const diff = diffs[n]
-								switch(diff) {
+								const diff = diffs[i]
+								switch(diff.action) {
 									case "add":
 										data[diff.key] = newAttribs[diff.key]
 										break
 									case "remove":
 										delete data[diff.key]
+										break
+									case "value":
+										if(data[diff.key] === diff.value) {
+											data[diff.key] = newAttribs[diff.key]
+										}
+										break
+									case "rename":
+										console.log("rename")
+										// const prevValue = data[diff.key]
+										// delete data[diff.key]
+										// data[diff.]
 										break
 								}
 							}
@@ -194,6 +204,9 @@ const compileDiff = (attribs, prevAttribs) =>
 		}
 		else if(prev.value !== curr.value) {
 			changes.push({ key, action: "value", prev: prev.value })
+		}
+		else if(prev.name !== curr.name) {
+			changes.push({ key, action: "rename" })
 		}
 	}
 

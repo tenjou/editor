@@ -90,6 +90,9 @@ Types.add("Text", "File", {
 	icon: "fa-font",
 	exts: {
 		txt: "text/plain"
+	},
+	open() {
+		store.set("local/workspace", this.id)
 	}	
 })
 

@@ -10,6 +10,15 @@ const isEmpty = function(obj)
 	return true
 }
 
+const firstKey = function(obj)
+{
+	for(let key in obj) {
+		return key
+	}
+
+	return null
+}
+
 const dataURItoBlob = function(dataURI, type)
 {
 	const binary = atob(dataURI.split(",")[1])
@@ -96,6 +105,7 @@ const uuid4 = () => {
 
 export {
 	isEmpty,
+	firstKey,
 	dataURItoBlob,
 	cloneObj,
 	uuid4

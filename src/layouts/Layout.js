@@ -44,8 +44,7 @@ export default component(
 		if(this.$.status.loading) 
 		{
 			const log = this.$.status.log
-			
-
+	
 			elementOpen("loading")
 				if(log.length > 0) {
 					const entry = log[log.length - 1]
@@ -78,17 +77,6 @@ export default component(
 		elementOpen("content")
 			elementOpen("column", marginRight)
 				elementOpen("row", { style: "flex: 100%;" })
-					if(localSceneId) {
-						elementOpen("column", { style: { maxWidth: "300px", borderRight: "3px solid #010008" } })
-							componentVoid(Hierarchy, { 
-								bind: {
-									scene: `assets/${localSceneId}`,
-									children: `sceneChildren/${localSceneId}`
-								} 
-							})
-						elementClose("column")
-					}
-
 					elementOpen("column")
 						componentVoid(Workspace)
 					elementClose("column")

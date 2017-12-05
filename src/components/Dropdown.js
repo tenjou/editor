@@ -125,13 +125,10 @@ const Dropdown = component
 			// 	return source[a].name.localeCompare(source[b].name)
 			// })
 
-			for(let n = 0; n < buffer.length; n++) 
-			{
-				for(let n = 0; n < source.length; n++) {
-					elementOpen("item", { "data-key": buffer[n] })
-						text(source[key])
-					elementClose("item")
-				}
+			for(let n = 0; n < buffer.length; n++) {
+				elementOpen("item", { "data-key": buffer[n] })
+					text(buffer[n])
+				elementClose("item")
 			}
 		}	
 	},

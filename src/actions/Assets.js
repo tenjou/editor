@@ -54,6 +54,21 @@ const createFileData = (file, parent) => {
 	return asset
 }
 
+const save = (asset, content) => 
+{
+	asset.updated = Date.now()
+
+	const path = buildPartialPath(asset)
+	let basePath = `${path}/${asset.name}`
+	if(asset.ext) {
+		basePath = `${basePath}.${asset.ext}`
+		const blob = new Blob([ content ], { type: Types.getMimeFromExt(asset.ext) })
+		Persistence.writeBlob(basePath, blob)
+	}
+
+	Persistence.writeJSON(`${basePath}.data`, asset)	
+}
+
 const upload = () => {
 	const uploadElement = document.getElementById("assets-upload")
 	if(!uploadElement) {
@@ -215,11 +230,15 @@ const performAdd = (payload) =>
 	}
 	else if(asset.ext) 
 	{
-		const blob = blobsWaiting[asset.id]
-		if(!blob) { return }
-		delete blobsWaiting[asset.id]
+		let blob = blobsWaiting[asset.id]
+		if(blob) {
+			delete blobsWaiting[asset.id]
+		}
+		else {
+			blob = new Blob([], { type: Types.getMimeFromExt(asset.ext) });
+		}
 
-		Persistence.writeBlob(filePath, blob)
+		Persistence.writeBlob(filePath, blob)	
 	}
 
 	Persistence.writeJSON(dataPath, asset)
@@ -589,6 +608,7 @@ export default {
 	dropFiles,
 	findFirstOfType,
 	open,
+	save,
 	move,
 	sync,
 	buildPath,

@@ -1,9 +1,19 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
+import Commander from "../Commander"
 
 const Workspace = component
 ({
+	state: {
+		id: null,
+		content: null
+	},
+
 	mount() {
-		this.quill = null
+		this.bind = {
+			id: "local/workspace",
+			content: "workspace"
+		}
+		this.simplemde = null
 	},
 
 	render() 
@@ -13,21 +23,34 @@ const Workspace = component
 				text("Workspace")
 			elementClose("header")
 
-			elementOpen("content")	
-				const element = elementOpen("div").element
-					elementOpen("p")
-						text("hello world!")
-					elementClose("p")
-				elementClose("div")	
-			elementClose("content")
-		elementClose("workspace")
+			const workspaceId = this.$id
+			if(workspaceId)
+			{
+				elementOpen("content")	
+					const element = elementOpen("div").element
+					elementClose("div")	
+				elementClose("content")
 
-		if(!this.quill) {
-			this.quill = new Quill(element, { theme: 'snow'})
-			this.quill.on("text-change", (delta, oldDelta, source) => {
-				console.log(this.quill.getText())
-			})
-		}
+				if(!this.quill) {
+					this.quill = new Quill(element, { theme: "snow" })
+					this.quill.on("text-change", (delta, oldDelta, source) => {
+						if(source === "user") {
+							Commander.execute("SaveWorkspace", this.quill.root.innerHTML)
+						}
+					})
+				}
+
+				if(this.$content) {
+					this.quill.root.innerHTML = this.$content
+					this.quill.update()	
+				}
+			}
+			else {
+				elementOpen("content", { class: "centered" })	
+					text("Workspace is empty")
+				elementClose("content")
+			}
+		elementClose("workspace")
 	}
 })
 
