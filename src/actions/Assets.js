@@ -339,6 +339,8 @@ const performRemove = (payload) =>
 		}
 		store.remove(`assetsChildren/${asset.parent}/${asset.id}`)
 	}
+
+	store.handle(payload)
 }
 
 const move = function(parent, item)
