@@ -203,7 +203,7 @@ const compileDiff = (attribs, prevAttribs) =>
 			changes.push({ key, action: "type" })
 		}
 		else if(prev.value !== curr.value) {
-			changes.push({ key, action: "value", prev: prev.value })
+			changes.push({ key, action: "value", value: prev.value })
 		}
 		else if(prev.name !== curr.name) {
 			changes.push({ key, action: "rename" })
