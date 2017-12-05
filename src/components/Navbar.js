@@ -8,7 +8,7 @@ import {
 } from "wabi"
 
 import Word from "./Word"
-import { exports } from "../actions/export"
+import { Exports } from "../actions/export"
 
 export default component(
 {
@@ -39,10 +39,10 @@ export default component(
 	},
 
 	handleExportClick(event) {
-		exports.Download({
-			type: "All",
-			format: "Uncompressed"
-		})
+		new Exports({
+			type: "Production",
+			format: "Compressed"
+		}).download()
 	},
 
 	handleSettings() {
