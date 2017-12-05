@@ -24,31 +24,30 @@ const Workspace = component
 			elementClose("header")
 
 			const workspaceId = this.$id
-			if(workspaceId)
-			{
-				elementOpen("content")	
-					const element = elementOpen("div").element
-					elementClose("div")	
-				elementClose("content")
+			const attrContent = this.$id ? null : { class: "hidden" }
 
-				if(!this.quill) {
-					this.quill = new Quill(element, { theme: "snow" })
-					this.quill.on("text-change", (delta, oldDelta, source) => {
-						if(source === "user") {
-							Commander.execute("SaveWorkspace", this.quill.root.innerHTML)
-						}
-					})
-				}
+			elementOpen("content", attrContent)	
+				const element = elementOpen("div").element
+				elementClose("div")	
+			elementClose("content")
 
-				if(this.$content) {
-					this.quill.root.innerHTML = this.$content
-					this.quill.update()	
-				}
+			if(!this.quill) {
+				this.quill = new Quill(element, { theme: "snow" })
+				this.quill.on("text-change", (delta, oldDelta, source) => {
+					if(source === "user") {
+						Commander.execute("SaveWorkspace", this.quill.root.innerHTML)
+					}
+				})
 			}
-			else {
+
+			if(!this.$id) {
 				elementOpen("content", { class: "centered" })	
 					text("Workspace is empty")
 				elementClose("content")
+			}
+			else {
+				this.quill.root.innerHTML = this.$content ? this.$content : null
+				this.quill.update()	
 			}
 		elementClose("workspace")
 	}

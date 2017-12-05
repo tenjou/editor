@@ -24,7 +24,8 @@ const handleWorkspaceLocal = (payload) => {
 
 const handleActive = (payload) => {
 	if(payload.action === "REMOVE") {
-		store.watch(`assets/${activeAsset.id}`, handleActive)
+		store.set("local/workspace", null)
+		store.set("workspace", null)
 		activeAsset = null
 	}
 }
