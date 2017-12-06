@@ -145,6 +145,26 @@ checkbox.checked:before {
 	content: "\f00c";
 }
 
+radiobutton {
+	display: block;
+	background-color: rgb(171, 169, 169);
+	width: 20px;
+	height: 20px;
+	border-radius: 45px;
+	color: #1d1d1d;
+	text-align: center;
+	line-height: 22px;
+	margin: 1px 0 1px 0;
+	cursor: pointer;
+}
+radiobutton.checked:before {
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+	content: "\f111";
+}
+
 loading > status {
 	display: block;
 	background: black;
@@ -1056,4 +1076,21 @@ entity row button {
 	color: black;
 	flex: 100%;
 	overflow: auto;	
+}
+
+
+/*
+	Export Window (needs changed)
+*/
+window {
+	position: absolute;
+    width: 250px;
+    top: 50%;
+    left: 50%;
+}
+
+window header icon.close{
+	position: absolute;
+	right: 6px;
+	top: 6px;
 }

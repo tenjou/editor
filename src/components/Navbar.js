@@ -7,15 +7,19 @@ import {
 	text
 } from "wabi"
 
-import Word from "./Word"
-import { Exports } from "../actions/export"
+import Export from "./Export"
 
 export default component(
 {
+	state: {
+		showExportWindow: false
+	},
+
 	mount() {
 		this.attrHome = { onclick: this.handleHomeClick.bind(this) }
 		this.attrExport = { onclick: this.handleExportClick.bind(this) }
 		this.attrSettings = { class: "fa fa-cog", onclick: this.handleSettings.bind(this) }
+
 	},
 
 	render() {
@@ -32,6 +36,10 @@ export default component(
 				elementVoid("settings", this.attrSettings)
 			elementClose("right-side")
 		elementClose("navbar")
+
+		if(this.$showExportWindow) {
+			componentVoid(Export)
+		}
 	},
 
 	handleHomeClick(event) {
@@ -39,10 +47,7 @@ export default component(
 	},
 
 	handleExportClick(event) {
-		new Exports({
-			type: "Production",
-			format: "Compressed"
-		}).download()
+		this.$showExportWindow = true
 	},
 
 	handleSettings() {
