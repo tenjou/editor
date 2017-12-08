@@ -9,26 +9,27 @@ const EnumItem = component
 	},
 
 	mount() {
+		this.validateFunc = (newId) => {
+			if(this.isValidId(newId)) {
+				return newId
+			}
+			return this.$value
+		}
 		this.attrButtonRemove = {
 			class: "fa fa-remove",
 			onclick: (event) => {
 				store.remove(this.bind.value)
 			}
 		}
-		this.attrWord = {
-			bind: this.bind.value,
-			$validateFunc: (newId) => {
-				if(this.isValidId(newId)) {
-					return newId
-				}
-				return this.$value
-			}
-		}
 	},
 
-	render() {
+	render() 
+	{
 		elementOpen("header")
-			componentVoid(Word, this.attrWord)
+			componentVoid(Word, {
+				bind: this.bind.value,
+				$validateFunc: this.validateFunc
+			})
 			elementOpen("button")
 				elementVoid("icon", this.attrButtonRemove)
 			elementClose("button")
