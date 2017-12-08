@@ -1,5 +1,6 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 import ContextMenu from "../actions/ContextMenu"
+import { firstKey } from "../Utils"
 
 const Dropdown = component
 ({
@@ -7,9 +8,9 @@ const Dropdown = component
 		value: null,
 		default: null,
 		source: null,
-		source2: null,
 		valueIsId: false,
-		emptyOption: false
+		emptyOption: false,
+		sourceRoot: null
 	},
 	
 	mount() 
@@ -27,49 +28,46 @@ const Dropdown = component
 		this.handleClickFunc = this.handleClick.bind(this)
 		this.handleCloseFunc = this.close.bind(this)
 		this.renderMenuFunc = this.renderMenu.bind(this)
-
-		if(!this.$value) {
-			this.$value = (this.$valueIsId) ? 0 : this.$source[0]
-		}
 	},
 
 	render()
 	{
-		elementOpen("dropdown")
-			const value = (this.$value === null) ? this.$default : this.$value
+		let source = this.$source
 
-			let item 
-			if(this.$valueIsId) {
-				item = this.$source ? this.$source[value] : null
-				if(!item && this.$source2) {
-					item = this.$source2 ? this.$source2[value] : null
+		if(source) 
+		{
+			if(this.$sourceRoot) {
+				const asset = store.get(`${this.$sourceRoot}/${source}`)
+				source = asset.data
+			}
+
+			if(this.$value) {
+				if(source.indexOf(this.$value) === -1) {
+					this.$value = null
 				}
 			}
-			else {
-				item = value
-			}
-			
-			let name
-			if(item) 
-			{
-				if(typeof item === "string") {
-					name = item
+
+			if(!this.$value) {
+				if(Array.isArray(source)) {
+					this.$value = source[0]
 				}
 				else {
-					name = item.name
+					this.$value = firstKey(source)
 				}
 			}
-			else {
-				name = ""
-			}
+		}
+		else {
+			this.$value = null
+		}
 
+		elementOpen("dropdown")
 			const inputNode = elementVoid("input", { 
 				type: "text", 
 				readonly: true,				
 				onclick: this.handleClickFunc, 
 				onblur: this.handleCloseFunc 
 			})
-			inputNode.element.value = name
+			inputNode.element.value = this.$value
 
 			elementVoid("icon", { class: "fa fa-caret-down" })
 		elementClose("dropdown")	
@@ -89,48 +87,44 @@ const Dropdown = component
 			if(this.$emptyOption) {
 				elementVoid("item")
 			}
-			this.renderSource(this.$source)
-			this.renderSource(this.$source2, true)
+
+			let source = this.$source
+
+			if(this.$sourceRoot && source) {
+				const asset = store.get(`${this.$sourceRoot}/${source}`)
+				source = asset.data
+			}
+	
+			if(Array.isArray(source)) 
+			{
+				// source.sort((a, b) => {
+				// 	return a.localeCompare(b)
+				// })
+	
+				for(let n = 0; n < source.length; n++) {
+					elementOpen("item", { "data-key": n })
+						text(source[n])
+					elementClose("item")
+				}
+			}
+			else
+			{
+				const buffer = []
+				for(let key in source) {
+					buffer.push(key)
+				}
+	
+				// buffer.sort((a, b) => {
+				// 	return source[a].name.localeCompare(source[b].name)
+				// })
+	
+				for(let n = 0; n < buffer.length; n++) {
+					elementOpen("item", { "data-key": buffer[n] })
+						text(buffer[n])
+					elementClose("item")
+				}
+			}
 		elementClose("menu")
-	},
-
-	renderSource(source, line) 
-	{
-		if(!source) { return }
-
-		if(line) {
-			elementVoid("line")
-		}
-
-		if(Array.isArray(source)) 
-		{
-			// source.sort((a, b) => {
-			// 	return a.localeCompare(b)
-			// })
-
-			for(let n = 0; n < source.length; n++) {
-				elementOpen("item", { "data-key": n })
-					text(source[n])
-				elementClose("item")
-			}
-		}
-		else
-		{
-			const buffer = []
-			for(let key in source) {
-				buffer.push(key)
-			}
-
-			// buffer.sort((a, b) => {
-			// 	return source[a].name.localeCompare(source[b].name)
-			// })
-
-			for(let n = 0; n < buffer.length; n++) {
-				elementOpen("item", { "data-key": buffer[n] })
-					text(buffer[n])
-				elementClose("item")
-			}
-		}	
 	},
 
 	handleClick(event) 
@@ -160,8 +154,16 @@ const Dropdown = component
 		if(this.$valueIsId) {
 			this.$value = event.target.dataset.key || null
 		}
-		else {
-			this.$value = this.$source[event.target.dataset.key] || null
+		else
+		{
+			let source = this.$source
+			
+			if(this.$sourceRoot && source) {
+				const asset = store.get(`${this.$sourceRoot}/${source}`)
+				source = asset.data
+			}
+
+			this.$value = source[event.target.dataset.key] || null
 		}
 		
 		this.menuOpen = false

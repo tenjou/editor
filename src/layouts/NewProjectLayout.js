@@ -1,15 +1,7 @@
-import {
-	component,
-	componentVoid,
-	elementOpen,
-	elementClose,
-	elementVoid,
-	store,
-	text
-} from "wabi"
-
+import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
 import TextInput from "../components/TextInput"
 import Dropdown from "../components/Dropdown"
+import Overlay from "../components/Overlay"
 import Project from "../actions/Project"
 import Definitions from "../definitions/Definitions"
 
@@ -78,6 +70,8 @@ export default component(
 				elementClose("new-project")
 			elementClose("content")
 		elementClose("layout")
+
+		componentVoid(Overlay)
 	},
 
 	goBack(event) {
@@ -87,10 +81,10 @@ export default component(
 	createProject(event) {
 		const data = store.get("new-project")
 		Project.create(data.name, data.type, this.handleProjectCreated.bind(this))
-		store.remove("new-project")
 	},
 
 	handleProjectCreated(data) {
+		store.remove("new-project")
 		store.set("projects/selected", data.id)
 		document.location.hash = ""
 		// System.openProject()

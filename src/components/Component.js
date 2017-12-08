@@ -5,6 +5,7 @@ import TextInput from "./TextInput"
 import NumberInput from "./NumberInput"
 import Checkbox from "./Checkbox"
 import Dropdown from "./Dropdown"
+import EnumDropdown from "./EnumDropdown"
 import { cloneObj } from "../Utils"
 
 const attribTypes = [ "Number", "String", "Boolean", "Enum" ]
@@ -106,21 +107,30 @@ const ComponentAttrib = component
 	},
 
 	renderEnum()
-	{
-		const bind = `${this.bind.value}/value`
-		
+	{		
 		elementOpen("item")
 			elementOpen("name")
 				text("source")
 			elementClose("name")						
-			componentVoid(Dropdown, { bind: { source: "enums" }})
+			componentVoid(EnumDropdown, { 
+				bind: { 
+					value: `${this.bind.value}/source`,
+					source: "enums" 
+				}
+			})
 		elementClose("item")
 
 		elementOpen("item")
 			elementOpen("name")
 				text("value")
-			elementClose("name")						
-			componentVoid(Dropdown, { bind: { source: "enums" }})
+			elementClose("name")		
+			componentVoid(Dropdown, { 
+				$sourceRoot: "assets",
+				bind: { 
+					source: `${this.bind.value}/source`,
+					value: `${this.bind.value}/value`
+				}
+			})
 		elementClose("item")	
 	},
 	

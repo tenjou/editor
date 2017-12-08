@@ -81,10 +81,13 @@ const Entity = component
 					componentVoid(Checkbox, { bind })
 					break	
 				case "Enum":
-					// componentVoid(Dropdown, { bind: {
-					// 	value: bind,
-					// 	source: `${componentBind}${attrib.source}`
-					// }})
+					componentVoid(Dropdown, { 
+						$sourceRoot: "assets",
+						$source: attrib.source,
+						bind: {
+							value: bind
+						}
+					})
 					break					
 			}
 			

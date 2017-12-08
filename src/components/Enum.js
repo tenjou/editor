@@ -33,6 +33,8 @@ const EnumItem = component
 				elementVoid("icon", this.attrButtonRemove)
 			elementClose("button")
 		elementClose("header")
+		elementOpen("test")
+		elementClose("test")
 	},
 
 	isValidId(id) {
