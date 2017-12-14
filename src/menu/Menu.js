@@ -87,8 +87,10 @@ const extend = (menu, def) =>
 	return menu
 }
 
-const sort = (menu) => {
+const sort = (menu) =>
+{
 	menu.sort(sortByIndex)
+	
 	for(let n = 0; n < menu.length; n++) {
 		const item = menu[n]
 		if(item.children && Array.isArray(item.children)) {
@@ -97,7 +99,7 @@ const sort = (menu) => {
 	}	
 }
 
-const sortByIndex = (a, b) =>
+const sortByIndex = (a, b) => 
 {
 	if(a.index === undefined) {
 		return b.index

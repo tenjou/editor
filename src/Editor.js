@@ -1,10 +1,4 @@
-import { 
-	componentVoid, 
-	update,
-	route, 
-	clearRoutes, 
-	store 
-} from "wabi"
+import { componentVoid, update, route, clearRoutes, store } from "wabi"
 import FileSystem from "./fs/FileSystem"
 import Persistence from "./Persistence"
 import Server from "./server/Server"
@@ -15,11 +9,9 @@ import NewProjectLayout from "./layouts/NewProjectLayout"
 import Project from "./actions/Project"
 import Status from "./actions/Status"
 import Types from "./types/index"
-import Definitions from "./definitions/Definitions"
 import "./menu/Assets"
 import "./menu/Project"
 import "./Migration"
-import "./definitions/index"
 import "./system/Component"
 import "./system/Prefab"
 import "./system/Enum"
@@ -42,8 +34,6 @@ let needSave = false
 
 const setup = function() 
 {
-	Definitions.add("Enum.ProjectType", [ "Default" ])
-
 	window.store = store
 	
 	route("", WarnLayout, null, null, () => {

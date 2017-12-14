@@ -1,5 +1,4 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
-import Definitions from "../definitions/Definitions"
 import Inspect from "../actions/Inspect"
 import Checkbox from "./Checkbox"
 import Dropdown from "./Dropdown"
@@ -215,33 +214,6 @@ const Items = component(
 					elementClose("item")
 				} break
 
-				case "TypeDropdown":
-				{
-					const inputAttr = { 
-						$valueIsId: false,
-						bind: {
-							value: itemBind,
-							source: item.source
-						}
-					}
-
-					if(item.$default) { inputAttr.$default = item.$default }
-
-					elementOpen("item")
-						elementVoid("name", attr)
-						const component = componentVoid(Dropdown, inputAttr)
-					elementClose("item")
-
-					const value = (component.$value === null) ? component.$default : component.$value
-					if(value)
-					{
-						const props = Definitions.get(`Inspect.${value}`)
-						if(props) {
-							componentVoid(Items, { $value: props, $bind: this.$bind })
-						}
-					}
-				} break
-
 				case "Image":
 				{
 					elementOpen("item")
@@ -312,14 +284,6 @@ const Items = component(
 						$props: item.children || null, 
 						$bind: itemBind 
 					})
-				} break
-
-				case "Placeholder":
-				{
-					const defs = Definitions.get(`Inspect.${item.def}`)
-					if(defs) {
-						componentVoid(Items, { $value: defs, $bind: this.$bind })
-					}
 				} break
 
 				case "Color":

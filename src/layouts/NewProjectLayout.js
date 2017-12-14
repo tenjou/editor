@@ -3,7 +3,6 @@ import TextInput from "../components/TextInput"
 import Dropdown from "../components/Dropdown"
 import Overlay from "../components/Overlay"
 import Project from "../actions/Project"
-import Definitions from "../definitions/Definitions"
 
 export default component(
 {
@@ -23,7 +22,7 @@ export default component(
 		this.attrTextInput = { bind: "new-project/name" }
 		this.attrDropdown = { 
 			bind: "new-project/type", 
-			$source: Definitions.get("Enum.ProjectType"), 
+			$source: [ "Default" ], 
 			$valueIsId: false 
 		}
 	},
