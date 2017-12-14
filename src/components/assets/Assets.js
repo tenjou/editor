@@ -199,8 +199,8 @@ const FilesItem = component({
 	},
 	handleContextMenu(event) {
 		store.set("local/selected", this.bind.value)
-		if(!ContextMenu.show(`Assets.${this.$value.type}`, this.bind, event)) {
-			ContextMenu.show("Assets.Item", this.bind, event)
+		if(!ContextMenu.show(`assets.${this.$value.type}`, this.bind, event)) {
+			ContextMenu.show("assets.item", this.bind, event)
 		}		
 	},
 	handleKeyUp(event) 
@@ -317,7 +317,7 @@ const FilesItems = component({
 	},
 
 	handleContextMenu(event) {
-		ContextMenu.show("Assets", "assets", event)
+		ContextMenu.show("assets", "assets", event)
 	},
 
 	handleDrop(event) 
@@ -499,7 +499,7 @@ export default component(
 		elementClose("assets")
 	},
 	handleContextMenu(event) {
-		ContextMenu.show("Assets", "assets", event)
+		ContextMenu.show("assets", "assets", event)
 	},
 	handleUpload(event) {
 		Assets.uploadFiles(event.currentTarget.files)

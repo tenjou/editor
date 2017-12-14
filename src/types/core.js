@@ -96,10 +96,6 @@ Types.add("Text", "File", {
 	}	
 })
 
-Types.add("Template", "File", {
-	icon: "fa-cube"
-})
-
 Types.add("Enum", "File", {
 	icon: "fa-list",
 	init() {
@@ -126,6 +122,20 @@ Types.add("Entity", "File", {
 			bind: "components"
 		}
 	]
+})
+
+Types.add("Prefab", "File", {
+	icon: "fa-cubes",
+	init() {
+		this.components = []
+	},
+	schema: [
+		{
+			name: "entity",
+			type: "Entity",
+			bind: "components"
+		}
+	]	
 })
 
 Types.add("Component", "File", {

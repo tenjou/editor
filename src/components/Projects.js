@@ -108,7 +108,7 @@ const ProjectItem = component({
 
 	handleContextMenu(event) {
 		this.select()
-		ContextMenu.show("Project.Item", this.bind, event)
+		ContextMenu.show("project.item", this.bind, event)
 	},
 
 	select() {

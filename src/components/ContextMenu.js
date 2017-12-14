@@ -1,61 +1,69 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
+import Menu from "../menu/Menu"
 
-const Inner = component(
-{
-	render() 
-	{
+const ContextMenuInner = component
+({
+	render() {
 		elementOpen("inner")
-
-		const items = this.$value
-		for(let n = 0; n < items.length; n++) 
-		{
-			const item = items[n]
-			if(!item.type) {
-				this.renderItem(item)
+			const items = this.$value
+			if(items.length === 0) {
+				elementOpen("content", { class: "centered" })
+					text("No items")
+				elementClose("content")
 			}
-			else {
-				componentVoid(Category, { $value: item })
+			else 
+			{
+				for(let n = 0; n < items.length; n++) {
+					const item = items[n]
+					if(item.type === "category") {
+						this.renderCategory(item)
+					}
+					else if(item.type === "menu") {
+						this.renderMenu(item)
+					}
+					else {
+						this.renderItem(item)
+					}
+				}
 			}
-		}
-
 		elementClose("inner")
 	},
 
-	renderItem(item)
-	{
-		if(item.func) {
-			elementOpen("item", { onclick: item.func })
-		}
-		else {
-			elementOpen("item")
-		}
+	renderItem(item) {
+		const attr = item.func ? { onclick: item.func } : null
+		elementOpen("item", attr)
 			if(item.icon) {
 				elementVoid("icon", { class: `fa ${item.icon}` })
 			}
-			else {
-				elementVoid("icon")
-			}
 			text(item.name)
-		elementClose("item")		
-	}
-})
+		elementClose("item")
+	},
 
-const Category = component(
-{
-	render() 
-	{
+	renderCategory(item) {
 		elementOpen("category")
-
 			elementOpen("header")
-				if(this.$value.icon) {
-					elementVoid("icon", { class: `fa ${this.$value.icon}` })
-				}
-				text(this.$value.name)
+				text(item.name)
 			elementClose("header")
-
-			componentVoid(Inner, { $value: this.$value.children })
-
+			componentVoid(ContextMenuInner, { $value: item.children })
 		elementClose("category")
+	},
+
+	renderMenu(item) {
+		elementOpen("item")
+			if(item.icon) {
+				elementVoid("icon", { class: `fa ${item.icon}` })
+			}		
+			text(item.name)
+			elementVoid("caret", { class: "fa fa-caret-right"})
+			elementOpen("contextmenu")
+				if(typeof item.children === "string") {
+					componentVoid(ContextMenuInner, { $value: Menu.get(item.children) })
+				}
+				else {
+					componentVoid(ContextMenuInner, { $value: item.children })
+				}
+			elementClose("contextmenu")
+		elementClose("item")
 	}
 })
 
@@ -67,15 +75,18 @@ const ContextMenu = component
 		props: null
 	},
 
-	render() 
-	{
+	mount() {
+		this.bind = "contextmenu"
+	},
+
+	render() {
 		elementOpen("contextmenu", { 
 			style: {
 				left: `${this.$x}px`,
 				top: `${this.$y}px`
 			}
 		})
-			componentVoid(Inner, { $value: this.$props })
+			componentVoid(ContextMenuInner, { $value: this.$props })
 		elementClose("contextmenu")
 	}
 })

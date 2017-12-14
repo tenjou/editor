@@ -1,5 +1,5 @@
 import { componentVoid, store } from "wabi"
-import Definitions from "../definitions/Definitions"
+import Menu from "../menu/Menu"
 import ContextMenu from "../components/ContextMenu"
 
 let menuX = 0
@@ -10,7 +10,7 @@ let menuVisible = false
 
 const show = function(id, bind, event, x, y)
 {
-	menuProps = Definitions.get(`Context.${id}`)
+	menuProps = Menu.get(id)
 	if(!menuProps) { return false }	
 
 	menuX = (x !== undefined) ? x : event.x

@@ -132,10 +132,10 @@ const Directory = component({
 	{
 		store.set("local/assets/location", this.$.value.id)
 		if(this.$.value.id === "") {
-			ContextMenu.show("Assets.MasterDirectory", this.bind.value, event)
+			ContextMenu.show("assets.masterDirectory", this.bind.value, event)
 		}
 		else {
-			ContextMenu.show("Assets.Directory", this.bind.value, event)
+			ContextMenu.show("assets.directory", this.bind.value, event)
 		}
 	},
 

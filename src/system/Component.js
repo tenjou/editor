@@ -26,6 +26,7 @@ const compile = (attribs) =>
 				break
 			case "Boolean":
 				obj[attrib.name] = attrib.value ? attrib.value : false
+				break
 		}
 	}
 
@@ -196,7 +197,10 @@ const compileDiff = (attribs, prevAttribs) =>
 	for(let key in attribsMap) {
 		const curr = attribsMap[key]
 		const prev = prevAttribsMap[key]
-		if(prev === undefined) {
+		if(prev.name !== curr.name) {
+			changes.push({ key, action: "rename" })
+		}		
+		else if(prev === undefined) {
 			changes.push({ key, action: "add" })
 		}
 		else if(prev.type !== curr.type) {
@@ -204,9 +208,6 @@ const compileDiff = (attribs, prevAttribs) =>
 		}
 		else if(prev.value !== curr.value) {
 			changes.push({ key, action: "value", value: prev.value })
-		}
-		else if(prev.name !== curr.name) {
-			changes.push({ key, action: "rename" })
 		}
 	}
 

@@ -541,6 +541,11 @@ contextmenu icon.float-right {
 	margin-right: -10px;
 	margin-top: 2px;
 }
+contextmenu caret {
+	float: right;
+	width: 6px !important;
+	padding: 3px 0 3px;
+}
 
 import > input[type="file"] {
 	display: none;
