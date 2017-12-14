@@ -32,21 +32,33 @@ const get = (id) =>
 		return null
 	}
 
+	let menu = def.menu
+
 	if(def.extend) {
-		let menu = extendMenu([], def.menu)
-		const extendDef = menus[def.extend]
-		if(extendDef) {
-			menu = extendMenu(menu, extendDef.menu)
-		}
-		return menu
+		menu = extend([], def)
 	}
-	
-	return def.menu || null
+
+	if(menu) {
+		sort(menu)
+	}
+
+	return menu || null
 }
 
-const extendMenu = (menu, extendMenu) => 
+const extend = (menu, def) => 
 {
+	if(def.extend) {
+		const defExtend = menus[def.extend]
+		if(!defExtend) {
+			console.warn(`(Menu.extend) Menu not defined: ${def.extend}`)
+		}
+		else {
+			menu = extend(menu, defExtend)
+		}
+	}
+
 	const maxIndex = menu.length
+	const extendMenu = def.menu
 
 	for(let n = 0; n < extendMenu.length; n++) 
 	{
@@ -73,6 +85,28 @@ const extendMenu = (menu, extendMenu) =>
 	}
 
 	return menu
+}
+
+const sort = (menu) => {
+	menu.sort(sortByIndex)
+	for(let n = 0; n < menu.length; n++) {
+		const item = menu[n]
+		if(item.children && Array.isArray(item.children)) {
+			sort(item.children)
+		}
+	}	
+}
+
+const sortByIndex = (a, b) =>
+{
+	if(a.index === undefined) {
+		return b.index
+	}
+	if(b.index === undefined) {
+		return a.index
+	}
+
+	return b.index - a.index
 }
 
 export {

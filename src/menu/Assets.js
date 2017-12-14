@@ -1,5 +1,6 @@
 import Menu from "./Menu"
 import Assets from "../actions/Assets"
+import ContextMenu from "../actions/ContextMenu"
 
 Menu.set("prefabs", [])
 
@@ -120,7 +121,7 @@ Menu.set("assets.directory", "assets.masterDirectory", [
 	}
 ])
 
-Menu.set("assets.Folder", "assets.Item", [
+Menu.set("assets.Folder", "assets.item", [
 	{
 		name: "Actions",
 		type: "category",

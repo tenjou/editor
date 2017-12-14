@@ -196,13 +196,13 @@ const compileDiff = (attribs, prevAttribs) =>
 
 	for(let key in attribsMap) {
 		const curr = attribsMap[key]
-		const prev = prevAttribsMap[key]
-		if(prev.name !== curr.name) {
-			changes.push({ key, action: "rename" })
-		}		
-		else if(prev === undefined) {
+		const prev = prevAttribsMap[key]	
+		if(prev === undefined) {
 			changes.push({ key, action: "add" })
 		}
+		else if(prev.name !== curr.name) {
+			changes.push({ key, action: "rename" })
+		}	
 		else if(prev.type !== curr.type) {
 			changes.push({ key, action: "type" })
 		}
