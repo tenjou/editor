@@ -107,6 +107,10 @@ input[type=number]::-webkit-outer-spin-button {
 	color: #ff2f2f;
 }
 
+.invisible-scrollbar::-webkit-scrollbar {
+	display: none;
+}
+
 warn {
 	padding: 10px;
 	background: black;
@@ -581,6 +585,8 @@ assets browser directory {
 	padding: 2px;
 	-webkit-user-drag: element;
 	user-drag: element;
+	overflow-x: scroll;
+	white-space: nowrap;	
 }
 assets browser directory > caret {
 	display: inline-block;
@@ -692,7 +698,7 @@ assets browser items > item > word {
 	color: white;
 	box-sizing: border-box;
 	text-align: center;
-	overflow: hidden;
+	overflow-x: scroll;
 	white-space: nowrap;
 }
 

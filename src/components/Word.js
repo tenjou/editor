@@ -11,12 +11,14 @@ const Word = component
 
 	mount() {
 		this.attr = {
+			class: "invisible-scrollbar",
 			spellcheck: false,
 			onclick: this.handleClick.bind(this),
 			ondblclick: this.handleDblClick.bind(this),
 			onkeydown: this.handleKeyDown.bind(this),
 			onblur: this.handleBlur.bind(this)
 		}
+		this.word = null
 	},
 
 	render() 
@@ -28,16 +30,18 @@ const Word = component
 			}, this.attr)
 		}
 		else {
-			attr = Object.assign({}, this.attr)		
+			attr = Object.assign({
+				style: { textOverflow: "ellipsis" }
+			}, this.attr)		
 		}
 
-		const node = elementOpen("word", attr)
+		this.word = elementOpen("word", attr).element
 			text(this.$.value)
 		elementClose("word")
 
 		if(this.$.editing) {
-			node.element.focus()
-			selectElementContents(node.element)
+			this.word.focus()
+			selectElementContents(this.word)
 		}
 	},
 
@@ -108,6 +112,7 @@ const Word = component
 			}
 		}
 
+		this.word.scrollLeft = 0
 		this.$editing = false
 	}
 })
