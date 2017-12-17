@@ -4,6 +4,7 @@ import TextInput from "./TextInput"
 import NumberInput from "./NumberInput"
 import Checkbox from "./Checkbox"
 import Dropdown from "./Dropdown"
+import Image from "./inspect/Image"
 import Component from "../system/Component"
 
 const Entity = component
@@ -88,7 +89,14 @@ const Entity = component
 							value: bind
 						}
 					})
-					break					
+					break
+				case "Image":
+					componentVoid(Image, {
+						bind: {
+							value: bind
+						}
+					})
+					break				
 			}
 			
 		elementClose("item")

@@ -41,9 +41,15 @@ const Dropdown = component
 				source = asset.data
 			}
 
-			if(this.$value) {
-				if(source.indexOf(this.$value) === -1) {
-					this.$value = null
+			if(this.$value) 
+			{
+				if(Array.isArray(source)) {
+					if(source.indexOf(this.$value) === -1) {
+						this.$value = null
+					}
+				}
+				else {
+
 				}
 			}
 

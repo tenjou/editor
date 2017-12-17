@@ -145,6 +145,8 @@ const FilesItem = component({
 	handleDragStart(event) {
 		event.dataTransfer.setData(event.target.dataset.id, "")
 		event.dataTransfer.effectAllowed = "move"
+		const img = new Image()
+		event.dataTransfer.setDragImage(img, 0, 0)
 	},
 
 	handleDrop(event) 

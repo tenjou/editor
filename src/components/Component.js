@@ -5,16 +5,18 @@ import TextInput from "./TextInput"
 import NumberInput from "./NumberInput"
 import Checkbox from "./Checkbox"
 import Dropdown from "./Dropdown"
+import Drop from "./Drop"
 import EnumDropdown from "./EnumDropdown"
 import { cloneObj } from "../Utils"
 
-const attribTypes = [ "Number", "String", "Boolean", "Enum" ]
+const attribTypes = [ "Number", "String", "Boolean", "Enum", "List", "Image", "Component" ]
 
 const ComponentAttrib = component
 ({
 	state: {
 		value: null,
-		list: null
+		list: null,
+		parentId: null
 	},
 
 	mount() {
@@ -49,7 +51,10 @@ const ComponentAttrib = component
 					elementOpen("name")
 						text("type")
 					elementClose("name")
-					componentVoid(Dropdown, { $source: attribTypes, bind: `${this.bind.value}/type` })	
+					componentVoid(Dropdown, { 
+						$source: attribTypes, 
+						bind: `${this.bind.value}/type` 
+					})	
 				elementClose("item")
 
 				switch(this.$value.type) {
@@ -64,6 +69,12 @@ const ComponentAttrib = component
 						break
 					case "Enum":
 						this.renderEnum()
+						break
+					case "List":
+						this.renderList()
+						break
+					case "Component":
+						this.renderComponent()
 						break
 				}
 			elementClose("items")
@@ -133,6 +144,31 @@ const ComponentAttrib = component
 			})
 		elementClose("item")	
 	},
+
+	renderList()
+	{
+		elementOpen("item")
+			elementOpen("name")
+				text("value")
+			elementClose("name")
+		elementClose("item")
+	},
+
+	renderComponent()
+	{
+		elementOpen("item")
+			elementOpen("name")
+				text("component")
+			elementClose("name")
+			componentVoid(Drop, {
+				$type: "Component",
+				$exclude: this.$parentId,
+				bind: {
+					value: `${this.bind.value}/value`
+				}
+			})
+		elementClose("item")
+	},
 	
 	isValidName(name) {
 		const list = this.$list
@@ -148,6 +184,7 @@ const ComponentAttrib = component
 const Component = component
 ({
 	state: {
+		value: null,
 		attribs: null,
 		attribsEdited: null,
 		isAttribsEdited: false
@@ -173,7 +210,13 @@ const Component = component
 			elementOpen("content", { class: "column" })
 				for(let n = 0; n < attribs.length; n++) {
 					const attrib = attribs[n]
-					componentVoid(ComponentAttrib, { bind: { value: `${this.bind.attribsEdited}/${n}` }, $list: attribs })
+					componentVoid(ComponentAttrib, { 
+						$list: attribs,
+						$parentId: this.$value.id,
+						bind: { 
+							value: `${this.bind.attribsEdited}/${n}` 
+						}
+					})
 				}
 			elementClose("content")
 
@@ -217,6 +260,7 @@ const Component = component
 		}
 
 		store.add(this.bind.attribsEdited, {
+			id: Date.now(),
 			name,
 			type: attribTypes[0],
 			value: 0

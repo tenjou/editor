@@ -70,7 +70,7 @@ const ready = function()
 			})
 	}
 
-	route("", HomeLayout)
+	route("/", HomeLayout)
 }
 
 const on = function(event, func, owner) 

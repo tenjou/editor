@@ -114,6 +114,9 @@ const Word = component
 
 		this.word.scrollLeft = 0
 		this.$editing = false
+
+		const selection = window.getSelection()
+		selection.removeAllRanges()
 	}
 })
 

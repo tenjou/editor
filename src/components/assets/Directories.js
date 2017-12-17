@@ -52,9 +52,9 @@ const Directory = component({
 	{
 		const item = this.$.value
 
-		let classes = ""
+		let classes = "invisible-scrollbar"
 		if(this.$.selected) {
-			classes = "selected"
+			classes += " selected"
 		}
 		if(this.$.dragOver) {
 			classes += " hover"

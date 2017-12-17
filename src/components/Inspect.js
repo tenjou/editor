@@ -243,6 +243,7 @@ const Items = component(
 					elementOpen("item")
 						componentVoid(Component, { 
 							bind: {
+								value: itemBind,
 								attribs: `${itemBind}/attribs`,
 								attribsEdited: `${itemBind}/cache/attribs`,
 								isAttribsEdited: `${itemBind}/cache/attribsEdited`
