@@ -1,5 +1,11 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text, store } from "wabi"
 
+const DropName = component({
+	render() {
+		text(this.$value)
+	}
+})
+
 const Drop = component
 ({
 	state: {
@@ -31,13 +37,7 @@ const Drop = component
 				store.set("local/selected", `assets/${this.$value}`)
 			},			
 			onkeydown: this.handleKeyDown.bind(this)
-		}
-		if(this.$value) {
-			this.bind = {
-				value: this.bind.value,
-				name: `assets/${this.$value}/name`
-			}
-		}		
+		}	
 	},
 
 	render() 
@@ -49,7 +49,9 @@ const Drop = component
 
 		const attr = this.$dragOver ? Object.assign({ class: "hover" }, this.attr) : this.attr
 		elementOpen("drop", attr)
-			text(this.$name || "")
+			if(this.$value) {
+				componentVoid(DropName, { bind: `assets/${this.$value}/name` })
+			}
 			elementOpen("tag")
 				text(this.$type)
 			elementClose("tag")
@@ -58,12 +60,6 @@ const Drop = component
 
 	handleDrop(event) {
 		this.$value = event.dataTransfer.types[0]
-		if(this.$value) {
-			this.bind = {
-				value: this.bind.value,
-				name: `assets/${this.$value}/name`
-			}
-		}		
 		this.$dragOver = false
 	},
 
@@ -82,10 +78,6 @@ const Drop = component
 		event.preventDefault()
 		if(event.keyCode === 46) {  // Delete 
 			this.$value = null
-			this.bind = {
-				value: this.bind.value,
-				name: null
-			}
 		}
 	},
 
