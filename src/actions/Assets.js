@@ -365,7 +365,7 @@ const performMove = (payload) =>
 	const itemPath = buildPath(item)
 	const prevParentId = item.parent
 
-	let newPath = `${parentPath}/${item.name}`
+	let newPath = `${parentPath}/${payload.value.name}`
 	if(item.ext) {
 		newPath = `${newPath}.${item.ext}`
 	}
