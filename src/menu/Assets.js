@@ -105,22 +105,6 @@ Menu.set("assets.masterDirectory", "assets", [
 	}
 ])
 
-Menu.set("assets.directory", "assets.masterDirectory", [
-	{
-		name: "Actions",
-		type: "category",
-		children: [
-			{
-				name: "Delete",
-				icon: "fa-trash",
-				func() {
-					Assets.removeAsset(ContextMenu.getBind())
-				}
-			}
-		]
-	}
-])
-
 Menu.set("assets.Folder", "assets.item", [
 	{
 		name: "Actions",

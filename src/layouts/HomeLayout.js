@@ -6,9 +6,9 @@ import {
 	elementVoid
 } from "wabi"
 
-import Navbar from "../components/Navbar"
-import Projects from "../components/Projects"
-import Overlay from "../components/Overlay"
+import Navbar from "../component/Navbar"
+import Projects from "../component/Projects"
+import Overlay from "../component/Overlay"
 
 export default component(
 {

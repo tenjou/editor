@@ -1,11 +1,11 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text, store } from "wabi"
+import TextInput from "~/component/TextInput"
+import NumberInput from "~/component/NumberInput"
+import Checkbox from "~/component/Checkbox"
+import Dropdown from "~/component/Dropdown"
 import ComponentDropdown from "./ComponentDropdown"
-import TextInput from "./TextInput"
-import NumberInput from "./NumberInput"
-import Checkbox from "./Checkbox"
-import Dropdown from "./Dropdown"
-import Image from "./inspect/Image"
-import Component from "../system/Component"
+import ImagePreview from "./ImagePreview"
+import ComponentService from "../service/Component"
 
 const Entity = component
 ({
@@ -91,12 +91,17 @@ const Entity = component
 					})
 					break
 				case "Image":
-					componentVoid(Image, {
+					componentVoid(ImagePreview, {
 						bind: {
 							value: bind
 						}
 					})
-					break				
+					break
+				case "Component":
+					// componentVoid(Entity, {
+					// 	bind
+					// })	
+					break		
 			}
 			
 		elementClose("item")
@@ -107,7 +112,7 @@ const Entity = component
 		const id = this.menu.$value
 		if(!id) { return }
 
-		const data = Component.clone(id)
+		const data = ComponentService.clone(id)
 		if(!data) {	
 			console.warn(`(Entity.handleAddComponent) Could not get component data from id: ${this.menu.$value}`)
 			return

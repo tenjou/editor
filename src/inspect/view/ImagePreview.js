@@ -1,9 +1,9 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text, store } from "wabi"
-import FileSystem from "../../fs/FileSystem"
-import Assets from "../../actions/Assets"
-import Drop from "../Drop"
+import FileSystem from "~/fs/FileSystem"
+import Assets from "~/actions/Assets"
+import Drop from "./Drop"
 
-const Image = component
+const ImagePreview = component
 ({
 	state: {
 		value: null,
@@ -44,7 +44,7 @@ const Image = component
 		const attr = this.$dragOver ? Object.assign({ class: "hover" }, this.attr) : this.attr
 
 		componentVoid(Drop, {
-			type: "Texture",
+			$type: "Texture",
 			bind: {
 				value: this.bind.value
 			}
@@ -61,4 +61,4 @@ const Image = component
 	}
 })
 
-export default Image
+export default ImagePreview

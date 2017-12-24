@@ -135,7 +135,7 @@ const Directory = component({
 			ContextMenu.show("assets.masterDirectory", this.bind.value, event)
 		}
 		else {
-			ContextMenu.show("assets.directory", this.bind.value, event)
+			ContextMenu.show("assets.Folder", this.bind.value, event)
 		}
 	},
 

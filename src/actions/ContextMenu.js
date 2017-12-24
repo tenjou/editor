@@ -1,6 +1,6 @@
 import { componentVoid, store } from "wabi"
 import Menu from "../menu/Menu"
-import ContextMenu from "../components/ContextMenu"
+import ContextMenu from "../component/ContextMenu"
 
 let menuX = 0
 let menuY = 0

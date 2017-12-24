@@ -1,15 +1,12 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
-import Inspect from "../actions/Inspect"
-import Checkbox from "./Checkbox"
-import Dropdown from "./Dropdown"
-import NumberInput from "./NumberInput"
-import TextInput from "./TextInput"
-import Image from "./Image"
+import Inspect from "../service/Inspect"
+import Checkbox from "~/component/Checkbox"
+import Dropdown from "~/component/Dropdown"
+import NumberInput from "~/component/NumberInput"
+import TextInput from "~/component/TextInput"
 import Audio from "./Audio"
-import Vector2 from "./Vector2"
-import Vector3 from "./Vector3"
+import Image from "./Image"
 import Color from "./Color"
-import MeshInspect from "./MeshInspect"
 import Component from "./Component"
 import Enum from "./Enum"
 import Entity from "./Entity"
@@ -166,26 +163,6 @@ const Items = component(
 					elementOpen("item")
 						elementVoid("name", attr)
 						componentVoid(Checkbox, inputAttr)
-					elementClose("item")
-				} break
-
-				case "Vector2":
-				{
-					elementOpen("item")
-						elementVoid("name", attr)
-						componentVoid(Vector2, { bind: itemBind })
-					elementClose("item")
-				} break
-
-				case "Vector3":
-				{
-					const inputAttr = { bind: itemBind }
-
-					elementOpen("item")
-						elementOpen("name")
-							text(item.name)
-						elementClose("name")
-						componentVoid(Vector3, inputAttr)
 					elementClose("item")
 				} break
 

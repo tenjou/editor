@@ -1,6 +1,7 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
-import Commander from "../Commander"
+import Commands from "../Commands"
 import Assets from "../actions/Assets"
+import SaveWorkspaceCommand from "~/commands/SaveWorkspace"
 
 const Workspace = component
 ({
@@ -42,7 +43,7 @@ const Workspace = component
 				this.quill = new Quill(element, { theme: "snow" })
 				this.quill.on("text-change", (delta, oldDelta, source) => {
 					if(source === "user") {
-						Commander.execute("SaveWorkspace", this.quill.root.innerHTML)
+						Commands.execute(SaveWorkspaceCommand, this.quill.root.innerHTML)
 					}
 				})
 			}

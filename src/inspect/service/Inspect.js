@@ -1,5 +1,5 @@
 import { store } from "wabi"
-import Types from "../actions/Types"
+import Types from "~/actions/Types"
 
 let selectedData = null
 let prevSelected = null

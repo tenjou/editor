@@ -12,11 +12,10 @@ import Directories from "./Directories"
 import Word from "../Word"
 import Search from "../Search"
 import Assets from "../../actions/Assets"
-import Inspect from "../../actions/Inspect"
 import Types from "../../actions/Types"
 import ContextMenu from "../../actions/ContextMenu"
-import FileSystem from "../../fs/FileSystem"
-import { isEmpty } from "../../Utils"
+import FileSystem from "~/fs/FileSystem"
+import { isEmpty } from "~/Utils"
 
 const attrCenteredContent = { class: "column centered max"}
 const attrArrowIcon = { class: "fa fa-caret-right" }
@@ -328,7 +327,7 @@ const FilesItems = component({
 		event.preventDefault()
 		this.$dragOver = false
 
-		const parentAsset = store.get(store.get("local/assets/location"))
+		const parentAsset = store.get(`assets/${store.get("local/assets/location")}`)
 		Assets.dropFiles(event.dataTransfer.items, parentAsset.id)
 	},
 

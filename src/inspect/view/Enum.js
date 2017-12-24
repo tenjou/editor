@@ -1,5 +1,5 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
-import Word from "./Word"
+import Word from "~/component/Word"
 
 const EnumItem = component
 ({

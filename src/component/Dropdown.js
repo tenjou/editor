@@ -10,7 +10,8 @@ const Dropdown = component
 		source: null,
 		valueIsId: false,
 		emptyOption: false,
-		sourceRoot: null
+		sourceRoot: null,
+		onChange: null
 	},
 	
 	mount() 
@@ -170,6 +171,10 @@ const Dropdown = component
 			}
 
 			this.$value = source[event.target.dataset.key] || null
+		}
+
+		if(this.$onChange) {
+			this.$onChange(this.$value)
 		}
 		
 		this.menuOpen = false

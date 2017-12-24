@@ -1,7 +1,7 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
-import TextInput from "../components/TextInput"
-import Dropdown from "../components/Dropdown"
-import Overlay from "../components/Overlay"
+import TextInput from "../component/TextInput"
+import Dropdown from "../component/Dropdown"
+import Overlay from "../component/Overlay"
 import Project from "../actions/Project"
 
 export default component(

@@ -1,13 +1,17 @@
 import { component, componentVoid, elementOpen, elementClose, elementVoid, text } from "wabi"
-import Dropdown from "./Dropdown"
-import Word from "./Word"
-import TextInput from "./TextInput"
-import NumberInput from "./NumberInput"
-import Checkbox from "./Checkbox"
-import Dropdown from "./Dropdown"
+import AddComponentAttribType from "../command/AddComponentAttribType"
+import SetComponentAttribType from "../command/SetComponentAttribType"
 import Drop from "./Drop"
+import List from "./List"
 import EnumDropdown from "./EnumDropdown"
-import { cloneObj } from "../Utils"
+import Dropdown from "~/component/Dropdown"
+import Word from "~/component/Word"
+import TextInput from "~/component/TextInput"
+import NumberInput from "~/component/NumberInput"
+import Checkbox from "~/component/Checkbox"
+import Dropdown from "~/component/Dropdown"
+import { cloneObj } from "~/Utils"
+import Commands from "~/Commands"
 
 const attribTypes = [ "Number", "String", "Boolean", "Enum", "List", "Image", "Component" ]
 
@@ -19,7 +23,8 @@ const ComponentAttrib = component
 		parentId: null
 	},
 
-	mount() {
+	mount() 
+	{
 		this.attrButtonRemove = {
 			onclick: (event) => {
 				store.remove(this.bind.value)
@@ -33,6 +38,16 @@ const ComponentAttrib = component
 				}
 				return this.$value.name
 			}
+		}
+		this.attrDropdown = { 
+			$source: attribTypes, 
+			$onChange: (type) => {
+				Commands.execute(SetComponentAttribType, {
+					id: this.bind.value,
+					type
+				})
+			},
+			bind: `${this.bind.value}/type`			
 		}
 	},
 
@@ -51,10 +66,7 @@ const ComponentAttrib = component
 					elementOpen("name")
 						text("type")
 					elementClose("name")
-					componentVoid(Dropdown, { 
-						$source: attribTypes, 
-						bind: `${this.bind.value}/type` 
-					})	
+					componentVoid(Dropdown, this.attrDropdown)	
 				elementClose("item")
 
 				switch(this.$value.type) {
@@ -149,8 +161,9 @@ const ComponentAttrib = component
 	{
 		elementOpen("item")
 			elementOpen("name")
-				text("value")
+				text("list")
 			elementClose("name")
+			componentVoid(List)
 		elementClose("item")
 	},
 
@@ -259,11 +272,10 @@ const Component = component
 			break
 		}
 
-		store.add(this.bind.attribsEdited, {
-			id: Date.now(),
+		Commands.execute(AddComponentAttribType, {
+			id: this.bind.attribsEdited, 
 			name,
-			type: attribTypes[0],
-			value: 0
+			type: attribTypes[0]
 		})
 	},
 

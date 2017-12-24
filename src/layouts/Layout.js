@@ -10,14 +10,14 @@ import {
 import Project from "../actions/Project"
 import Status from "../actions/Status"
 
-import Navbar from "../components/Navbar"
-import Hierarchy from "../components/Hierarchy"
-import Assets from "../components/assets/Assets"
-import Inspect from "../components/Inspect"
-import Word from "../components/Word"
-import Workspace from "../components/Workspace"
-import Overlay from "../components/Overlay"
-import StatusBar from "../components/StatusBar"
+import Navbar from "../component/Navbar"
+import Hierarchy from "../component/Hierarchy"
+import Assets from "../component/assets/Assets"
+import Inspect from "../inspect/view/Inspect"
+import Word from "../component/Word"
+import Workspace from "../component/Workspace"
+import Overlay from "../component/Overlay"
+import StatusBar from "../component/StatusBar"
 
 const marginRight = { style: { borderRight: "3px solid #010008" }}
 

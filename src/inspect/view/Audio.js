@@ -5,7 +5,7 @@ import {
 	elementVoid,
 } from "wabi"
 
-import FileSystem from "../fs/FileSystem"
+import FileSystem from "~/fs/FileSystem"
 
 export default component(
 {
