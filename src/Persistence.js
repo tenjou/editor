@@ -98,8 +98,10 @@ class Storage
 				// Remove old keys
 				for(let key in data) {
 					if(seed[key] === undefined) {
-						delete data[key]
-						changed = true
+						if(this.seedings[key] == undefined) {
+							delete data[key]
+							changed = true
+						} 
 					}
 				}
 
