@@ -119,7 +119,7 @@ const HandleUpdateAsset = (asset, key, value) =>
 					diffAsset(asset.id, prefabs, diffs, prevValue, newAttribs)
 					diffAsset(asset.id, entities, diffs, prevValue, newAttribs)
 
-					prevInfo.attribs = newAttribs					
+					prevInfo.attribs = newAttribs				
 					break
 
 				case "cache":
@@ -135,33 +135,49 @@ const HandleUpdateAsset = (asset, key, value) =>
 const diffAsset = (componentId, assets, diffs, prevValue, newAttribs) => 
 {
 	for(let key in assets) {
-		const components = assets[key].components
+		const asset = assets[key]
+		const components = asset.components
 		for(let n = 0; n < components.length; n++) 
 		{
 			const component = components[n]
 			if(component.id !== componentId) { continue }
 
+			let changed = false
 			const data = component.data
-			for(let i = 0; i < diffs.length; i++) {
+			for(let i = 0; i < diffs.length; i++) 
+			{
 				const diff = diffs[i]
-				switch(diff.action) {
+
+				switch(diff.action) 
+				{
 					case "add":
 						data[diff.key] = newAttribs[diff.key]
+						changed = true
 						break
+
 					case "remove":
 						delete data[diff.key]
+						changed = true
 						break
+
 					case "value":
 						if(data[diff.key] === diff.value) {
 							data[diff.key] = newAttribs[diff.key]
 						}
+						changed = true
 						break
+
 					case "rename":
 						const prevValue = data[diff.value]
 						delete data[diff.value]
 						data[diff.key] = prevValue
+						changed = true
 						break
 				}
+			}
+
+			if(changed) {
+				store.set(`assets/${asset.id}/components/${n}/data`, data)
 			}
 		}
 	}	
