@@ -39,46 +39,86 @@ class Storage
 		Status.startLoading()
 
 		const path = `db/${this.type}.json`
-		const pathOld = `db/${this.type}_old.json`
 
-		FileSystem
-
-		FileSystem.read(path, (error, json) => {
+		FileSystem.read(path, (error, json) => 
+		{
 			if(error) {
-				FileSystem.read(pathOld, (error, json) => {
-					if(error) 
-					{
-						if(canWrite) 
-						{
-							const data = this.performSeeding({})
-							FileSystem.write(path, JSON.stringify(data), (error, filepath) => {
-								if(error) {
-									Status.log(`${StatusMsg.Project.DB_CANT_CREATE} ${url}/${path}`, Status.ERROR)
-									console.error(error)
-								}
-		
-								store.set(this.type, data)
-								Status.endLoading()
-							})
-						}
-						else {
-							Status.log(`${StatusMsg.Project.DB_NOT_FOUND} ${url}/${path}`, Status.ERROR)
-							console.error(error)
-						}
-					}
-					else {
-						const data = this.performSeeding(JSON.parse(json))
-						store.set(this.type, data)
-						Status.endLoading()	
-					}
-				})
+				this.loadBackupDB(url, canWrite)
 			}
 			else {
-				const data = this.performSeeding(JSON.parse(json))
-				store.set(this.type, data)
-				Status.endLoading()	
+				try {
+					const data = JSON.parse(json)
+					this.loadFromData(data)
+				}
+				catch(error) {
+					this.loadBackupDB(url, canWrite)
+				}
 			}
+
+			Status.endLoading()
 		})
+	}
+
+	loadBackupDB(url, canWrite) 
+	{
+		Status.startLoading()
+		
+		const path = `db/${this.type}.json.backup`
+
+		FileSystem.read(path, (error, json) => 
+		{
+			if(error) {
+				if(canWrite) {
+					this.writeEmptyData()
+				}
+				else {
+					Status.log(`${StatusMsg.Project.DB_NOT_FOUND} ${url}/${path}`, Status.ERROR)
+					console.error(error)
+				}
+			}
+			else {
+				try {
+					const normalPath = `db/${this.type}.json`
+					Persistence.write(normalPath, json)
+					const data = JSON.parse(json)
+					this.loadFromData(data)
+				}
+				catch(error) {
+					this.writeEmptyData()
+				}
+			}
+
+			Status.endLoading()
+		})
+	}
+
+	writeEmptyData() 
+	{
+		Status.startLoading()
+
+		const path = `db/${this.type}.json`
+		const data = this.performSeeding({})
+
+		FileSystem.write(path, JSON.stringify(data), (error, filepath) => {
+			if(error) {
+				Status.log(`${StatusMsg.Project.DB_CANT_CREATE} ${url}/${path}`, Status.ERROR)
+				console.error(error)
+			}
+
+			store.set(this.type, data)
+		})
+
+		Status.endLoading()
+	}
+
+	loadFromData(data) 
+	{
+		Status.startLoading()
+
+		const seededData = this.performSeeding(data)
+		store.set(this.type, seededData)
+
+		Status.endLoading()	
 	}
 
 	seed(path, seed)
@@ -144,37 +184,37 @@ class Storage
 
 		const data = store.data[this.type]
 		const path = `db/${this.type}.json`
-		const pathNew = `db/${this.type}_new.json`
-		const pathOld = `db/${this.type}_old.json`
+		const pathNew = `db/${this.type}.json.write`
+		const pathOld = `db/${this.type}.json.backup`
 
-		FileSystem.write(path, JSON.stringify(data, 4), (error, data) => {
+		FileSystem.write(pathNew, JSON.stringify(data, 4), (error, data) => {
 			if(error) {
 				console.error(`(Persistence) Error while writing ${this.type} data in: ${pathNew}`)
 				return
 			}
 
-			// FileSystem.moveTo(path, pathOld, (error) => {
-			// 	if(error) {
-			// 		console.error(`(Persistence) Error while renaming: ${path}`)
-			// 		return
-			// 	}
+			FileSystem.moveTo(path, pathOld, (error) => {
+				if(error) {
+					console.error(`(Persistence) Error while renaming: ${path}`)
+					return
+				}
 
-			// 	FileSystem.moveTo(pathNew, path, (error) => {
-			// 		if(error) {
-			// 			console.error(`(Persistence) Error while renaming: ${pathNew}`)
-			// 			return
-			// 		}
+				FileSystem.moveTo(pathNew, path, (error) => {
+					if(error) {
+						console.error(`(Persistence) Error while renaming: ${pathNew}`)
+						return
+					}
 	
-			// 		FileSystem.remove(pathOld, (error) => {
-			// 			if(error) {
-			// 				console.error(`(Persistence) Error while removing: ${pathOld}`)
-			// 				return
-			// 			}
+					FileSystem.remove(pathOld, (error) => {
+						if(error) {
+							console.error(`(Persistence) Error while removing: ${pathOld}`)
+							return
+						}
 
 						console.log(`(${this.type} saved)`)
-			// 		})
-			// 	})
-			// })
+					})
+				})
+			})
 		})
 	}
 
