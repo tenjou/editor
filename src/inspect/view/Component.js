@@ -4,6 +4,7 @@ import SetComponentAttribType from "../command/SetComponentAttribType"
 import Drop from "./Drop"
 import List from "./List"
 import Caret from "./Caret"
+import ImagePreview from "./ImagePreview"
 import EntityComponent from "./EntityComponent"
 import EnumDropdown from "./EnumDropdown"
 import InspectItem from "./InspectItem"
@@ -96,6 +97,9 @@ const ComponentAttrib = component
 						break
 					case "Component":
 						this.renderComponent()
+						break
+					case "Image":
+						this.renderImage()
 						break
 				}
 			elementClose("items")
@@ -229,6 +233,22 @@ const ComponentAttrib = component
 					})
 				}
 			}
+		elementClose("item")
+	},
+
+	renderImage() 
+	{
+		const bind = `${this.bind.value}/value`
+		
+		elementOpen("item")
+			elementOpen("name")
+				text("value")
+			elementClose("name")						
+			componentVoid(ImagePreview, {
+				bind: {
+					value: bind
+				} 
+			})
 		elementClose("item")
 	},
 	
