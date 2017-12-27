@@ -184,36 +184,21 @@ class Storage
 
 		const data = store.data[this.type]
 		const path = `db/${this.type}.json`
-		const pathNew = `db/${this.type}.json.write`
-		const pathOld = `db/${this.type}.json.backup`
+		const pathBackup = `db/${this.type}.json.backup`
 
-		FileSystem.write(pathNew, JSON.stringify(data, 4), (error, data) => {
+		FileSystem.write(pathBackup, JSON.stringify(data, 4), (error, data) => {
 			if(error) {
-				console.error(`(Persistence) Error while writing ${this.type} data in: ${pathNew}`)
+				console.error(`(Persistence) Error while writing ${this.type} data in: ${pathBackup}`)
 				return
 			}
 
-			FileSystem.moveTo(path, pathOld, (error) => {
+			FileSystem.moveTo(pathBackup, path, (error) => {
 				if(error) {
-					console.error(`(Persistence) Error while renaming: ${path}`)
+					console.error(`(Persistence) Error while renaming: ${pathBackup}`)
 					return
 				}
 
-				FileSystem.moveTo(pathNew, path, (error) => {
-					if(error) {
-						console.error(`(Persistence) Error while renaming: ${pathNew}`)
-						return
-					}
-	
-					FileSystem.remove(pathOld, (error) => {
-						if(error) {
-							console.error(`(Persistence) Error while removing: ${pathOld}`)
-							return
-						}
-
-						console.log(`(${this.type} saved)`)
-					})
-				})
+				console.log(`(${this.type} saved)`)
 			})
 		})
 	}
