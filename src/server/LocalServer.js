@@ -170,6 +170,12 @@ const moveItem = (payload) => {
 		if(index > 1) {
 			payload.value.name = `${name} ${index}`
 		}
+		else {
+			payload.value.name = name
+		}
+	}
+	else {
+		payload.value.name = item.name
 	}
 
 	Translator.dispatch(payload)
