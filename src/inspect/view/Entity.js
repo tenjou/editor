@@ -24,8 +24,8 @@ const Entity = component
 		elementOpen("entity")
 			elementOpen("items")
 				for(let n = 0; n < components.length; n++) {
-					const component = components[n]
-					this.renderComponent(component, n)
+					const componentInfo = components[n]
+					this.renderComponent(componentInfo, n)
 				}
 			elementClose("items")
 
@@ -38,10 +38,10 @@ const Entity = component
 		elementClose("entity")
 	},
 
-	renderComponent(component, index)
+	renderComponent(componentInfo, index)
 	{
-		const data = component.data
-		const asset = store.data.assets[component.id]
+		const data = componentInfo.data
+		const asset = store.data.assets[componentInfo.component]
 		const attribs = asset.attribs
 		const attr = {
 			onclick: (event) => {
@@ -55,71 +55,22 @@ const Entity = component
 				elementVoid("icon", { class: "fa fa-remove" })
 			elementClose("button")			
 		elementClose("header")
-		elementOpen("items")
-			const bind = `${this.bind}/${index}/data/`
-			for(let n = 0; n < attribs.length; n++) {
-				this.renderItem(attribs[n], data, bind)
-			}
-		elementClose("items")
-	},
-
-	renderItem(attrib, data, componentBind)
-	{
-		const bind = `${componentBind}${attrib.name}`
-
-		elementOpen("item")
-			elementOpen("name")
-				text(attrib.name)
-			elementClose("name")
-			switch(attrib.type) {
-				case "Number":
-					componentVoid(NumberInput, { bind })
-					break				
-				case "String":
-					componentVoid(TextInput, { bind })
-					break
-				case "Boolean":
-					componentVoid(Checkbox, { bind })
-					break	
-				case "Enum":
-					componentVoid(Dropdown, { 
-						$sourceRoot: "assets",
-						$source: attrib.source,
-						bind: {
-							value: bind
-						}
-					})
-					break
-				case "Image":
-					componentVoid(ImagePreview, {
-						bind: {
-							value: bind
-						}
-					})
-					break
-				case "Component":
-					// componentVoid(Entity, {
-					// 	bind
-					// })	
-					break		
-			}
-			
-		elementClose("item")
+		componentVoid(EntityComponent)
 	},
 
 	handleAddComponent(event) 
 	{
-		const id = this.menu.$value
-		if(!id) { return }
+		const component = this.menu.$value
+		if(!component) { return }
 
-		const data = ComponentService.clone(id)
+		const data = ComponentService.clone(component)
 		if(!data) {	
 			console.warn(`(Entity.handleAddComponent) Could not get component data from id: ${this.menu.$value}`)
 			return
 		}
 
 		this.menu.$value = null
-		store.add(this.bind, { id, data })
+		store.add(this.bind, { component, data })
 	}
 })
 

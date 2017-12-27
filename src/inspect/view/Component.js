@@ -3,7 +3,10 @@ import AddComponentAttribType from "../command/AddComponentAttribType"
 import SetComponentAttribType from "../command/SetComponentAttribType"
 import Drop from "./Drop"
 import List from "./List"
+import Caret from "./Caret"
+import EntityComponent from "./EntityComponent"
 import EnumDropdown from "./EnumDropdown"
+import InspectItem from "./InspectItem"
 import Dropdown from "~/component/Dropdown"
 import Word from "~/component/Word"
 import TextInput from "~/component/TextInput"
@@ -95,7 +98,7 @@ const ComponentAttrib = component
 
 	renderNumber()
 	{
-		const bind = `${this.bind.value}/value`
+		const bind = `${this.bind.value}/value`		
 
 		elementOpen("item")
 			elementOpen("name")
@@ -161,10 +164,26 @@ const ComponentAttrib = component
 	{
 		elementOpen("item")
 			elementOpen("name")
-				text("list")
-			elementClose("name")
-			componentVoid(List)
+				text("listType")
+			elementClose("name")						
+			componentVoid(Dropdown, {
+				$source: attribTypes
+			})	
 		elementClose("item")
+
+		elementOpen("item")
+			elementOpen("name")
+				text("component")
+			elementClose("name")						
+			componentVoid(Drop, {
+				$type: "Component"
+			})
+		elementClose("item")
+
+		componentVoid(InspectItem, {
+			$type: this.$value.type,
+			bind: this.bind.value
+		})
 	},
 
 	renderComponent()
@@ -177,9 +196,28 @@ const ComponentAttrib = component
 				$type: "Component",
 				$exclude: this.$parentId,
 				bind: {
-					value: `${this.bind.value}/value`
+					value: `${this.bind.value}/value/component`
 				}
 			})
+		elementClose("item")
+
+		elementOpen("item")
+			elementOpen("line")
+				elementOpen("name")
+					componentVoid(Caret)
+					text("data")
+				elementClose("name")
+			elementClose("line")
+			const data = this.$value.value.data
+			if(data) {
+				const component = store.data.assets[this.$value.value.component]
+				componentVoid(EntityComponent, { 
+					$attribs: component.cache.attribs,
+					bind: {
+						value: `${this.bind.value}/value/data`
+					}
+				})
+			}
 		elementClose("item")
 	},
 	

@@ -587,16 +587,15 @@ const isParentFolderRemoving = (path) => {
 
 const openSelected = () => {
 	const item = store.get(store.get("local/selected"))
-	const type = Types.get(item.type)
-	if(!type) {
-		console.warn(`(Assets.openSelected) No such type registered: ${type}`)
+	const typeInfo = Types.get(item.type)
+	if(!typeInfo) {
+		console.warn(`(Assets.openSelected) No such type registered: ${typeInfo.type}`)
 		return
 	}
-	if(!type.open) {
-		console.warn(`(Assets.openSelected) No open function defined for type: ${type}`)
+	if(!typeInfo.open) {
 		return
 	}
-	type.open.call(item)
+	typeInfo.open.call(item)
 }
 
 store.watch("local/assets/location", watchLocation)

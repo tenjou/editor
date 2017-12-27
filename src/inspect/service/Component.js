@@ -114,7 +114,7 @@ const HandleUpdateAsset = (asset, key, value) =>
 					const prevInfo = components[asset.id]
 					const prevValue = asset.attribs
 					const newAttribs = compile(value)
-					const diffs = compileDiff(value, prevValue)
+					const diffs = compileAttribDiff(value, prevValue)
 	
 					diffAsset(asset.id, prefabs, diffs, prevValue, newAttribs)
 					diffAsset(asset.id, entities, diffs, prevValue, newAttribs)
@@ -190,9 +190,85 @@ const HandleAssets = (payload) =>
 		HandleCreateAsset(assets[key])
 	}	
 	store.unwatch("assets", HandleAssets)
+
+	for(let key in components) {
+		updateComponent(components[key])
+	}
 }
 
-const compileDiff = (attribs, prevAttribs) => 
+const updateComponent = (component) => {
+	updateComponentAttribs(component.asset.attribs)
+	updateComponentAttribs(component.asset.cache.attribs)
+}
+
+const updateComponentAttribs = (attribs) => {
+	for(let n = 0; n < attribs.length; n++) {
+		const attrib = attribs[n]
+		if(attrib.type === "Component") {
+			const attribComponent = components[attrib.value.component]
+			if(!attribComponent) {
+				console.warn(`(ComponentService.updateComponent) No such component found: ${attrib.component}`)
+				attrib.value.data = null
+			}
+			else {
+				attrib.value.data = diff(attrib.value.data || {}, attribComponent.asset.attribs)
+			}
+		}
+	}
+}
+
+const diff = (prevData, attribs) => 
+{
+	const newData = {}
+	for(let n = 0; n < attribs.length; n++) {
+		const attrib = attribs[n]
+		const prev = prevData[attrib.name]
+		switch(attrib.type) {
+			case "Number":
+			case "Boolean":
+			case "String":
+				if(typeof prev !== typeof attrib.value) {
+					newData[attrib.name] = attrib.value
+				}
+				else {
+					newData[attrib.name] = prev
+				}
+				break
+
+			case "Enum":
+				const enumAsset = store.data.assets[attrib.source]
+				if(enumAsset.data.indexOf(prev) === -1) {
+					newData[attrib.name] = attrib.value
+				}
+				else {
+					newData[attrib.name] = prev
+				}
+				break
+
+			case "List":
+				console.warn("implement")
+				break
+
+			case "Image":
+				const imageAsset = store.data.assets[prev]
+				if(!imageAsset) {
+					newData[attrib.name] = attrib.value
+				}
+				else {
+					newData[attrib.name] = prev
+				}
+				break
+
+			default:
+				newData[attrib.name] = prev
+				break
+		}
+	}
+
+	return newData
+}
+
+const compileAttribDiff = (attribs, prevAttribs) => 
 {
 	const changes = []
 
@@ -261,11 +337,14 @@ const createValue = (type) =>
 				list: []
 			}
 
+		case "Component":
+			return {
+				component: null,
+				data: null
+			}
+
 		case "Enum":
 		case "Image":
-		case "Component":
-			return null
-
 		default:
 			return null
 	}	
