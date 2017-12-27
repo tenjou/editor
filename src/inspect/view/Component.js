@@ -34,7 +34,6 @@ const ComponentAttrib = component
 			}
 		}
 		this.attrWord = {
-			bind: `${this.bind.value}/name`,
 			$validateFunc: (newName) => {
 				if(this.isValidName(newName)) {
 					return newName
@@ -49,15 +48,22 @@ const ComponentAttrib = component
 					id: this.bind.value,
 					type
 				})
-			},
-			bind: `${this.bind.value}/type`			
+			}	
 		}
 	},
 
-	render() {
+	render() 
+	{
+		const attrWord = Object.assign({
+			bind: `${this.bind.value}/name`
+		}, this.attrWord)
+		const attrDropdown = Object.assign({
+			bind: `${this.bind.value}/type`
+		}, this.attrDropdown)		
+
 		elementOpen("attrib")
 			elementOpen("header")
-				componentVoid(Word, this.attrWord)
+				componentVoid(Word, attrWord)
 
 				elementOpen("button", this.attrButtonRemove)
 					elementVoid("icon", { class: "fa fa-remove" })
@@ -69,7 +75,7 @@ const ComponentAttrib = component
 					elementOpen("name")
 						text("type")
 					elementClose("name")
-					componentVoid(Dropdown, this.attrDropdown)	
+					componentVoid(Dropdown, attrDropdown)	
 				elementClose("item")
 
 				switch(this.$value.type) {
