@@ -188,6 +188,8 @@ const ComponentAttrib = component
 
 	renderComponent()
 	{
+		const valueBind = `${this.bind.value}/value`
+
 		elementOpen("item")
 			elementOpen("name")
 				text("component")
@@ -196,27 +198,30 @@ const ComponentAttrib = component
 				$type: "Component",
 				$exclude: this.$parentId,
 				bind: {
-					value: `${this.bind.value}/value/component`
+					value: `${valueBind}/component`
 				}
 			})
 		elementClose("item")
 
 		elementOpen("item")
-			elementOpen("line")
-				elementOpen("name")
-					componentVoid(Caret)
-					text("data")
-				elementClose("name")
-			elementClose("line")
 			const data = this.$value.value.data
 			if(data) {
-				const component = store.data.assets[this.$value.value.component]
-				componentVoid(EntityComponent, { 
-					$attribs: component.cache.attribs,
-					bind: {
-						value: `${this.bind.value}/value/data`
-					}
-				})
+				elementOpen("line")
+					elementOpen("name")
+						componentVoid(Caret, { bind: `${valueBind}/cache/open` })
+						text("data")
+					elementClose("name")
+				elementClose("line")
+
+				if(this.$value.value.cache.open) {
+					const component = store.data.assets[this.$value.value.component]
+					componentVoid(EntityComponent, { 
+						$attribs: component.cache.attribs,
+						bind: {
+							value: `${valueBind}/data`
+						}
+					})
+				}
 			}
 		elementClose("item")
 	},

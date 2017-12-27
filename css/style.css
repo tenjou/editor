@@ -713,6 +713,10 @@ inspect {
 	overflow-y: auto;
 	height: 1px;
 }
+inspect caret {
+	display: inline-block;
+	cursor: pointer;
+}
 inspect category header {
 	padding: 3px;
 }

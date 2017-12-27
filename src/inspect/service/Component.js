@@ -334,13 +334,19 @@ const createValue = (type) =>
 		case "List":
 			return {
 				size: 0,
-				list: []
+				list: [],
+				cache: {
+					open: true
+				}
 			}
 
 		case "Component":
 			return {
 				component: null,
-				data: null
+				data: null,
+				cache: {
+					open: true
+				}
 			}
 
 		case "Enum":
