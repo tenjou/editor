@@ -37,7 +37,6 @@ const get = (id) =>
 	if(def.extend) {
 		menu = extend([], def)
 	}
-
 	if(menu) {
 		sort(menu)
 	}
@@ -47,13 +46,29 @@ const get = (id) =>
 
 const extend = (menu, def) => 
 {
-	if(def.extend) {
-		const defExtend = menus[def.extend]
-		if(!defExtend) {
-			console.warn(`(Menu.extend) Menu not defined: ${def.extend}`)
+	const menuExtends = def.extend
+	if(menuExtends)
+	{
+		if(Array.isArray(menuExtends)) {
+			for(let n = 0; n < menuExtends.length; n++) {
+				const menuExtend = menuExtends[n]
+				const defExtend = menus[menuExtend]
+				if(!defExtend) {
+					console.warn(`(Menu.extend) Menu not defined: ${menuExtend}`)
+				}
+				else {
+					menu = extend(menu, defExtend)
+				}
+			}
 		}
 		else {
-			menu = extend(menu, defExtend)
+			const defExtend = menus[menuExtends]
+			if(!defExtend) {
+				console.warn(`(Menu.extend) Menu not defined: ${menuExtends}`)
+			}
+			else {
+				menu = extend(menu, defExtend)
+			}		
 		}
 	}
 

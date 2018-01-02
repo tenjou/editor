@@ -4,10 +4,11 @@ import ContextMenu from "../actions/ContextMenu"
 
 Menu.set("prefabs", [])
 
-Menu.set("assets", [
+Menu.set("assets", "assets.upload", [
 	{
 		type: "category",
 		name: "Create",
+		index: 100,
 		children: [
 			{
 				name: "Folder",
@@ -77,7 +78,7 @@ Menu.set("assets.defaultItem", [
 	}
 ])
 
-Menu.set("assets.item", "assets.defaultItem", [
+Menu.set("assets.upload", [
 	{
 		name: "Actions",
 		type: "category",
@@ -105,7 +106,7 @@ Menu.set("assets.masterDirectory", "assets", [
 	}
 ])
 
-Menu.set("assets.Folder", "assets.item", [
+Menu.set("assets.Folder", [ "assets.upload", "assets.defaultItem" ], [
 	{
 		name: "Actions",
 		type: "category",
