@@ -339,14 +339,41 @@ action("renameFolder", (prevPath, newPath) => {
 	FileSystem.moveToDirectory(prevPath, newPath, handleActionCallback)	
 })
 action("write", (path, data) => {
-	FileSystem.write(path, data, handleActionCallback)
+	const pathWrite = `${path}.write`
+	FileSystem.write(pathWrite, data, (error) => {
+		if(error) {
+			console.error(error)
+			nextAction()
+		}
+		else {
+			FileSystem.moveTo(pathWrite, path, handleActionCallback)
+		}
+	})
 })
 action("writeJSON", (path, data) => {
 	const json = JSON.stringify(data, null, "\t")
-	FileSystem.write(path, json, handleActionCallback)
+	const pathWrite = `${path}.write`
+	FileSystem.write(pathWrite, json, (error) => {
+		if(error) {
+			console.error(error)
+			nextAction()
+		}
+		else {
+			FileSystem.moveTo(pathWrite, path, handleActionCallback)
+		}
+	})
 })
 action("writeBlob", (path, blob) => {
-	FileSystem.writeBlob(path, blob, handleActionCallback)
+	const pathWrite = `${path}.write`
+	FileSystem.writeBlob(pathWrite, blob, (error) => {
+		if(error) {
+			console.error(error)
+			nextAction()
+		}
+		else {
+			FileSystem.moveTo(pathWrite, path, handleActionCallback)
+		}
+	})
 })
 action("remove", (path, value) => {
 	FileSystem.remove(path, handleActionCallback)
