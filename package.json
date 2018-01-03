@@ -17,7 +17,7 @@
     "wabi": "^0.10.1"
   },
   "devDependencies": {
-    "build-replica": "^0.2.55",
+    "build-replica": "^0.2.58",
     "electron": "~1.6.2",
     "electron-packager": "^8.6.0"
   }
