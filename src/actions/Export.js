@@ -3,6 +3,7 @@ import { saveAs } from "../../libs/FileSaver"
 import { JSZip } from "../../libs/JSZip"
 import fs from "../fs/FileSystem"
 import Assets from "../actions/Assets"
+import { cloneObj } from "~/Utils"
 
 class Exports {
 	constructor(options) {
@@ -75,7 +76,7 @@ class Exports {
 
 	json() {
 		return new Promise((resolve, reject) => {
-			let processed_assets = Object.assign({}, this.assets)
+			let processed_assets = cloneObj(this.assets)
 			Object.keys(processed_assets).forEach((key) => {
 				delete processed_assets[key]['cache']
 			})
