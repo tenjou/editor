@@ -504,6 +504,7 @@ export default component(
 	},
 	handleUpload(event) {
 		Assets.uploadFiles(event.currentTarget.files)
+		event.target.value = ""
 	},
 	handleDrop(event) {
 		event.stopPropagation()

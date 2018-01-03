@@ -82,6 +82,9 @@ const uploadFiles = (files) => {
 	filesToUpload = files
 	fileToUploadId = 0
 	uploadNextFile()
+	blobsFolders[""] = {}
+	blobsMasterFolder[""] = true
+	numEntriesPreparing = files.length
 }
 
 const uploadNextFile = () => {

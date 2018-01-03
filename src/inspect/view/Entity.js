@@ -9,15 +9,15 @@ import ComponentService from "../service/Component"
 
 const Entity = component
 ({
-	mount() 
+	mount()
 	{
 		this.menu = null
 		this.attrAddComponent = {
 			onclick: this.handleAddComponent.bind(this)
-		}	
+		}
 	},
 
-	render() 
+	render()
 	{
 		const components = this.$value
 
@@ -53,7 +53,7 @@ const Entity = component
 			text(asset.name)
 			elementOpen("button", attr)
 				elementVoid("icon", { class: "fa fa-remove" })
-			elementClose("button")			
+			elementClose("button")
 		elementClose("header")
 		componentVoid(EntityComponent, {
 			$attribs: attribs,
@@ -63,13 +63,13 @@ const Entity = component
 		})
 	},
 
-	handleAddComponent(event) 
+	handleAddComponent(event)
 	{
 		const component = this.menu.$value
 		if(!component) { return }
 
 		const data = ComponentService.clone(component)
-		if(!data) {	
+		if(!data) {
 			console.warn(`(Entity.handleAddComponent) Could not get component data from id: ${this.menu.$value}`)
 			return
 		}
