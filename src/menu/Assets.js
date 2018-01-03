@@ -62,7 +62,7 @@ Menu.set("assets", "assets.upload", [
 	}
 ])
 
-Menu.set("assets.defaultItem", [
+Menu.set("assets.item", [
 	{
 		name: "Actions",
 		type: "category",
@@ -106,7 +106,7 @@ Menu.set("assets.masterDirectory", "assets", [
 	}
 ])
 
-Menu.set("assets.Folder", [ "assets.upload", "assets.defaultItem" ], [
+Menu.set("assets.Folder", [ "assets.upload", "assets.item" ], [
 	{
 		name: "Actions",
 		type: "category",
@@ -135,5 +135,3 @@ Menu.set("assets.Text", "assets.item", [
 		]
 	}
 ])
-
-Menu.set("asset.item", "assets.defaultItem", [])
