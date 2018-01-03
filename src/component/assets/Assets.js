@@ -157,11 +157,11 @@ const FilesItem = component({
 
 		const data = event.dataTransfer.types[0]
 		if(this.isDropValid(data)) {
-			if(data) {
-				Assets.move(event.currentTarget.dataset.id, data)
+			if(data === "Files") {
+				Assets.dropFiles(event.dataTransfer.items, this.$.value.id)
 			}
 			else {
-				Assets.dropFiles(event.dataTransfer.items, this.$.value.id)
+				Assets.move(event.currentTarget.dataset.id, data)
 			}
 		}
 	},
@@ -499,26 +499,32 @@ export default component(
 			elementVoid("input", this.attrUpload)
 		elementClose("assets")
 	},
+
 	handleContextMenu(event) {
 		ContextMenu.show("assets", "assets", event)
 	},
+
 	handleUpload(event) {
 		Assets.uploadFiles(event.currentTarget.files)
 		event.target.value = ""
 	},
+
 	handleDrop(event) {
 		event.stopPropagation()
 		event.preventDefault()
 	},
+
 	handleDragOver(event) {
 		event.stopPropagation()
 		event.preventDefault()
 		event.dataTransfer.dropEffect = "copy"
 	},
+
 	handleDragEnter(event) {
 		event.stopPropagation()
 		event.preventDefault()
 	},
+
 	handleDragLeave(event) {
 		event.stopPropagation()
 		event.preventDefault()

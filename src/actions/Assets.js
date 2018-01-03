@@ -148,19 +148,18 @@ const dropFiles_traverseDir = (entry, parent) =>
 	}
 	else if(entry.isDirectory) 
 	{
-		const folder = createItemData("Folder", null, parent)
-		const meta = folder.meta
-		meta.name = entry.name
-		blobsAssets[meta.id] = folder
-		blobsFolders[parent][meta.id] = folder
-		blobsFolders[meta.id] = {}
+		const folder = Types.create("Folder", parent);
+		folder.name = entry.name
+		blobsAssets[folder.id] = folder
+		blobsFolders[parent][folder.id] = folder
+		blobsFolders[folder.id] = {}
 
 		const dirReader = entry.createReader()
 		numEntriesPreparing++
 		dirReader.readEntries((entries) => {
 			for(let n = 0; n < entries.length; n++) {
 				numEntriesPreparing++
-				dropFiles_traverseDir(entries[n], folder.meta.id)
+				dropFiles_traverseDir(entries[n], folder.id)
 			}
 			entryPrepared()
 		})
@@ -170,7 +169,6 @@ const dropFiles_traverseDir = (entry, parent) =>
 }
 
 const writeFile = (file, fileResult, parent) => {
-	// parent = parent || prevLocation
 	const blob = dataURItoBlob(fileResult.target.result, file.type)
 	const asset = createFileData(file, parent || prevLocation)
 	blobsFolders[parent][asset.id] = asset
