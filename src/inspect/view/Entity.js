@@ -4,7 +4,7 @@ import NumberInput from "~/component/NumberInput"
 import Checkbox from "~/component/Checkbox"
 import Dropdown from "~/component/Dropdown"
 import ComponentDropdown from "./ComponentDropdown"
-import ImagePreview from "./ImagePreview"
+import EntityComponent from "./EntityComponent"
 import ComponentService from "../service/Component"
 
 const Entity = component
@@ -55,7 +55,12 @@ const Entity = component
 				elementVoid("icon", { class: "fa fa-remove" })
 			elementClose("button")			
 		elementClose("header")
-		componentVoid(EntityComponent)
+		componentVoid(EntityComponent, {
+			$attribs: attribs,
+			bind: {
+				value: `${this.bind}/${index}/data`
+			}
+		})
 	},
 
 	handleAddComponent(event) 
