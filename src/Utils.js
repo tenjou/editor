@@ -32,7 +32,7 @@ const dataURItoBlob = function(dataURI, type)
 	return new Blob([ array ], { type: type })
 }
 
-const cloneObj = function(obj)
+const cloneObj = (obj) =>
 {
 	if(Array.isArray(obj))
 	{
@@ -67,9 +67,12 @@ const cloneObj = function(obj)
 			const value = obj[key]
 			if(typeof value === "object" && value !== undefined) 
 			{
-				// TODO: Possibly loop through array and check if there are objects to clone?
-				if(value instanceof Array) {
-					result[key] = value.slice(0)
+				if(Array.isArray(value)) {
+					const array = new Array(value.length)
+					for(let n = 0; n < value.length; n++) {
+						array[n] = cloneObj(value[n])
+					}
+					result[key] = array
 				}
 				else {
 					result[key] = cloneObj(value)
@@ -83,7 +86,7 @@ const cloneObj = function(obj)
 		return result
 	}
 
-	return null
+	return obj
 }
 
 const rngBuffer = new Uint8Array(16)
