@@ -14,7 +14,8 @@ const actionsOrder = []
 let actionIndex = 0
 let numIoOps = 0
 let waitingOnIo = false
-let onIoDoneFuncs = []
+let onIoDonePromise = null
+let onIoDoneCallback = null
 
 class Storage 
 {
@@ -273,11 +274,10 @@ const nextAction = () =>
 	const action = actionsOrder[actionIndex++] || null
 	if(!action) 
 	{
-		if(onIoDoneFuncs) {
-			for(let n = 0; n < onIoDoneFuncs.length; n++) {
-				onIoDoneFuncs[n]()
-			}
-			onIoDoneFuncs.length = 0
+		if(onIoDoneCallback) {
+			onIoDoneCallback()
+			onIoDoneCallback = null
+			onIoDonePromise = null
 		}
 		
 		actionIndex = 0
@@ -317,8 +317,15 @@ const queueAction = (action, key, value) =>
 	buffer[key] = value
 }
 
-const onIoDone = function(func) {
-	onIoDoneFuncs.push(func)
+const onIoDone = (func) => {
+	if(!onIoDonePromise) {
+		onIoDonePromise = new Promise((resolve, reject) => {
+			onIoDoneCallback = () => {
+				resolve()
+			}
+		})
+	}
+	return onIoDonePromise
 }
 
 const handleActionCallback = (error, url) => {

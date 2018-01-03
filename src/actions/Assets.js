@@ -87,7 +87,7 @@ const uploadFiles = (files) => {
 const uploadNextFile = () => {
 	const nextFile = filesToUpload[fileToUploadId++]
 	if(!nextFile) { return }
-	readFile(nextFile, uploadNextFile, null)
+	readFile(nextFile, uploadNextFile, "")
 }
 
 const readFile = (file, onDone, parent) => {
@@ -201,7 +201,7 @@ const performAdd = (payload) =>
 	const filePath = buildPath(asset)
 	const dataPath = filePath + ".data"
 
-	Persistence.onIoDone(() => {
+	Persistence.onIoDone().then(() => {
 		handlePayload(asset, payload)
 	})
 
@@ -217,7 +217,7 @@ const performAdd = (payload) =>
 			}
 			delete blobsFolders[asset.id]
 
-			Persistence.onIoDone(() => {
+			Persistence.onIoDone().then(() => {
 				store.dispatch({
 					action: "ADD_BULK",
 					key: "assets",
@@ -265,10 +265,11 @@ const performUpdate = (payload, buffer) =>
 			return 
 		}
 
-		store.handle(payload)
-		Persistence.onIoDone(() => {
+		store.handle(payload, Persistence.onIoDone())
+
+		Persistence.onIoDone().then((resolve, reject) => {
 			store.set(`assetsChildren/${asset.parent}`, assetsChildren[asset.parent])
-		})				
+		})			
 
 		let newPath = `${path}/${payload.value}`
 
@@ -393,7 +394,7 @@ const performMove = (payload) =>
 		Persistence.rename(itemPath, newPath)
 	}
 
-	Persistence.onIoDone(() => {
+	Persistence.onIoDone().then(() => {
 		store.handle({
 			action: "SET",
 			key: `assets/${item.id}`,
