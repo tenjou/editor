@@ -8,7 +8,7 @@ import {
 } from "wabi"
 
 import Word from "./Word"
-import { Exports } from "../actions/export"
+import { Exports } from "../actions/Export"
 
 export default component(
 {
