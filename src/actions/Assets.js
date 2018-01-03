@@ -299,7 +299,7 @@ const performRemove = (payload) =>
 	const path = buildPath(asset)
 
 	if(prevLocation === asset.id) {
-		const parent = store.assets[asset.parent]
+		const parent = store.data.assets[asset.parent]
 		if(parent) {
 			store.set("local/assets/location", asset.parent)
 		}
