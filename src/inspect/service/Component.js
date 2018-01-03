@@ -75,8 +75,8 @@ const HandleRemoveAsset = (asset) =>
 				const components = entities[key].components
 				let changed = false
 				for(let n = components.length - 1; n >= 0; n--) {
-					const component = components[n]
-					if(component.id === asset.id) {
+					const componentInfo = components[n]
+					if(componentInfo.component === asset.id) {
 						components.splice(n, 1)
 						changed = true
 					}
