@@ -759,7 +759,7 @@ inspect items item > image {
 	max-height: 300px;
 	align-items: center;
 	justify-content: center;
-	background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAJElEQVQoU2NkYGD4z4AKGJG5IA4dFKA5AdVKFAdBVaK4iXIFAEiuCAWq9MdHAAAAAElFTkSuQmCC) repeat;
+	background: #222;
 	border-bottom: 1px solid #2f2f2f;
 }
 inspect items item > image.hover {
@@ -768,6 +768,8 @@ inspect items item > image.hover {
 inspect items item > image > img {
 	max-width: 100%;
 	max-height: 100%;
+	background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAJElEQVQoU2NkYGD4z4AKGJG5IA4dFKA5AdVKFAdBVaK4iXIFAEiuCAWq9MdHAAAAAElFTkSuQmCC) repeat;
+	background-color: #444;
 }
 inspect items item > image > button {
 	position: absolute;
