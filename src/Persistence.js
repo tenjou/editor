@@ -43,15 +43,15 @@ class Storage
 
 		FileSystem.read(path, (error, json) => 
 		{
-			if(error) {
+			if(error) {			
 				this.loadBackupDB(url, canWrite)
 			}
 			else {
-				try {
-					const data = JSON.parse(json)
+				try {				
+					const data = JSON.parse(json)					
 					this.loadFromData(data)
 				}
-				catch(error) {
+				catch(error) {				
 					this.loadBackupDB(url, canWrite)
 				}
 			}
@@ -68,7 +68,7 @@ class Storage
 
 		FileSystem.read(path, (error, json) => 
 		{
-			if(error) {
+			if(error) {			
 				if(canWrite) {
 					this.writeEmptyData()
 				}
@@ -107,9 +107,8 @@ class Storage
 			}
 
 			store.set(this.type, data)
+			Status.endLoading()
 		})
-
-		Status.endLoading()
 	}
 
 	loadFromData(data) 
