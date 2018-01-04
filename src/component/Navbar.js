@@ -28,9 +28,9 @@ export default component(
 				text("export")
 			elementClose("export")
 
-			elementOpen("right-side")
-				elementVoid("settings", this.attrSettings)
-			elementClose("right-side")
+			// elementOpen("right-side")
+			// 	elementVoid("settings", this.attrSettings)
+			// elementClose("right-side")
 		elementClose("navbar")
 	},
 
