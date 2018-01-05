@@ -44,7 +44,7 @@ const EntityComponent = component
 						$sourceRoot: "assets",
 						$source: attrib.source,
 						bind: {
-							value: bind
+							value: `${bind}/value`
 						}
 					})
 					break

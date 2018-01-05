@@ -23,10 +23,18 @@ const compile = (attribs) =>
 				obj[attrib.name] = attrib.value ? attrib.value : 0
 				break
 			case "String":
+			case "Component":
+			case "Image":
 				obj[attrib.name] = attrib.value ? attrib.value : null
 				break
 			case "Boolean":
 				obj[attrib.name] = attrib.value ? attrib.value : false
+				break
+			case "Enum":
+				obj[attrib.name] = {
+					source: attrib.source ? attrib.source : null,
+					value: attrib.value ? attrib.value : ""
+				}
 				break
 		}
 	}
@@ -140,7 +148,7 @@ const diffAsset = (componentId, assets, diffs, prevValue, newAttribs) =>
 		for(let n = 0; n < components.length; n++) 
 		{
 			const component = components[n]
-			if(component.id !== componentId) { continue }
+			if(component.component !== componentId) { continue }
 
 			let changed = false
 			const data = component.data
