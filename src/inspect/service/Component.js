@@ -168,17 +168,17 @@ const diffAsset = (componentId, assets, diffs, prevValue, newAttribs) =>
 						changed = true
 						break
 
+					case "rename":
+						const prevValue = data[diff.prevKey]
+						delete data[diff.prevKey]
+						data[diff.key] = prevValue
+						changed = true
+						break
+
 					case "value":
 						if(data[diff.key] === diff.value) {
 							data[diff.key] = newAttribs[diff.key]
 						}
-						changed = true
-						break
-
-					case "rename":
-						const prevValue = data[diff.value]
-						delete data[diff.value]
-						data[diff.key] = prevValue
 						changed = true
 						break
 				}
@@ -306,7 +306,7 @@ const compileAttribDiff = (attribs, prevAttribs) =>
 			changes.push({ key: curr.name, action: "add" })
 		}
 		else if(prev.name !== curr.name) {
-			changes.push({ key: curr.name, action: "rename" })
+			changes.push({ key: curr.name, action: "rename", prevKey: prev.name })
 		}	
 		else if(prev.type !== curr.type) {
 			changes.push({ key: curr.name, action: "type" })
