@@ -56,7 +56,12 @@ const Dropdown = component
 
 			if(!this.$value) {
 				if(Array.isArray(source)) {
-					this.$value = source[0]
+					if(source.length > 0) {
+						this.$value = source[0]
+					}
+					else {
+						this.$value = ""
+					}
 				}
 				else {
 					this.$value = firstKey(source)
