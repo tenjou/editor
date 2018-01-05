@@ -79,15 +79,24 @@ const ContextMenu = component
 		this.bind = "contextmenu"
 	},
 
-	render() {
-		elementOpen("contextmenu", { 
+	render() 
+	{
+		const element = elementOpen("contextmenu", { 
 			style: {
 				left: `${this.$x}px`,
 				top: `${this.$y}px`
 			}
-		})
+		}).element
 			componentVoid(ContextMenuInner, { $value: this.$props })
 		elementClose("contextmenu")
+
+		const rect = element.getBoundingClientRect()
+		const bodyRect = document.body.getBoundingClientRect()
+		const bottomSpaceLeft = bodyRect.bottom - rect.bottom
+		if(bottomSpaceLeft < 0) {
+			const newY = this.$y + bottomSpaceLeft
+			element.style.top = `${newY}px`
+		}
 	}
 })
 
