@@ -1,5 +1,6 @@
 import { store } from "wabi"
 import Menu from "../menu/Menu"
+import Types from "~/actions/Types"
 import Cmder from "~/Cmder"
 import AddAssetCommand from "~/assets/Commands/AddAssetCommand"
 import RemoveAssetCommand from "~/assets/Commands/RemoveAssetCommand"
@@ -7,8 +8,23 @@ import UpdateAssetCommand from "~/assets/Commands/UpdateAssetCommand"
 
 const prefabsMenu = []
 
-const createEntityFromPrefab = (id) => {
-	console.log("create", id)
+const createEntityFromPrefab = (id) => 
+{
+	const prefab = store.data.assets[id]
+	if(!prefab) {
+		console.warn(`(Prefab.createEntityFromPrefab) Could not find prefab with such id: ${prefab}`)
+		return
+	}
+
+	const parent = store.get("local/assets/location")
+	const asset = Types.create("Entity", parent)
+	if(!asset) { return }
+
+	store.dispatch({
+		action: "ADD_ITEM",
+		value: asset,
+		key: "assets"
+	})
 }
 
 const HandleCreateAsset = (asset) =>
