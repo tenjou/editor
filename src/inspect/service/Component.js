@@ -1,5 +1,9 @@
 import { store } from "wabi"
 import Translator from "~/server/Translator"
+import Cmder from "~/Cmder"
+import AddAssetCommand from "~/assets/Commands/AddAssetCommand"
+import RemoveAssetCommand from "~/assets/Commands/RemoveAssetCommand"
+import UpdateAssetCommand from "~/assets/Commands/UpdateAssetCommand"
 
 const components = {}
 const componentsList = []
@@ -40,104 +44,6 @@ const compile = (attribs) =>
 	}
 
 	return obj
-}
-
-const HandleCreateAsset = (asset) =>
-{
-	switch(asset.type) 
-	{
-		case "Component": 
-		{
-			const componentInfo = new ComponentInfo(
-				asset,
-				compile(asset.attribs))
-
-			components[asset.id] = componentInfo
-			componentsList.push(componentInfo)
-			store.set("components", componentsList)
-		} break
-
-		case "Entity":
-			entities[asset.id] = asset
-			break
-		case "Prefab":
-			prefabs[asset.id] = asset
-			break
-	}
-}
-
-const HandleRemoveAsset = (asset) => 
-{
-	switch(asset.type) 
-	{
-		case "Component": 
-		{
-			const componentInfo = components[asset.id]
-			delete components[asset.id]
-			
-			const index = componentsList.indexOf(componentInfo)
-			componentsList[index] = componentsList[componentsList.length - 1]
-			componentsList.pop()
-
-			for(let key in entities) {
-				const components = entities[key].components
-				let changed = false
-				for(let n = components.length - 1; n >= 0; n--) {
-					const componentInfo = components[n]
-					if(componentInfo.component === asset.id) {
-						components.splice(n, 1)
-						changed = true
-					}
-				}
-				if(changed) {
-					store.set(`assets/${key}/components`, components)
-				}
-			}
-
-			store.set("components", componentsList)
-		} break
-
-		case "Entity":
-			delete entities[asset.id]
-			break
-		case "Prefab":
-			delete prefabs[asset.id]
-			break
-	}
-}
-
-const HandleUpdateAsset = (asset, key, value) => 
-{
-	switch(asset.type) 
-	{
-		case "Component": 
-		{
-			switch(key[0]) 
-			{
-				case "name":
-					store.set("components", componentsList)
-					break
-
-				case "attribs":
-					const prevInfo = components[asset.id]
-					const prevValue = asset.attribs
-					const newAttribs = compile(value)
-					const diffs = compileAttribDiff(value, prevValue)
-	
-					diffAsset(asset.id, prefabs, diffs, prevValue, newAttribs)
-					diffAsset(asset.id, entities, diffs, prevValue, newAttribs)
-
-					prevInfo.attribs = newAttribs				
-					break
-
-				case "cache":
-					if(key[1] === "attribs") {
-						store.set(`assets/${asset.id}/cache/attribsEdited`, true)
-					}
-					break
-			}
-		} break
-	}
 }
 
 const diffAsset = (componentId, assets, diffs, prevValue, newAttribs) => 
@@ -189,19 +95,6 @@ const diffAsset = (componentId, assets, diffs, prevValue, newAttribs) =>
 			}
 		}
 	}	
-}
-
-const HandleAssets = (payload) => 
-{
-	const assets = payload.value
-	for(let key in assets) {
-		HandleCreateAsset(assets[key])
-	}	
-	store.unwatch("assets", HandleAssets)
-
-	for(let key in components) {
-		updateComponent(components[key])
-	}
 }
 
 const updateComponent = (component) => {
@@ -319,13 +212,6 @@ const compileAttribDiff = (attribs, prevAttribs) =>
 	return changes
 }
 
-store.set("components", componentsList)
-store.watch("assets", HandleAssets)
-
-Translator.watch("CreateAsset", HandleCreateAsset)
-Translator.watch("RemoveAsset", HandleRemoveAsset)
-Translator.watch("UpdateAsset", HandleUpdateAsset)
-
 const createValue = (type) => 
 {
 	switch(type) 
@@ -371,6 +257,129 @@ const clone = (id) => {
 	}
 	return Object.assign({}, component.attribs)
 }
+
+const HandleAssets = (payload) => 
+{
+	const assets = payload.value
+	for(let key in assets) {
+		HandleCreateAsset(assets[key])
+	}	
+	store.unwatch("assets", HandleAssets)
+
+	for(let key in components) {
+		updateComponent(components[key])
+	}
+}
+
+const HandleCreateAsset = (asset) =>
+{
+	switch(asset.type) 
+	{
+		case "Component": 
+		{
+			const componentInfo = new ComponentInfo(
+				asset,
+				compile(asset.attribs))
+
+			components[asset.id] = componentInfo
+			componentsList.push(componentInfo)
+		} break
+
+		case "Entity":
+			entities[asset.id] = asset
+			break
+		case "Prefab":
+			prefabs[asset.id] = asset
+			break
+	}
+}
+
+const HandleRemoveAsset = (asset) => 
+{
+	switch(asset.type) 
+	{
+		case "Component": 
+		{
+			const componentInfo = components[asset.id]
+			delete components[asset.id]
+			
+			const index = componentsList.indexOf(componentInfo)
+			componentsList[index] = componentsList[componentsList.length - 1]
+			componentsList.pop()
+
+			for(let key in entities) {
+				const components = entities[key].components
+				let changed = false
+				for(let n = components.length - 1; n >= 0; n--) {
+					const componentInfo = components[n]
+					if(componentInfo.component === asset.id) {
+						components.splice(n, 1)
+						changed = true
+					}
+				}
+				if(changed) {
+					store.set(`assets/${key}/components`, components)
+				}
+			}
+
+			store.set("components", componentsList)
+		} break
+
+		case "Entity":
+			delete entities[asset.id]
+			break
+		case "Prefab":
+			delete prefabs[asset.id]
+			break
+	}
+}
+
+const HandleUpdateAsset = (props) => 
+{
+	const asset = props.asset
+	const key = props.key
+
+	switch(asset.type) 
+	{
+		case "Component": 
+		{
+			switch(key[0]) 
+			{
+				case "name":
+					store.set("components", componentsList)
+					break
+
+				case "attribs":
+					const prevInfo = components[asset.id]
+					const prevValue = asset.attribs
+					const newAttribs = compile(value)
+					const diffs = compileAttribDiff(value, prevValue)
+	
+					diffAsset(asset.id, prefabs, diffs, prevValue, newAttribs)
+					diffAsset(asset.id, entities, diffs, prevValue, newAttribs)
+
+					prevInfo.attribs = newAttribs				
+					break
+
+				case "cache":
+					if(key[1] === "attribs") {
+						store.set(`assets/${asset.id}/cache/attribsEdited`, true)
+					}
+					break
+			}
+		} break
+	}
+}
+
+store.set("components", componentsList)
+store.watch("assets", HandleAssets)
+
+Cmder.on(AddAssetCommand, (asset) => { 
+	HandleCreateAsset(asset) 
+	store.set("components", componentsList)
+})
+Cmder.on(RemoveAssetCommand, HandleRemoveAsset)
+Cmder.on(UpdateAssetCommand, HandleUpdateAsset)
 
 export {
 	createValue,

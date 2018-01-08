@@ -1,6 +1,10 @@
 import { store } from "wabi"
 import Assets from "../actions/Assets"
 import Persistence from "../Persistence"
+import Cmder from "~/Cmder"
+import AddAssetCommand from "~/assets/commands/AddAssetCommand"
+import RemoveAssetCommand from "~/assets/commands/RemoveAssetCommand"
+import UpdateAssetCommand from "~/assets/commands/UpdateAssetCommand"
 
 const watchers = {}
 
@@ -34,14 +38,18 @@ const translate = function(payload)
 					}
 					else if(buffer.length === 2) {
 						Assets.performAdd(payload)
-						emit("CreateAsset", payload.value)
+						Cmder.execute(AddAssetCommand, payload.value)
 					}
 					else {
 						if(payload.key.indexOf("assets//") === 0) {
 							store.handle(payload)
 						}	
 						else {		
-							emit("UpdateAsset", store.data.assets[buffer[1]], buffer.slice(2), payload.value)		
+							Cmder.execute(UpdateAssetCommand, {
+								asset: store.data.assets[buffer[1]], 
+								key: buffer.slice(2), 
+								value: payload.value
+							})		
 							Assets.performUpdate(payload, buffer)
 						}
 					}
@@ -49,17 +57,25 @@ const translate = function(payload)
 
 				case "ADD":
 				{
-					emit("UpdateAsset", store.data.assets[buffer[1]], buffer.slice(2), payload.value)
+					Cmder.execute(UpdateAssetCommand, {
+						asset: store.data.assets[buffer[1]], 
+						key: buffer.slice(2), 
+						value: payload.value
+					})
 					Assets.performUpdate(payload, buffer)
 				} break
 
 				case "REMOVE": {
 					if(buffer.length === 2) {
-						emit("RemoveAsset", payload.value ? payload.value : store.get(payload.key))
+						Cmder.execute(RemoveAssetCommand, payload.value ? payload.value : store.get(payload.key))
 						Assets.performRemove(payload)
 					}
 					else if(buffer.length >= 4) {
-						emit("UpdateAsset", store.data.assets[buffer[1]], buffer.slice(2), payload.value)
+						Cmder.execute(UpdateAssetCommand, {
+							asset: store.data.assets[buffer[1]], 
+							key: buffer.slice(2), 
+							value: payload.value
+						})
 						Assets.performUpdate(payload, buffer)
 						break
 					}

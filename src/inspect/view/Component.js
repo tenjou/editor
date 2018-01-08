@@ -15,7 +15,7 @@ import NumberInput from "~/component/NumberInput"
 import Checkbox from "~/component/Checkbox"
 import Dropdown from "~/component/Dropdown"
 import { cloneObj } from "~/Utils"
-import Commands from "~/Commands"
+import Cmder from "~/Cmder"
 
 const attribTypes = [ "Number", "String", "Boolean", "Enum", "List", "Image", "Component" ]
 
@@ -45,7 +45,7 @@ const ComponentAttrib = component
 		this.attrDropdown = { 
 			$source: attribTypes, 
 			$onChange: (type) => {
-				Commands.execute(SetComponentAttribType, {
+				Cmder.execute(SetComponentAttribType, {
 					id: this.bind.value,
 					type
 				})
@@ -341,7 +341,7 @@ const Component = component
 			break
 		}
 
-		Commands.execute(AddComponentAttribType, {
+		Cmder.execute(AddComponentAttribType, {
 			id: this.bind.attribsEdited, 
 			name,
 			type: attribTypes[0]
