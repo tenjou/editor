@@ -18,7 +18,7 @@ const ContextMenuInner = component
 					if(item.type === "category") {
 						this.renderCategory(item)
 					}
-					else if(item.type === "menu") {
+					else if(item.children) {
 						this.renderMenu(item)
 					}
 					else {
@@ -49,7 +49,8 @@ const ContextMenuInner = component
 	},
 
 	renderMenu(item) {
-		elementOpen("item")
+		const attr = item.func ? { onclick: item.func } : null
+		elementOpen("item", attr)
 			if(item.icon) {
 				elementVoid("icon", { class: `fa ${item.icon}` })
 			}		

@@ -18,10 +18,12 @@ Menu.set("assets", "assets.upload", [
 				}
 			},
 			{
-				type: "menu",
-				name: "Prefabs",
-				icon: "fa-cubes",
-				children: "prefabs"
+				name: "Entity",
+				icon: "fa-cube",
+				children: "prefabs",
+				func() {
+					Assets.createAsset("Entity", null)
+				}			
 			},
 			{
 				name: "Prefab",
@@ -38,11 +40,7 @@ Menu.set("assets", "assets.upload", [
 				}
 			},			
 			{
-				name: "Entity",
-				icon: "fa-cube",
-				func() {
-					Assets.createAsset("Entity", null)
-				}
+
 			},			
 			{
 				name: "Component",
