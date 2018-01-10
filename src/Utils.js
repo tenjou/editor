@@ -48,7 +48,12 @@ const cloneObj = (obj) =>
 					result[n] = value.slice(0)
 				}
 				else {
-					result[n] = cloneObj(value)
+					if(value) {
+						result[key] = cloneObj(value)
+					}
+					else {
+						result[key] = null
+					}
 				}
 			}
 			else {
@@ -75,7 +80,12 @@ const cloneObj = (obj) =>
 					result[key] = array
 				}
 				else {
-					result[key] = cloneObj(value)
+					if(value) {
+						result[key] = cloneObj(value)
+					}
+					else {
+						result[key] = null
+					}
 				}
 			}
 			else {
@@ -86,6 +96,20 @@ const cloneObj = (obj) =>
 		return result
 	}
 
+	return obj
+}
+
+const assignObj = (obj, srcObj) => {
+	for(let key in srcObj) {
+		const currValue = obj[key]
+		const newValue = srcObj[key]
+		if(currValue !== undefined && typeof currValue === "object" && typeof newValue === "object") {
+			assignObj(currValue, newValue)
+		}
+		else {
+			obj[key] = newValue
+		}
+	}
 	return obj
 }
 
@@ -111,5 +135,6 @@ export {
 	firstKey,
 	dataURItoBlob,
 	cloneObj,
+	assignObj,
 	uuid4
 }

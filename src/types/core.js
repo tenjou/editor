@@ -4,7 +4,7 @@ import { uuid4 } from "../Utils"
 Types.add("General", {
 	icon: "fa-question",
 	data: {
-		id: null,
+		id: "",
 		type: null,
 		name: null,
 		parent: null,
@@ -37,9 +37,11 @@ Types.add("General", {
 
 Types.add("Folder", "General", {
 	icon: "fa-folder",
-	init() {
-		this.cache.selectedDirectory = false
-		this.cache.open = true
+	data: {
+		cache: {
+			selectedDirectory: false,
+			open: true
+		}
 	},
 	open() {
 		store.set("local/assets/location", this.id)
@@ -48,8 +50,8 @@ Types.add("Folder", "General", {
 
 Types.add("File", "General", {
 	icon: "fa-file",
-	init() {
-		this.ext = null
+	data: {
+		ext: null
 	}
 })
 
@@ -88,6 +90,9 @@ Types.add("Video", "File", {
 
 Types.add("Text", "File", {
 	icon: "fa-font",
+	data: {
+		data: ""
+	},
 	exts: {
 		txt: "text/plain"
 	},
@@ -98,8 +103,8 @@ Types.add("Text", "File", {
 
 Types.add("Enum", "File", {
 	icon: "fa-list",
-	init() {
-		this.data = []
+	data: {
+		data: []
 	},
 	schema: [
 		{
@@ -112,8 +117,9 @@ Types.add("Enum", "File", {
 
 Types.add("Entity", "File", {
 	icon: "fa-cube",
-	init() {
-		this.components = []
+	data: {
+		components: [],
+		prefab: null
 	},
 	schema: [
 		{
@@ -126,8 +132,8 @@ Types.add("Entity", "File", {
 
 Types.add("Prefab", "File", {
 	icon: "fa-cubes",
-	init() {
-		this.components = []
+	data: {
+		components: []
 	},
 	schema: [
 		{
@@ -140,10 +146,12 @@ Types.add("Prefab", "File", {
 
 Types.add("Component", "File", {
 	icon: "fa-flask",
-	init() {
-		this.attribs = []
-		this.cache.attribs = []
-		this.cache.attribsEdited = false
+	data: {
+		attribs: [],
+		cache: {
+			attribs: [],
+			attribsEdited: false
+		}
 	},
 	schema: [
 		{

@@ -3,7 +3,7 @@ import Hierarchy from "./Hierarchy"
 import Types from "./Types"
 import FileSystem from "../fs/FileSystem"
 import Persistence from "../Persistence"
-import { dataURItoBlob } from "../Utils"
+import { cloneObj, dataURItoBlob } from "../Utils"
 import Log from "../Log"
 
 const dataFilePostfix = ".data"
@@ -500,6 +500,67 @@ const syncDirectoryCallback = function(error, data, parent, path)
 	}
 }
 
+const diffChanges = (data) => {
+	const typeData = Types.getData(data.type)
+	diffChanges_Remove(data, typeData)
+	diffChanges_Add(data, typeData)
+}
+
+const diffChanges_Remove = (data, typeData) => 
+{
+	for(let key in data) 
+	{
+		if(typeData[key] === undefined) {
+			console.warn(`(Assets.diffChanges) Removed item key: ${key}`)
+			delete data[key]
+			continue
+		}
+
+		const value = data[key]
+		if(typeof value === "object") {
+			diffChanges_Remove(value, typeData[key])
+		}
+	}
+}
+
+const diffChanges_Add = (data, typeData) => 
+{
+	for(let key in data) 
+	{
+		if(data[key] === undefined) {
+			data[key] = cloneObj(typeData[key])
+			continue
+		}
+
+		const typeDataValue = typeData[key]
+		const typeDataType = typeof typeDataValue
+		const value = data[key]
+		const valueType = typeof value
+
+		if(valueType !== typeDataType) {
+			if(typeDataValue === null) {
+				switch(typeDataType) {
+					case "number":
+					case "boolean":
+						data[key] = null
+						break
+				}
+			}
+			else {
+				if(typeDataValue === "object") {
+					data[key] = cloneObj(typeDataValue)
+				}
+				else {
+					data[key] = typeDataValue
+				}				
+			}
+		}
+		else if(valueType === "object") {
+			diffChanges_Add(value, typeDataValue)
+		}
+	}
+}
+
 const syncReadMetaCallback = function(error, json, parent, path, file, contentFile)
 {
 	if(error) {
@@ -513,6 +574,8 @@ const syncReadMetaCallback = function(error, json, parent, path, file, contentFi
 		syncingRemoveItem(file, `${path}/${file.name}`)
 		return
 	}
+
+	diffChanges(data)
 
 	assets[data.id] = data
 	

@@ -1,5 +1,5 @@
 import { store } from "wabi"
-import { uuid4, cloneObj, firstKey } from "../Utils"
+import { uuid4, cloneObj, assignObj, firstKey } from "../Utils"
 
 const types = {}
 const exts = {}
@@ -52,7 +52,7 @@ const add = (name, extend, props) =>
 		const newType = {
 			type: name,
 			icon: props.icon ? props.icon : extendedType.icon,
-			data: Object.assign(extendedData, props.data),
+			data: assignObj(extendedData, props.data),
 			init: props.init ? extendedType.init.concat(props.init) : extendedType.init,
 			open: props.open,
 			exts,
@@ -133,10 +133,19 @@ const getMimeFromExt = (ext) => {
 	return mime ? mime : null
 }
 
+const getData = (type) => {
+	const typeInfo = types[type]
+	if(typeInfo) {
+		return typeInfo.data
+	}
+	return null
+}
+
 export default {
 	createFromExt,
 	getIconFromType,
 	getMimeFromExt,
+	getData,
 	add,
 	get,
 	create
