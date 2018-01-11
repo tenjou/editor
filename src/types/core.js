@@ -91,7 +91,7 @@ Types.add("Video", "File", {
 Types.add("Text", "File", {
 	icon: "fa-font",
 	data: {
-		data: null
+		data: ""
 	},
 	exts: {
 		txt: "text/plain"
@@ -104,7 +104,7 @@ Types.add("Text", "File", {
 Types.add("Enum", "File", {
 	icon: "fa-list",
 	data: {
-		data: null
+		data: []
 	},
 	schema: [
 		{
@@ -147,9 +147,9 @@ Types.add("Prefab", "File", {
 Types.add("Component", "File", {
 	icon: "fa-flask",
 	data: {
-		attribs: null,
+		attribs: [],
 		cache: {
-			attribs: null,
+			attribs: [],
 			attribsEdited: false
 		}
 	},
