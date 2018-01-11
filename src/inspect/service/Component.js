@@ -338,6 +338,7 @@ const HandleUpdateAsset = (props) =>
 {
 	const asset = props.asset
 	const key = props.key
+	const value = props.value
 
 	switch(asset.type) 
 	{

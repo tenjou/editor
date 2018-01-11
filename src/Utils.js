@@ -48,12 +48,7 @@ const cloneObj = (obj) =>
 					result[n] = value.slice(0)
 				}
 				else {
-					if(value) {
-						result[key] = cloneObj(value)
-					}
-					else {
-						result[key] = null
-					}
+					result[n] = cloneObj(value)
 				}
 			}
 			else {

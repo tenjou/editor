@@ -38,10 +38,7 @@ Menu.set("assets", "assets.upload", [
 				func() {
 					Assets.createAsset("Enum", null)
 				}
-			},			
-			{
-
-			},			
+			},		
 			{
 				name: "Component",
 				icon: "fa-flask",
@@ -52,7 +49,7 @@ Menu.set("assets", "assets.upload", [
 			{
 				name: "Text",
 				icon: "fa-font",
-				func: () => {
+				func() {
 					Assets.createAsset("Text", null)
 				}
 			}				

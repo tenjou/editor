@@ -518,45 +518,53 @@ const diffChanges_Remove = (data, typeData) =>
 
 		const value = data[key]
 		if(typeof value === "object") {
-			diffChanges_Remove(value, typeData[key])
+			const typeDataValue = typeData[key]
+			if(typeDataValue && typeof typeDataValue === "object" && !Array.isArray(typeDataValue)) {
+				diffChanges_Remove(value, typeDataValue)
+			}
 		}
 	}
 }
 
 const diffChanges_Add = (data, typeData) => 
 {
-	for(let key in data) 
+	for(let key in typeData) 
 	{
-		if(data[key] === undefined) {
-			data[key] = cloneObj(typeData[key])
-			continue
-		}
-
 		const typeDataValue = typeData[key]
 		const typeDataType = typeof typeDataValue
 		const value = data[key]
+
+		if(value === undefined) {
+			if(typeof typeDataType === "object") {
+				data[key] = cloneObj(typeDataValue)
+			}
+			else {
+				data[key] = typeDataValue
+			}
+			continue
+		}
+
 		const valueType = typeof value
 
 		if(valueType !== typeDataType) {
-			if(typeDataValue === null) {
-				switch(typeDataType) {
-					case "number":
-					case "boolean":
-						data[key] = null
-						break
+			if(typeDataType === "object") {
+				if(value === null && typeDataValue !== null) {
+					data[key] = cloneObj(typeDataValue)
 				}
 			}
 			else {
-				if(typeDataValue === "object") {
-					data[key] = cloneObj(typeDataValue)
-				}
-				else {
-					data[key] = typeDataValue
-				}				
+				data[key] = typeDataValue
 			}
 		}
-		else if(valueType === "object") {
-			diffChanges_Add(value, typeDataValue)
+		else if(typeDataType === "object") {
+			if(typeDataValue !== null) {
+				if(value === null) {
+					data[key] = cloneObj(typeDataValue)
+				}
+				else if(!Array.isArray(typeDataValue)) {
+					diffChanges_Add(value, typeDataValue)
+				}
+			}
 		}
 	}
 }

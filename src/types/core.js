@@ -4,7 +4,7 @@ import { uuid4 } from "../Utils"
 Types.add("General", {
 	icon: "fa-question",
 	data: {
-		id: "",
+		id: null,
 		type: null,
 		name: null,
 		parent: null,
@@ -91,7 +91,7 @@ Types.add("Video", "File", {
 Types.add("Text", "File", {
 	icon: "fa-font",
 	data: {
-		data: ""
+		data: null
 	},
 	exts: {
 		txt: "text/plain"
@@ -104,7 +104,7 @@ Types.add("Text", "File", {
 Types.add("Enum", "File", {
 	icon: "fa-list",
 	data: {
-		data: []
+		data: null
 	},
 	schema: [
 		{
@@ -147,9 +147,9 @@ Types.add("Prefab", "File", {
 Types.add("Component", "File", {
 	icon: "fa-flask",
 	data: {
-		attribs: [],
+		attribs: null,
 		cache: {
-			attribs: [],
+			attribs: null,
 			attribsEdited: false
 		}
 	},
