@@ -1,5 +1,8 @@
 import { store } from "wabi"
-import Translator from "../server/Translator"
+import Cmder from "~/Cmder"
+import AddAssetCommand from "~/assets/Commands/AddAssetCommand"
+import RemoveAssetCommand from "~/assets/Commands/RemoveAssetCommand"
+import UpdateAssetCommand from "~/assets/Commands/UpdateAssetCommand"
 
 const enums = {}
 
@@ -18,7 +21,7 @@ const HandleRemoveAsset = (asset) =>
 {
 	switch(asset.type) 
 	{
-		case "Template": 
+		case "Enum": 
 			delete enums[asset.name]
 			store.set("enums", enums)
 			break			
@@ -47,6 +50,9 @@ const HandleAssets = (payload) =>
 
 store.watch("assets", HandleAssets)
 
-Translator.watch("CreateAsset", HandleCreateAsset)
-Translator.watch("RemoveAsset", HandleRemoveAsset)
-Translator.watch("UpdateAsset", HandleUpdateAsset)
+Cmder.on(AddAssetCommand, (assets) => {
+	HandleCreateAsset(assets)
+	store.set("enums", enums)
+})
+Cmder.on(RemoveAssetCommand, HandleRemoveAsset)
+Cmder.on(UpdateAssetCommand, HandleUpdateAsset)

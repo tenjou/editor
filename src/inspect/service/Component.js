@@ -325,6 +325,32 @@ const HandleRemoveAsset = (asset) =>
 			store.set("components", componentsList)
 		} break
 
+		case "Enum":
+		{
+			for(let key in components) 
+			{
+				const component = components[key].asset
+				let changed = false
+
+				if(removeEnumFromAttribs(component.cache.attribs, asset.id)) {
+					changed = true
+				}
+				if(removeEnumFromAttribs(component.attribs, asset.id)) {
+					for(let key in entities) {
+						const components = entities[key].components
+						
+					}
+					changed = true
+				}
+				
+				if(changed) {
+					store.set(`assets/${key}`, component)
+				}
+
+
+			}
+		} break
+
 		case "Entity":
 			delete entities[asset.id]
 			break
@@ -332,6 +358,23 @@ const HandleRemoveAsset = (asset) =>
 			delete prefabs[asset.id]
 			break
 	}
+}
+
+const removeEnumFromAttribs = (attribs, enumId) => 
+{
+	let changed = false
+
+	for(let n = 0; n < attribs.length; n++) 
+	{
+		const attrib = attribs[n]
+		if(attrib.type !== "Enum") { continue }
+		if(attrib.source !== enumId) { continue }
+		
+		attrib.source = null
+		changed = true
+	}
+
+	return changed
 }
 
 const HandleUpdateAsset = (props) => 
