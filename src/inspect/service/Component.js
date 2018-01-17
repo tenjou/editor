@@ -330,24 +330,22 @@ const HandleRemoveAsset = (asset) =>
 			for(let key in components) 
 			{
 				const component = components[key].asset
-				let changed = false
 
 				if(removeEnumFromAttribs(component.cache.attribs, asset.id)) {
-					changed = true
+					store.set(`assets/${key}/cache/attribs`, component.cache.attribs)
 				}
-				if(removeEnumFromAttribs(component.attribs, asset.id)) {
-					for(let key in entities) {
-						const components = entities[key].components
-						
+
+				const enumAttribs = getAttribsWithEnum(component.attribs, asset.id)
+				if(enumAttribs) {
+					removeEnumFromBuffer(entities, enumAttribs, asset.id)
+					removeEnumFromBuffer(prefabs, enumAttribs, asset.id)				
+					for(let n = 0; n < enumAttribs.length; n++) {
+						const attrib = enumAttribs[n]
+						attrib.source = null
+						attrib.value = null
 					}
-					changed = true
+					store.set(`assets/${key}/attribs`, component.attribs)
 				}
-				
-				if(changed) {
-					store.set(`assets/${key}`, component)
-				}
-
-
 			}
 		} break
 
@@ -358,6 +356,27 @@ const HandleRemoveAsset = (asset) =>
 			delete prefabs[asset.id]
 			break
 	}
+}
+
+const getAttribsWithEnum = (attribs, enumId) =>
+{
+	let result = null
+	
+	for(let n = 0; n < attribs.length; n++) 
+	{
+		const attrib = attribs[n]
+		if(attrib.type !== "Enum") { continue }
+		if(attrib.source !== enumId) { continue }
+
+		if(!result) {
+			result = [ attrib ]
+		}
+		else {
+			result.push(attrib)
+		}
+	}
+
+	return result
 }
 
 const removeEnumFromAttribs = (attribs, enumId) => 
@@ -375,6 +394,30 @@ const removeEnumFromAttribs = (attribs, enumId) =>
 	}
 
 	return changed
+}
+
+const removeEnumFromBuffer = (buffer, enumAttribs, enumId) => 
+{
+	for(let key in buffer) 
+	{
+		const components = buffer[key].components
+
+		for(let n = 0; n < components.length; n++) 
+		{
+			const data = components[n].data
+			let changed = false
+
+			for(let n = 0; n < enumAttribs.length; n++) {
+				const attrib = enumAttribs[n]
+				data[attrib.name].value = null
+				changed = true
+			}
+
+			if(changed) {
+				store.set(`assets/${key}/components/${n}/data`, data)
+			}
+		}
+	}
 }
 
 const HandleUpdateAsset = (props) => 
