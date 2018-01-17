@@ -27,18 +27,13 @@ const compile = (attribs) =>
 				obj[attrib.name] = attrib.value ? attrib.value : 0
 				break
 			case "String":
+			case "Enum":
 			case "Component":
 			case "Image":
 				obj[attrib.name] = attrib.value ? attrib.value : null
 				break
 			case "Boolean":
 				obj[attrib.name] = attrib.value ? attrib.value : false
-				break
-			case "Enum":
-				obj[attrib.name] = {
-					source: attrib.source ? attrib.source : null,
-					value: attrib.value ? attrib.value : ""
-				}
 				break
 		}
 	}
