@@ -347,9 +347,17 @@ const HandleRemoveAsset = (asset) =>
 		case "Entity":
 			delete entities[asset.id]
 			break
+
 		case "Prefab":
+		{
+			for(let key in entities) {
+				const entity = entities[key]
+				if(entity.prefab === asset.id) {
+					store.set(`assets/${key}/prefab`, null)
+				}
+			}
 			delete prefabs[asset.id]
-			break
+		} break
 	}
 }
 
@@ -447,6 +455,16 @@ const HandleUpdateAsset = (props) =>
 					if(key[1] === "attribs") {
 						store.set(`assets/${asset.id}/cache/attribsEdited`, true)
 					}
+					break
+			}
+		} break
+
+		case "Entity":
+		{
+			switch(key[0])
+			{
+				case "prefab":
+					console.log("prefab", value)
 					break
 			}
 		} break

@@ -125,7 +125,10 @@ Types.add("Entity", "File", {
 		{
 			name: "entity",
 			type: "Entity",
-			bind: "components"
+			bind: {
+				value: "",
+				prefab: "prefab"
+			}
 		}
 	]
 })
@@ -137,8 +140,8 @@ Types.add("Prefab", "File", {
 	},
 	schema: [
 		{
-			name: "entity",
-			type: "Entity",
+			name: "prefab",
+			type: "Prefab",
 			bind: "components"
 		}
 	]	

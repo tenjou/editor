@@ -10,13 +10,16 @@ import Color from "./Color"
 import Component from "./Component"
 import Enum from "./Enum"
 import Entity from "./Entity"
+import Prefab from "./Prefab"
 
-const Category = component({
+const Category = component
+({
 	state: {
 		props: null,
 		bind: null,
 		open: true
 	},
+
 	mount()
 	{
 		const handleCaretClickFunc = this.handleCaretClick.bind(this)
@@ -33,6 +36,7 @@ const Category = component({
 			onclick: handleCaretClickFunc
 		}			
 	},
+
 	render() 
 	{
 		if(this.$open)
@@ -62,12 +66,14 @@ const Category = component({
 			elementClose("category")
 		}
 	},
+
 	handleClick(event) 
 	{
 		if(event.detail % 2 === 0) {
 			this.$open = !this.$open
 		}
 	},
+
 	handleCaretClick(event) {
 		event.stopPropagation()
 		this.$open = !this.$open
@@ -85,29 +91,35 @@ const Items = component(
 		elementOpen("items")
 
 		const props = this.$value
-		const bind = this.$bind
+		const rootBind = this.$bind
+		let bind
+
 		for(let n = 0; n < props.length; n++)
 		{
 			const item = props[n]
+			let itemBind = item.bind
 
-			let itemBind = item.bind ? `${this.$.bind}/${item.bind}` : this.$.bind
-
-			// let itemBind = 
-			// if(item.bind)
-			// {
-			// 	if(item.local) {
-			// 		itemBind = store.get(`${this.$bind}.local.${item.local}`)
-			// 		if(itemBind) {
-			// 			itemBind += `.${item.bind}`
-			// 		}
-			// 	}
-			// 	else {
-			// 		itemBind = `${this.$bind}.${item.bind}`
-			// 	}
-			// }
-			// else {
-			// 	itemBind = null
-			// }
+			if(itemBind) 
+			{
+				if(typeof itemBind === "object") {
+					bind = {}
+					for(let key in itemBind) {
+						const path = itemBind[key]
+						if(path) {
+							bind[key] = `${rootBind}/${path}`
+						}
+						else {
+							bind[key] = rootBind
+						}
+					}
+				}
+				else {
+					bind = `${rootBind}/${itemBind}`
+				}
+			}
+			else {
+				bind = rootBind
+			}
 
 			switch(item.type)
 			{
@@ -128,7 +140,7 @@ const Items = component(
 
 				case "Number":
 				{
-					const inputAttr = { bind: itemBind }
+					const inputAttr = { bind }
 					inputAttr.$min = (item.$min !== undefined) ? item.$min : Number.MIN_SAFE_INTEGER
 					inputAttr.$max = (item.$max !== undefined) ? item.$max : Number.MAX_SAFE_INTEGER
 
@@ -142,7 +154,7 @@ const Items = component(
 
 				case "String":
 				{
-					const inputAttr = { bind: itemBind }
+					const inputAttr = { bind }
 					if(item.readonly) {
 						inputAttr.$readonly = item.readonly
 					}
@@ -157,7 +169,7 @@ const Items = component(
 
 				case "Checkbox":
 				{
-					const inputAttr = { bind: itemBind }
+					const inputAttr = { bind }
 					if(item.$default) { inputAttr.$default = item.$default }
 
 					elementOpen("item")
@@ -170,7 +182,7 @@ const Items = component(
 				{
 					const inputAttr = { 
 						bind: {
-							value: itemBind,
+							value: bind,
 							source: item.source
 						},
 						$emptyOption: (item.$emptyOption !== undefined) ? item.$emptyOption : false,
@@ -196,8 +208,8 @@ const Items = component(
 					elementOpen("item")
 						componentVoid(Image, { 
 							bind: {
-								value: itemBind,
-								updated: `${itemBind}/updated` 
+								value: bind,
+								updated: `${bind}/updated` 
 							}
 						})
 					elementClose("item")
@@ -208,8 +220,8 @@ const Items = component(
 					elementOpen("item")
 						componentVoid(Audio, { 
 							bind: {
-								value: itemBind,
-								updated: `${itemBind}/updated` 
+								value: bind,
+								updated: `${bind}/updated` 
 							}
 						})
 					elementClose("item")
@@ -220,10 +232,10 @@ const Items = component(
 					elementOpen("item")
 						componentVoid(Component, { 
 							bind: {
-								value: itemBind,
-								attribs: `${itemBind}/attribs`,
-								attribsEdited: `${itemBind}/cache/attribs`,
-								isAttribsEdited: `${itemBind}/cache/attribsEdited`
+								value: bind,
+								attribs: `${bind}/attribs`,
+								attribsEdited: `${bind}/cache/attribs`,
+								isAttribsEdited: `${bind}/cache/attribsEdited`
 							}
 						})
 					elementClose("item")
@@ -232,60 +244,32 @@ const Items = component(
 				case "Enum":
 				{
 					elementOpen("item")
-						componentVoid(Enum, { bind: itemBind })
+						componentVoid(Enum, { bind })
 					elementClose("item")
 				} break		
 				
 				case "Entity":
 				{
 					elementOpen("item")
-						componentVoid(Entity, { bind: itemBind })
+						componentVoid(Entity, { bind })			
 					elementClose("item")
-				} break		
-
-				case "Category":
-				{
-					const value = store.get(itemBind)
-					if(typeof value === "string") 
-					{
-						itemBind = `${item.source}.${value}`
-						if(!store.get(itemBind)) {
-							break
-						}
-					}
-					else {
-						break
-					}
-
-					componentVoid(Category, { 
-						$value: item.name, 
-						$props: item.children || null, 
-						$bind: itemBind 
-					})
 				} break
+
+				case "Prefab":
+				{
+					elementOpen("item")
+						componentVoid(Prefab, { bind })
+					elementClose("item")
+				} break					
 
 				case "Color":
 				{
-					const inputAttr = { bind: itemBind }
+					const inputAttr = { bind }
 					if(item.$default) { inputAttr.$default = item.$default }
 
 					elementOpen("item")
 						elementVoid("name", attr)
 						componentVoid(Color, inputAttr)
-					elementClose("item")
-				} break
-
-				case "MeshInspect":
-				{
-					const inputAttr = { 
-						bind: {
-							value: this.$bind,
-							selected: `${this.$bind}.local.selected`
-						}
-					}
-
-					elementOpen("item")
-						componentVoid(MeshInspect, inputAttr)
 					elementClose("item")
 				} break
 
